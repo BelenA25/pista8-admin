@@ -45,7 +45,7 @@ export const DynamicTypography = styled(({ tag, children, ...props }: DynamicTyp
         `;
       case 'p':
         return css`
-          font-size: 1rem;
+          font-size: 0.87rem;
           font-weight: normal;
           font-family: 'Lato', sans-serif;
         `;

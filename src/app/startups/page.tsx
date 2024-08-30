@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
 import { onValue, ref } from "firebase/database";
 
-const ITEMS_PAGE = 8;
+const ITEMS_PAGE = 6;
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
