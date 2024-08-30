@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Lato, Lexend } from '@next/font/google';
 import "./globals.css";
 import SideMenu from "@/components/side-menu";
 
-const inter = Inter({ subsets: ["latin"] });
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['400', '700'], 
+});
+
+const lexend = Lexend({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
+
 
 export const metadata: Metadata = {
   title: "Pista 8 Admin",
@@ -17,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} flex`}>
+      <body className={`${lexend.className} flex`}>
         <SideMenu></SideMenu>
         <main className="flex-1 p-4">
           {children}
