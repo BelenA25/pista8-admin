@@ -1,4 +1,4 @@
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "./ui/pagination";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "./ui/pagination";
 
 interface PaginationSectionProps {
     currentPage: number;
@@ -23,7 +23,7 @@ export default function PaginationSection({ currentPage, totalPages, onPageChang
                 )}
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <PaginationItem key={page}>
-                        <PaginationLink href="#" isActive={page === currentPage} onClick={() => handlePageChange(page)}>
+                        <PaginationLink href="#" isActive={page === currentPage} onClick={(event) => {event.preventDefault();  handlePageChange(page);}}>
                             {page}
                         </PaginationLink>
                     </PaginationItem>
