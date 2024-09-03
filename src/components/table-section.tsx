@@ -17,7 +17,7 @@ export default function TableSection({ data }: TableSectionProps) {
             <Table className="w-full">
                 <TableBody>
                     {data.map((item, index) => (
-                        <TableRowData name={item.name} imageUrl={item.imageUrl} sector={item.sector} />
+                        <TableRowData key={index} name={item.name} imageUrl={item.imageUrl} sector={item.sector} />
                     ))}
                 </TableBody>
             </Table>
