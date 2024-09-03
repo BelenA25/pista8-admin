@@ -33,9 +33,12 @@ export default function Startups() {
 
     return (
         <>
-            <Title></Title>
+            <Title
+             title="Lista de Startups"
+            />
             <SearchCard></SearchCard>
             <TableSection data={paginatedData}></TableSection>
-            <PaginationSection currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}></PaginationSection>        </>
+            <PaginationSection currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}></PaginationSection>       
+        </>
     )
 }
