@@ -6,7 +6,7 @@ import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { limitToFirst, onValue, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
+import { equalTo, limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter } from "firebase/database";
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,6 +14,7 @@ export default function Startups() {
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalItems] = useState<number>(0);
     const [lastKey, setLastKey] = useState<string | null>(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const handleResize = () => {
@@ -36,20 +37,27 @@ export default function Startups() {
             const startupsReference = ref(database, 'startups');
             let queryStartups;
 
-            if (currentPage === 1) {
+            if (searchTerm) {
                 queryStartups = query(
-                    startupsReference,
-                    orderByKey(),
-                    limitToFirst(itemsPerPage)
+                  startupsReference,
+                  orderByChild('name'), 
+                  equalTo(searchTerm)
                 );
-            } else {
+              } else if (currentPage === 1) {
                 queryStartups = query(
-                    startupsReference,
-                    orderByKey(),
-                    startAfter(lastKey),
-                    limitToFirst(itemsPerPage)
+                  startupsReference,
+                  orderByKey(),
+                  limitToFirst(itemsPerPage)
                 );
-            }
+              } else {
+                queryStartups = query(
+                  startupsReference,
+                  orderByKey(),
+                  startAfter(lastKey),
+                  limitToFirst(itemsPerPage)
+                );
+              }
+        
             onValue(queryStartups, (snapshot) => {
                 const data = snapshot.val();
                 const startupsData = data ? Object.values(data) : [];
@@ -75,18 +83,20 @@ export default function Startups() {
         };
         estimateTotalItems();
         fetchingData();
-    }, [currentPage, itemsPerPage]);
+    }, [currentPage, itemsPerPage, searchTerm]);
     
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
-
+    const handleSearchClick = (term: string) => {
+        setSearchTerm(term);
+      };
     return (
         <>
             <Title></Title>
-            <SearchCard></SearchCard>
+            <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
             <TableSection data={data}></TableSection>
-            <PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>        
+            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}      
         </>
     )
 }
