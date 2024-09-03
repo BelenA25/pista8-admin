@@ -6,7 +6,7 @@ import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { equalTo, limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter } from "firebase/database";
+import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter } from "firebase/database";
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,28 +39,36 @@ export default function Startups() {
 
             if (searchTerm) {
                 queryStartups = query(
-                  startupsReference,
-                  orderByChild('name'), 
-                  equalTo(searchTerm)
+                    startupsReference,
+                    orderByChild('name')
                 );
-              } else if (currentPage === 1) {
+            } else if (currentPage === 1) {
                 queryStartups = query(
-                  startupsReference,
-                  orderByKey(),
-                  limitToFirst(itemsPerPage)
+                    startupsReference,
+                    orderByKey(),
+                    limitToFirst(itemsPerPage)
                 );
-              } else {
+            } else {
                 queryStartups = query(
-                  startupsReference,
-                  orderByKey(),
-                  startAfter(lastKey),
-                  limitToFirst(itemsPerPage)
+                    startupsReference,
+                    orderByKey(),
+                    startAfter(lastKey),
+                    limitToFirst(itemsPerPage)
                 );
-              }
-        
+            }
+
             onValue(queryStartups, (snapshot) => {
                 const data = snapshot.val();
-                const startupsData = data ? Object.values(data) : [];
+                let startupsData = data ? Object.values(data) : [];
+
+                if (searchTerm) {
+                    const lowerSearchTerm = searchTerm.toLowerCase();
+                    startupsData = startupsData.filter((startup: any) =>
+                        startup.name.toLowerCase().includes(lowerSearchTerm)
+                    );
+                    const startIndex = (currentPage - 1) * itemsPerPage;
+                    setData(startupsData.slice(startIndex, startIndex + itemsPerPage));
+                }
                 setLastKey(startupsData.length ? Object.keys(data)[startupsData.length - 1] : null);
                 setData(startupsData);
             });
@@ -84,19 +92,19 @@ export default function Startups() {
         estimateTotalItems();
         fetchingData();
     }, [currentPage, itemsPerPage, searchTerm]);
-    
+
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
     const handleSearchClick = (term: string) => {
         setSearchTerm(term);
-      };
+    };
     return (
         <>
             <Title></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
             <TableSection data={data}></TableSection>
-            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}      
+            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )
 }

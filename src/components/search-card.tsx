@@ -19,10 +19,15 @@ export default function SearchCard({ onSearchClick }: SearchCardProps) {
             handleSearchClick();
         }
     };
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        onSearchClick(value);
+    };
     return (
         <Card className="mx-8 p-4 flex items-center space-x-5 border-none">
             <Typography tag='h6' noWrap={true}>Buscar Startup: </Typography>
-            <Input type="text" value={searchTerm} placeholder="Escribe el nombre del startup..." onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={handleKeyDown} className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <Input type="text" value={searchTerm} onChange={handleSearchChange}  placeholder="Escribe el nombre del startup..." onKeyDown={handleKeyDown} className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
             <SearchButton onClick={handleSearchClick}></SearchButton>
         </Card>
     );
