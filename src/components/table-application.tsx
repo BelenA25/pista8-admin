@@ -15,7 +15,7 @@ export default function TableApplication({startup_name, full_name, email, phone}
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
 
-                <TableCell className="flex flex-col flex-grow">
+                <TableCell className=" w-1/18 flex flex-col flex-grow ">
                     <Typography tag="p" alignment="left" fontWeight="bold">
                         {startup_name}
                     </Typography>
@@ -24,6 +24,7 @@ export default function TableApplication({startup_name, full_name, email, phone}
                         {email}  {" - "}
                         {phone}  
                     </Typography>
+                    
                    
                 </TableCell>
                 <TableCell className="flex justify-end items-center">

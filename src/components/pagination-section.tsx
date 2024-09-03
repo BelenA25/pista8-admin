@@ -13,27 +13,94 @@ export default function PaginationSection({ currentPage, totalPages, onPageChang
         }
     };
 
+    // Determine the range of pages to show
+    const pageRange = 7;
+    const startPage = Math.max(1, Math.min(currentPage - Math.floor(pageRange / 2), totalPages - pageRange + 1));
+    const endPage = Math.min(totalPages, startPage + pageRange - 1);
+
+    const showEllipsisLeft = startPage > 1;
+    const showEllipsisRight = endPage < totalPages;
+
     return (
         <Pagination>
             <PaginationContent>
+                {/* Previous Button */}
                 {currentPage > 1 && (
                     <PaginationItem>
-                        <PaginationPrevious href="#" onClick={(event) => { event.preventDefault(); handlePageChange(currentPage - 1); }} />
+                        <PaginationPrevious
+                            href="#"
+                            onClick={(event) => { 
+                                event.preventDefault(); 
+                                handlePageChange(currentPage - 1); 
+                            }}
+                        />
                     </PaginationItem>
                 )}
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+
+               
+                {showEllipsisLeft && (
+                    <>
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(event) => { 
+                                    event.preventDefault(); 
+                                    handlePageChange(1); 
+                                }}
+                            >
+                                1
+                            </PaginationLink>
+                        </PaginationItem>
+                        <PaginationEllipsis />
+                    </>
+                )}
+
+                {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map(page => (
                     <PaginationItem key={page}>
-                        <PaginationLink href="#" isActive={page === currentPage} onClick={() => handlePageChange(page)}>
+                        <PaginationLink
+                            href="#"
+                            isActive={page === currentPage}
+                            onClick={(event) => { 
+                                event.preventDefault(); 
+                                handlePageChange(page); 
+                            }}
+                        >
                             {page}
                         </PaginationLink>
                     </PaginationItem>
                 ))}
+
+               
+                {showEllipsisRight && (
+                    <>
+                        <PaginationEllipsis />
+                        <PaginationItem>
+                            <PaginationLink
+                                href="#"
+                                onClick={(event) => { 
+                                    event.preventDefault(); 
+                                    handlePageChange(totalPages); 
+                                }}
+                            >
+                                {totalPages}
+                            </PaginationLink>
+                        </PaginationItem>
+                    </>
+                )}
+
+                {/* Next Button */}
                 {currentPage < totalPages && (
                     <PaginationItem>
-                        <PaginationNext href="#" onClick={(event) => { event.preventDefault(); handlePageChange(currentPage + 1); }} />
+                        <PaginationNext
+                            href="#"
+                            onClick={(event) => { 
+                                event.preventDefault(); 
+                                handlePageChange(currentPage + 1); 
+                            }}
+                        />
                     </PaginationItem>
                 )}
             </PaginationContent>
         </Pagination>
-    )
+    );
 }
