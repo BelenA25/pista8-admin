@@ -14,7 +14,6 @@ interface TableRowDataProps {
   }
 
 export default function TableRowData({itemId, itemName, imageUrl, itemSector, itemType, handleDelete }: TableRowDataProps) {
-    console.log("hola estoy aqui en table row data", itemId, itemName);
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">

@@ -5,8 +5,9 @@ import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useCallback, useEffect, useState } from "react";
-import { database } from "../firebaseConfig";
-import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
+import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
+
+const TYPE = 'startups'
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,107 +19,27 @@ export default function Startups() {
     const [allKeys, setAllKeys] = useState<string[]>([]);
 
     useEffect(() => {
-        const handleResize = () => {
-            const tableHeight = window.innerHeight - 200;
-            const itemHeight = 80;
-            const newItemsPerPage = Math.floor(tableHeight / itemHeight);
-            setItemsPerPage(newItemsPerPage);
-        };
+        const onResize = () => handleResize(setItemsPerPage);
 
-        window.addEventListener('resize', handleResize);
-        handleResize();
+        window.addEventListener('resize', onResize);
+        onResize();
 
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', onResize);
         };
     }, []);
 
-    const fetchingData = useCallback(async () => {
-        const startKey = allKeys[(currentPage - 1) * itemsPerPage];
-        const startupsReference = ref(database, 'startups');
-        let queryStartups;
+    const fetchDataCallback = useCallback(() => {
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, allKeys, setData, setLastKeys);
+    }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
-        if (searchTerm) {
-            queryStartups = query(
-                startupsReference,
-                orderByChild('name')
-            );
-        } else {
-            if (currentPage === 1) {
-                queryStartups = query(
-                    startupsReference,
-                    limitToFirst(itemsPerPage)
-                );
-            } else {
-                queryStartups = query(
-                    startupsReference,
-                    orderByKey(),
-                    startAt(startKey),
-                    limitToFirst(itemsPerPage)
-                );
-            }
-        }
-
-        onValue(queryStartups, (snapshot) => {
-            const data = snapshot.val();
-            let startupsData = data 
-            ? Object.entries(data)
-                .map(([id, item]) => ({id,...(item as Record<string, any>)}))
-            : [];
-            if (searchTerm) {
-                const lowerSearchTerm = searchTerm.toLowerCase();
-                startupsData = startupsData.filter((startup: any) =>
-                    startup.name.toLowerCase().includes(lowerSearchTerm)
-                );
-                startupsData = startupsData.slice(0, itemsPerPage);
-            }
-            if (startupsData.length > 0) {
-                setLastKeys(prevKeys => {
-                    const newKeys = [...prevKeys];
-                    if (!newKeys[currentPage - 1]) {
-                        newKeys[currentPage - 1] = startupsData[startupsData.length - 1].id;
-                    }
-                    return newKeys;
-                });
-            }
-
-            setData(startupsData);
-        });
-    }, [searchTerm, currentPage, itemsPerPage, lastKeys]);
     useEffect(() => {
-        const prefetchKeys = async () => {
-            const startupsReference = ref(database, 'startups');
-            const queryKeys = query(startupsReference, orderByKey());
-            onValue(queryKeys, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    const keys = Object.keys(data);
-                    setAllKeys(keys);
-                    setTotalItems(keys.length);
-                }
-            });
-        };
-        prefetchKeys();
+        fetchAllKeys(TYPE, setAllKeys, setTotalItems);
     }, []);
     useEffect(() => {
-        const estimateTotalItems = async () => {
-            const startupsReference = ref(database, 'startups');
-            const queryStartups = query(
-                startupsReference,
-                orderByKey(),
-                limitToFirst(100)
-            );
-            onValue(queryStartups, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    const keys = Object.keys(data);
-                    setTotalItems(keys.length);
-                }
-            });
-        };
-        estimateTotalItems();
-        fetchingData();
-    }, [currentPage, itemsPerPage, searchTerm]);
+        estimateTotalItems(TYPE, setTotalItems);
+        fetchDataCallback();
+    }, [currentPage, itemsPerPage, searchTerm, fetchDataCallback]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
@@ -129,7 +50,7 @@ export default function Startups() {
     };
 
     const handleDelete = () => {
-        fetchingData();
+        fetchDataCallback();
     };
 
     return (
