@@ -11,7 +11,7 @@ import Title from "@/components/title";
 export default function Applications() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
-    const [itemsPerPage, setItemsPerPage] = useState(6); // Dynamic item count based on window size
+    const [itemsPerPage, setItemsPerPage] = useState(6); 
     const [totalItems, setTotalItems] = useState<number>(0);
     const [lastKey, setLastKey] = useState<string | null>(null);
     const [isSearching, setIsSearching] = useState<boolean>(false);

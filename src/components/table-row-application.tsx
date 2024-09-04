@@ -8,7 +8,7 @@ interface TableApplicationsPorps {
     full_name: string;
     email: string;
     phone: string;
-    id: string; // Agregado para eliminar
+    id: string; 
     onDelete: (id: string) => void;
     
 }
