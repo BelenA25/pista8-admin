@@ -42,7 +42,7 @@ export default function SideMenu() {
                                         <AccordionContent className="pl-8">
                                             <ul className="space-y-2">
                                                 <li><a href="/startups" className="block p-2 rounded-md hover:bg-[#F2A594] " >Lista de Startups</a></li>
-                                                <li><a href="/startups/postulaciones" className="block p-2 rounded-md hover:bg-[#F2A594]">Lista de Postulaciones</a></li>
+                                                <li><a href="/startups/applications" className="block p-2 rounded-md hover:bg-[#F2A594]">Lista de Postulaciones</a></li>
                                             </ul>
                                         </AccordionContent>
                                     </AccordionItem>
@@ -58,7 +58,7 @@ export default function SideMenu() {
                                         <AccordionContent className="pl-8">
                                             <ul className="space-y-2">
                                                 <li><a href="/mentores" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Mentores</a></li>
-                                                <li><a href="/mentores/postulaciones" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Postulaciones</a></li>
+                                                <li><a href="/mentores/applications" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Postulaciones</a></li>
                                             </ul>
                                         </AccordionContent>
                                     </AccordionItem>
