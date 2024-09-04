@@ -6,29 +6,30 @@ import { database } from "@/app/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 
 interface DeleteButtonProps {
-    startupId: string;
-    onDelete: () => void; 
+    itemId: string;
+    itemType: string;
+    onDelete: () => void;
 }
 
-export default function DeleteButton({ startupId, onDelete }: DeleteButtonProps) {
+export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButtonProps) {
     const [open, setOpen] = useState(false);
 
     const handleDelete = async () => {
-        const startupRef = ref(database, `startups/${startupId}`);
-        const deletedStartupsRef = ref(database, `deleted_startups/${startupId}`);
+        const itemRef = ref(database, `${itemType}/${itemId}`);
+        const deletedItemsRef = ref(database, `deleted_${itemType}/${itemId}`);
 
         try {
-            const snapshot = await get(startupRef);
+            const snapshot = await get(itemRef);
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const timestamp = new Date().toISOString();
                 const dataWithTimestamp = { ...data, deletedAt: timestamp };
-                await set(deletedStartupsRef, dataWithTimestamp);
-                await remove(startupRef);
-                onDelete(); 
+                await set(deletedItemsRef, dataWithTimestamp);
+                await remove(itemRef);
+                onDelete();
             }
         } catch (error) {
-            console.error("Error deleting startup:", error);
+            console.error("Error deleting item:", error);
         } finally {
             setOpen(false);
         }
