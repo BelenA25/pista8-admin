@@ -5,12 +5,13 @@ import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface TableRowDataProps {
+    startupId: string;
     name: string;
     imageUrl: string;
     sector: string;
   }
 
-export default function TableRowData({ name, imageUrl, sector }: TableRowDataProps) {
+export default function TableRowData({startupId, name, imageUrl, sector }: TableRowDataProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
@@ -32,7 +33,7 @@ export default function TableRowData({ name, imageUrl, sector }: TableRowDataPro
                     <EditButton />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <DeleteButton />
+                    <DeleteButton startupId={startupId} />
                 </TableCell>
             </TableRow>
         </div>
