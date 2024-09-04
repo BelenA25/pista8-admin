@@ -6,7 +6,7 @@ import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter } from "firebase/database";
+import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -66,8 +66,7 @@ export default function Startups() {
                     startupsData = startupsData.filter((startup: any) =>
                         startup.name.toLowerCase().includes(lowerSearchTerm)
                     );
-                    const startIndex = (currentPage - 1) * itemsPerPage;
-                    setData(startupsData.slice(startIndex, startIndex + itemsPerPage));
+                    startupsData = startupsData.slice(0, itemsPerPage);
                 }
                 setLastKey(startupsData.length ? Object.keys(data)[startupsData.length - 1] : null);
                 setData(startupsData);
