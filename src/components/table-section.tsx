@@ -2,10 +2,11 @@ import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import TableRowData from "./table-row-data";
 
 interface TableRowDataProps {
-    id: string; 
-    name: string;
-    imageUrl: string;
-    sector: string;
+    itemId: string; 
+    itemName: string;
+    itemImageUrl: string;
+    itemSector: string;
+    itemType: string; 
 }
 
 interface TableSectionProps {
@@ -28,7 +29,7 @@ export default function TableSection({ data, searchTerm, handleDelete }: TableSe
                         </TableRow>
                     ) : (
                         data.map((item, index) => (
-                            <TableRowData key={index} name={item.name} imageUrl={item.imageUrl} sector={item.sector} startupId={item.id} handleDelete={handleDelete}/>
+                            <TableRowData key={index} itemName={item.itemName} imageUrl={item.itemImageUrl} itemSector={item.itemSector} itemId={item.itemId}  itemType={item.itemType} handleDelete={handleDelete}/>
                         ))
                     )}
                 </TableBody>
