@@ -103,7 +103,7 @@ export default function Startups() {
         <>
             <Title></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data}></TableSection>
+            <TableSection data={data} searchTerm={searchTerm}></TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )
