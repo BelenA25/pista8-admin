@@ -4,9 +4,9 @@ import PaginationSection from "@/components/pagination-section";
 import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
 import Title from "@/components/title";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
+import { equalTo, limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,47 +31,48 @@ export default function Startups() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    const fetchingData = useCallback(async () => {
+        const startupsReference = ref(database, 'startups');
+        let queryStartups;
 
-    useEffect(() => {
-        const fetchingData = async () => {
-            const startupsReference = ref(database, 'startups');
-            let queryStartups;
+        if (searchTerm) {
+            queryStartups = query(
+                startupsReference,
+                orderByChild('name')
+            );
+        } else if (currentPage === 1) {
+            queryStartups = query(
+                startupsReference,
+                limitToFirst(itemsPerPage)
+            );
+        } else {
+            queryStartups = query(
+                startupsReference,
+                orderByKey(),
+                startAfter(lastKey),
+                limitToFirst(itemsPerPage)
+            );
+        }
 
+        onValue(queryStartups, (snapshot) => {
+            const data = snapshot.val();
+            let startupsData = data 
+            ? Object.entries(data)
+                .map(([id, item]) => ({id,...(item as Record<string, any>)}))
+            : [];
             if (searchTerm) {
-                queryStartups = query(
-                    startupsReference,
-                    orderByChild('name')
+                const lowerSearchTerm = searchTerm.toLowerCase();
+                startupsData = startupsData.filter((startup: any) =>
+                    startup.name.toLowerCase().includes(lowerSearchTerm)
                 );
-            } else if (currentPage === 1) {
-                queryStartups = query(
-                    startupsReference,
-                    orderByKey(),
-                    limitToFirst(itemsPerPage)
-                );
-            } else {
-                queryStartups = query(
-                    startupsReference,
-                    orderByKey(),
-                    startAfter(lastKey),
-                    limitToFirst(itemsPerPage)
-                );
+                startupsData = startupsData.slice(0, itemsPerPage);
             }
-
-            onValue(queryStartups, (snapshot) => {
-                const data = snapshot.val();
-                let startupsData = data ? Object.values(data) : [];
-
-                if (searchTerm) {
-                    const lowerSearchTerm = searchTerm.toLowerCase();
-                    startupsData = startupsData.filter((startup: any) =>
-                        startup.name.toLowerCase().includes(lowerSearchTerm)
-                    );
-                    startupsData = startupsData.slice(0, itemsPerPage);
-                }
-                setLastKey(startupsData.length ? Object.keys(data)[startupsData.length - 1] : null);
-                setData(startupsData);
-            });
-        };
+            setLastKey(startupsData.length ? Object.keys(data)[startupsData.length - 1] : null);
+            setData(startupsData);
+        });
+    }, [searchTerm, currentPage, itemsPerPage, lastKey]);
+    useEffect(() => {
+        
 
         const estimateTotalItems = async () => {
             const startupsReference = ref(database, 'startups');
@@ -98,11 +99,15 @@ export default function Startups() {
     const handleSearchClick = (term: string) => {
         setSearchTerm(term);
     };
+    const handleDelete = () => {
+        fetchingData();
+    };
+
     return (
         <>
             <Title></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data} searchTerm={searchTerm}></TableSection>
+            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete}></TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )

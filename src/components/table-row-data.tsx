@@ -9,9 +9,10 @@ interface TableRowDataProps {
     name: string;
     imageUrl: string;
     sector: string;
+    handleDelete: () => void;
   }
 
-export default function TableRowData({startupId, name, imageUrl, sector }: TableRowDataProps) {
+export default function TableRowData({startupId, name, imageUrl, sector, handleDelete }: TableRowDataProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
@@ -33,7 +34,7 @@ export default function TableRowData({startupId, name, imageUrl, sector }: Table
                     <EditButton />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <DeleteButton startupId={startupId} />
+                    <DeleteButton startupId={startupId} onDelete={handleDelete}/>
                 </TableCell>
             </TableRow>
         </div>
