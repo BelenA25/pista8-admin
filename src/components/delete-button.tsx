@@ -4,6 +4,7 @@ import { TrashIcon } from '@radix-ui/react-icons';
 import { get, ref, remove, set, update } from "firebase/database";
 import { database } from "@/app/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+import { toast } from "sonner";
 
 interface DeleteButtonProps {
     itemId: string;
@@ -27,9 +28,10 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                 await set(deletedItemsRef, dataWithTimestamp);
                 await remove(itemRef);
                 onDelete();
+                toast("Item borrado correctamente!") 
             }
         } catch (error) {
-            console.error("Error deleting item:", error);
+            toast("Error borrando item") 
         } finally {
             setOpen(false);
         }
