@@ -8,9 +8,12 @@ interface TableApplicationsPorps {
     full_name: string;
     email: string;
     phone: string;
+    id: string; // Agregado para eliminar
+    onDelete: (id: string) => void;
     
 }
-export default function TableRowApplication({startup_name, full_name, email, phone, }: TableApplicationsPorps) {
+export default function TableRowApplication({startup_name, full_name, email, phone,id, onDelete}: TableApplicationsPorps) {
+    
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
@@ -31,9 +34,7 @@ export default function TableRowApplication({startup_name, full_name, email, pho
                     <InformationButton />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <DeleteButton
-                    
-                    />
+                <DeleteButton onClick={() => onDelete(id)} />
                 </TableCell>
             </TableRow>
         </div>
