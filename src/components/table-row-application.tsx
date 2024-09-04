@@ -8,7 +8,7 @@ interface TableApplicationsPorps {
     full_name: string;
     email: string;
     phone: string;
-    id: string; // Agregado para eliminar
+    id: string; 
     onDelete: (id: string) => void;
     
 }
@@ -26,9 +26,7 @@ export default function TableRowApplication({startup_name, full_name, email, pho
                         {full_name} {" - "}
                         {email}  {" - "}
                         {phone}  
-                    </Typography>
-                    
-                   
+                    </Typography>  
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <InformationButton />
