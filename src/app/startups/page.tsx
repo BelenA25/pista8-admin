@@ -6,15 +6,16 @@ import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useCallback, useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
-import { equalTo, limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
+import { limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAfter, startAt } from "firebase/database";
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
     const [totalItems, setTotalItems] = useState<number>(0);
-    const [lastKey, setLastKey] = useState<string | null>(null);
+    const [lastKeys, setLastKeys] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [allKeys, setAllKeys] = useState<string[]>([]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -31,7 +32,9 @@ export default function Startups() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+
     const fetchingData = useCallback(async () => {
+        const startKey = allKeys[(currentPage - 1) * itemsPerPage];
         const startupsReference = ref(database, 'startups');
         let queryStartups;
 
@@ -40,18 +43,20 @@ export default function Startups() {
                 startupsReference,
                 orderByChild('name')
             );
-        } else if (currentPage === 1) {
-            queryStartups = query(
-                startupsReference,
-                limitToFirst(itemsPerPage)
-            );
         } else {
-            queryStartups = query(
-                startupsReference,
-                orderByKey(),
-                startAfter(lastKey),
-                limitToFirst(itemsPerPage)
-            );
+            if (currentPage === 1) {
+                queryStartups = query(
+                    startupsReference,
+                    limitToFirst(itemsPerPage)
+                );
+            } else {
+                queryStartups = query(
+                    startupsReference,
+                    orderByKey(),
+                    startAt(startKey),
+                    limitToFirst(itemsPerPage)
+                );
+            }
         }
 
         onValue(queryStartups, (snapshot) => {
@@ -67,13 +72,35 @@ export default function Startups() {
                 );
                 startupsData = startupsData.slice(0, itemsPerPage);
             }
-            setLastKey(startupsData.length ? Object.keys(data)[startupsData.length - 1] : null);
+            if (startupsData.length > 0) {
+                setLastKeys(prevKeys => {
+                    const newKeys = [...prevKeys];
+                    if (!newKeys[currentPage - 1]) {
+                        newKeys[currentPage - 1] = startupsData[startupsData.length - 1].id;
+                    }
+                    return newKeys;
+                });
+            }
+
             setData(startupsData);
         });
-    }, [searchTerm, currentPage, itemsPerPage, lastKey]);
+    }, [searchTerm, currentPage, itemsPerPage, lastKeys]);
     useEffect(() => {
-        
-
+        const prefetchKeys = async () => {
+            const startupsReference = ref(database, 'startups');
+            const queryKeys = query(startupsReference, orderByKey());
+            onValue(queryKeys, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const keys = Object.keys(data);
+                    setAllKeys(keys);
+                    setTotalItems(keys.length);
+                }
+            });
+        };
+        prefetchKeys();
+    }, []);
+    useEffect(() => {
         const estimateTotalItems = async () => {
             const startupsReference = ref(database, 'startups');
             const queryStartups = query(
@@ -96,9 +123,11 @@ export default function Startups() {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+
     const handleSearchClick = (term: string) => {
         setSearchTerm(term);
     };
+
     const handleDelete = () => {
         fetchingData();
     };

@@ -18,19 +18,19 @@ export default function PaginationSection({ currentPage, totalPages, onPageChang
             <PaginationContent>
                 {currentPage > 1 && (
                     <PaginationItem>
-                        <PaginationPrevious href="#" onClick={(event) => { event.preventDefault(); handlePageChange(currentPage - 1); }} />
+                        <PaginationPrevious onClick={(event) => { event.preventDefault(); handlePageChange(currentPage - 1); }} />
                     </PaginationItem>
                 )}
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
                     <PaginationItem key={page}>
-                        <PaginationLink href="#" isActive={page === currentPage} onClick={(event) => {event.preventDefault();  handlePageChange(page);}}>
+                        <PaginationLink isActive={page === currentPage} onClick={(event) => {event.preventDefault();  handlePageChange(page);}}>
                             {page}
                         </PaginationLink>
                     </PaginationItem>
                 ))}
                 {currentPage < totalPages && (
                     <PaginationItem>
-                        <PaginationNext href="#" onClick={(event) => { event.preventDefault(); handlePageChange(currentPage + 1); }} />
+                        <PaginationNext onClick={(event) => { event.preventDefault(); handlePageChange(currentPage + 1); }} />
                     </PaginationItem>
                 )}
             </PaginationContent>
