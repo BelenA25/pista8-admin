@@ -107,7 +107,7 @@ export default function Startups() {
         <>
             <Title></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete}></TableSection>
+            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"startups"}></TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )
