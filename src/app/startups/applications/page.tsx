@@ -46,7 +46,7 @@ export default function Applications() {
   }, []);
 
   const fetchInitialData = async () => {
-    const applicationsRef = ref(database, "applications");
+    const applicationsRef = ref(database, TYPE);
     let queryApplications;
 
     if (currentPage === 1) {
@@ -82,7 +82,7 @@ export default function Applications() {
   };
 
   const estimateTotalItems = async () => {
-    const applicationsRef = ref(database, "applications");
+    const applicationsRef = ref(database, TYPE);
     const queryApplications = query(
       applicationsRef,
       orderByKey(),
@@ -120,7 +120,7 @@ export default function Applications() {
       return;
     }
     setIsSearching(true);
-    const applicationsRef = ref(database, "applications");
+    const applicationsRef = ref(database, TYPE);
     const searchQuery = query(
       applicationsRef,
       orderByChild("startup_name"),

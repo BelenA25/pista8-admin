@@ -9,7 +9,7 @@ interface SearchCardProps {
 }
 export default function SearchCard({ onSearch }: SearchCardProps) {
 
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
