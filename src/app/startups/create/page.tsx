@@ -78,7 +78,7 @@ export default function CreateStartupForm() {
     return (
         <>
             <Typography tag="h1">Crear Startup</Typography>
-            <div className="m-9 p-9 border border-black rounded-lg shadow-[0px_5px_5px_rgba(0,0,0,0.5)] overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
+            <div className="m-9 p-9 border border-black rounded-lg custom-shadow overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
                 <Form {...form}>
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 flex flex-col gap-6">
@@ -147,9 +147,7 @@ export default function CreateStartupForm() {
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
-                        <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)}>
-                            Crear
-                        </Button>
+                        <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)}> Crear </Button>
                     </div>
                 </Form>
             </div>

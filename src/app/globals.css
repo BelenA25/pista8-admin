@@ -70,3 +70,7 @@
 .bg-custom-orange {
   background-color: #FE420A;
 }
+
+.custom-shadow {
+  box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.5);
+}
