@@ -12,7 +12,8 @@ interface TableApplicationsPorps {
   startup_description: string;
   startup_stage: string;
   id: string;
-  onDelete: (id: string) => void;
+  onDelete: () => void;
+  itemType: string;
 }
 export default function TableRowApplication({
   startup_name,
@@ -24,7 +25,9 @@ export default function TableRowApplication({
   startup_stage,
   id,
   onDelete,
+  itemType,
 }: TableApplicationsPorps) {
+    
   return (
     <div className="border border-black rounded-lg">
       <TableRow className="w-full flex  border border-gray-400">
@@ -47,7 +50,11 @@ export default function TableRowApplication({
           />
         </TableCell>
         <TableCell className="flex justify-end items-center">
-          <DeleteButton onClick={() => onDelete(id)} />
+          <DeleteButton 
+            id={id} 
+            itemType={itemType} 
+            onClick={onDelete}
+          />
         </TableCell>
       </TableRow>
     </div>

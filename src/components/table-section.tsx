@@ -23,10 +23,11 @@ interface TableApplicationsProps {
 interface TableSectionProps {
     data?: TableRowDataProps[];
     appl?: TableApplicationsProps[];
-    onDelete: (id: string) => void;
+    onDelete: () => void;
+    itemType: string;
 }
 
-export default function TableSection({ data, appl, onDelete }: TableSectionProps) {
+export default function TableSection({ data, appl, onDelete, itemType }: TableSectionProps) {
     return (
         <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg shadow-[0px_5px_5px_rgba(0,0,0,0.5)] overflow-hidden">
             <Table className="w-full">
@@ -45,6 +46,7 @@ export default function TableSection({ data, appl, onDelete }: TableSectionProps
                                 phone={item.phone}
                                 id={item.id}
                                 onDelete={onDelete}
+                                itemType={itemType}
                                 startup_description={item.startup_description}
                                 city={item.city}
                                 startup_stage={item.startup_stage}

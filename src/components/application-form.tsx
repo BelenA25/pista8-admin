@@ -22,7 +22,7 @@ const applicationSchema = z.object({
   email: z.string().email({ message: "Debe ser un correo electrónico válido" }),
   phone: z
     .string()
-    .min(8, {
+    .min(7, {
       message: "El teléfono es obligatorio y debe tener minimo 8 dijitos",
     })
     .regex(/^[\d\+\-\(\) ]+$/, {
@@ -92,7 +92,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
     setErrors(null);
   };
 
-  return (
+  return ( 
     <form
       onSubmit={handleSubmit}
       className="p-4 border border-gray-600 rounded-lg shadow-lg"

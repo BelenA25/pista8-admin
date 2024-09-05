@@ -19,6 +19,8 @@ import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 
+const TYPE = "applications";
+
 export default function Applications() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
@@ -101,15 +103,9 @@ export default function Applications() {
   }, [currentPage, itemsPerPage]);
 
   //delete application
-  const handleDeleteApplication = (id: string) => {
-    const applicationRef = ref(database, `applications/${id}`);
-    remove(applicationRef)
-      .then(() => {
-        setData((prevData) => prevData.filter((item) => item.id !== id));
-      })
-      .catch((error) => {
-        console.error("Error al eliminar la aplicación:", error);
-      });
+  const handleDelete = () => {
+   fetchInitialData();
+    
   };
 
   const handlePageChange = (page: number) => {
@@ -148,7 +144,7 @@ export default function Applications() {
     <>
       <Title title="Lista De Postulaciones Startups " />
       <SearchCard onSearch={handleSearch} />
-      <TableSection appl={data} onDelete={handleDeleteApplication} />
+      <TableSection appl={data} onDelete={handleDelete} itemType={"applications"} />
       {!isSearching && (
         <PaginationSection
           currentPage={currentPage}
