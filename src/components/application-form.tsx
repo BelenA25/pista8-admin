@@ -7,16 +7,34 @@ import { Textarea } from "./ui/textarea";
 
 // Definimos el esquema de validación con Zod
 const applicationSchema = z.object({
-  startup_name: z.string().min(3, { message: "El nombre de la startup es obligatorio o debe tener almenos 3 caracteres" }),
-  full_name: z.string().min(3, { message: "El nombre completo es obligatorio o debe tener almenos 3 caracteres" }),
+  startup_name: z
+    .string()
+    .min(3, {
+      message:
+        "El nombre de la startup es obligatorio o debe tener almenos 3 caracteres",
+    }),
+  full_name: z
+    .string()
+    .min(3, {
+      message:
+        "El nombre completo es obligatorio o debe tener almenos 3 caracteres",
+    }),
   email: z.string().email({ message: "Debe ser un correo electrónico válido" }),
   phone: z
     .string()
-    .min(8, { message: "El teléfono es obligatorio y debe tener minimo 8 dijitos" })
-    .regex(/^[\d\+\-\(\) ]+$/, { message: "El teléfono solo debe contener números" }),
+    .min(8, {
+      message: "El teléfono es obligatorio y debe tener minimo 8 dijitos",
+    })
+    .regex(/^[\d\+\-\(\) ]+$/, {
+      message: "El teléfono solo debe contener números",
+    }),
   city: z.string().min(1, { message: "La ciudad es obligatoria" }),
-  startup_description: z.string().min(1, { message: "La descripción es obligatoria" }),
-  startup_stage: z.string().regex(/^[12]$/, { message: "La etapa de la startup debe ser 1 o 2" }),
+  startup_description: z
+    .string()
+    .min(1, { message: "La descripción es obligatoria" }),
+  startup_stage: z
+    .string()
+    .regex(/^[12]$/, { message: "La etapa de la startup debe ser 1 o 2" }),
 });
 
 interface ApplicationFormProps {
@@ -40,7 +58,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
   const [startupDescription, setStartupDescription] = useState("");
   const [startupStage, setStartupStage] = useState("");
 
-  // Estado para manejar errores de validación
+  //erros state
   const [errors, setErrors] = useState<z.ZodError | null>(null);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -55,16 +73,14 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
       startup_stage: startupStage,
     };
 
-    // Validar los datos del formulario
+    // Validate forms data
     const result = applicationSchema.safeParse(applicationData);
 
     if (!result.success) {
-      // Si hay errores de validación, los guardamos en el estado
       setErrors(result.error);
       return;
     }
 
-    // Si no hay errores, enviamos los datos y reseteamos el formulario
     onSubmit(applicationData);
     setStartupName("");
     setFullName("");
@@ -92,7 +108,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.startup_name && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.startup_name[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.startup_name[0]}
+            </p>
           )}
         </div>
 
@@ -106,7 +124,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.full_name && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.full_name[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.full_name[0]}
+            </p>
           )}
         </div>
 
@@ -121,7 +141,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.email && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.email[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.email[0]}
+            </p>
           )}
         </div>
 
@@ -136,7 +158,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.phone && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.phone[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.phone[0]}
+            </p>
           )}
         </div>
 
@@ -150,7 +174,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.city && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.city[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.city[0]}
+            </p>
           )}
         </div>
 
@@ -164,7 +190,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.startup_description && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.startup_description[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.startup_description[0]}
+            </p>
           )}
         </div>
 
@@ -181,7 +209,9 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             required
           />
           {errors?.formErrors.fieldErrors.startup_stage && (
-            <p className="text-red-600">{errors.formErrors.fieldErrors.startup_stage[0]}</p>
+            <p className="text-red-600">
+              {errors.formErrors.fieldErrors.startup_stage[0]}
+            </p>
           )}
         </div>
       </div>

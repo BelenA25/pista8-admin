@@ -15,6 +15,9 @@ interface TableApplicationsProps {
     email: string;
     phone: string;
     id: string;
+    city: string;
+    startup_description: string;
+    startup_stage: string;
 }
 
 interface TableSectionProps {
@@ -42,6 +45,11 @@ export default function TableSection({ data, appl, onDelete }: TableSectionProps
                                 phone={item.phone}
                                 id={item.id}
                                 onDelete={onDelete}
+                                startup_description={item.startup_description}
+                                city={item.city}
+                                startup_stage={item.startup_stage}
+
+                                
                             />
                         ))
                     ) : (
