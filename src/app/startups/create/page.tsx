@@ -1,12 +1,16 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import Typography from "@/components/Typography/typography"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import Typography from "@/components/Typography/typography";
+import { database } from "@/app/firebaseConfig";
+import { ref as dbRef, push, set } from "firebase/database";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     year: z.string()
@@ -34,9 +38,11 @@ const formSchema = z.object({
         .regex(/^[A-Za-z0-9\s.,!?'"()_-]*$/, { message: "El autor solo debe contener letras, números y caracteres especiales comunes." }),
 });
 
-type FormValues = z.infer<typeof formSchema>
+type FormValues = z.infer<typeof formSchema>;
 
 export default function CreateStartupForm() {
+    const router = useRouter();
+
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -48,11 +54,26 @@ export default function CreateStartupForm() {
             author: "",
         },
     });
-
-    function onSubmit(values: FormValues) {
-        console.log(values);
-        // Handle form submission logic here
-    }
+    const onSubmit = async (values: FormValues) => {
+        try {
+            const newStartup = {
+                year: values.year,
+                name: values.name,
+                sector: values.sector,
+                description: values.description,
+                quote: values.quote || "",
+                author: values.author,
+            };
+            const dataRef = push(dbRef(database, "startups"));
+            await set(dataRef, newStartup);
+            toast.success("Startup creado satisfactoriamente!");{
+                form.reset();
+                router.push("/startups");
+            }
+        } catch (error) {
+            console.error("Error submitting form: ", error);
+        }
+    };
 
     return (
         <>
@@ -144,6 +165,7 @@ export default function CreateStartupForm() {
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
+
                         <Button
                             type="button"
                             className="bg-custom-orange text-white"
@@ -155,5 +177,5 @@ export default function CreateStartupForm() {
                 </Form>
             </div>
         </>
-    )
+    );
 }
