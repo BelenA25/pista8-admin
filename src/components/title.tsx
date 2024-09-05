@@ -1,3 +1,4 @@
+import Link from "next/link";
 import AddButton from "./add-button";
 import Typography from "./Typography/typography";
 
@@ -13,7 +14,12 @@ export default function Title({title}: TitleProps) {
                     <Typography tag="h1">{title}</Typography>
                 </div>
             </div>
-            <AddButton></AddButton>
+            <Link href="applications/addApplications">
+            <AddButton
+            
+            />
+            </Link>
+                
         </div>
     )
 }

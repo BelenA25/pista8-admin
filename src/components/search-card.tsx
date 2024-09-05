@@ -2,8 +2,7 @@ import { Input } from './ui/input';
 import Typography from './Typography/typography';
 import { Card } from './ui/card';
 import SearchButton from './search-button';
-import { useState } from 'react';
-import { ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 interface SearchCardProps {
     onSearch: (searchTerm: string) => void;
@@ -12,7 +11,7 @@ export default function SearchCard({ onSearch }: SearchCardProps) {
 
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setSearchTerm(value);
         onSearch(value);
@@ -20,8 +19,7 @@ export default function SearchCard({ onSearch }: SearchCardProps) {
     const handleSearch = () => {
         onSearch(searchTerm);
         searchTerm && setSearchTerm('');
-   }
-    
+   } 
     
     return (
         <Card className="mx-8 p-4 flex items-center space-x-5 border-none">

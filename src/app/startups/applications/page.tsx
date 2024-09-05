@@ -8,6 +8,7 @@ import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 
+
 export default function Applications() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
