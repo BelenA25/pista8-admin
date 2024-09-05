@@ -7,4 +7,4 @@ export default function EditButton() {
             <Pencil1Icon className="w-11 h-11" />
         </Button>
     )
-}
+} 
