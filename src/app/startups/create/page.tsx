@@ -66,12 +66,12 @@ export default function CreateStartupForm() {
             };
             const dataRef = push(dbRef(database, "startups"));
             await set(dataRef, newStartup);
-            toast.success("Startup creado satisfactoriamente!");{
+            toast.success("Startup creado satisfactoriamente!"); {
                 form.reset();
                 router.push("/startups");
             }
         } catch (error) {
-            console.error("Error submitting form: ", error);
+            toast.error("Error submitting form");
         }
     };
 
@@ -82,96 +82,73 @@ export default function CreateStartupForm() {
                 <Form {...form}>
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 flex flex-col gap-6">
-                            <FormField
-                                control={form.control}
-                                name="year"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Año</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="2024" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="year" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Año</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="2024" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nombre</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Nombre del startup" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="name" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Nombre</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Nombre del startup" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="sector"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Sector</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Sector de desempeño del startup" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="sector" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Sector</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Sector de desempeño del startup" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
                         </div>
                         <div className="flex-1 flex flex-col gap-6">
-                            <FormField
-                                control={form.control}
-                                name="description"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Descripción</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Descripción del startup" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="description" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Descripción</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Descripción del startup" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="quote"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Cita</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Cita inspiradora" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="quote" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Cita</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Cita inspiradora" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="author"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Autor</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="Autor de la cita" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                            <FormField control={form.control} name="author" render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Autor</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Autor de la cita" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                             />
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
-
-                        <Button
-                            type="button"
-                            className="bg-custom-orange text-white"
-                            onClick={form.handleSubmit(onSubmit)}
-                        >
-                            CREAR
+                        <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)}>
+                            Crear
                         </Button>
                     </div>
                 </Form>
