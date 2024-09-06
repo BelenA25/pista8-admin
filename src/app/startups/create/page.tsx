@@ -1,5 +1,5 @@
 import Typography from "@/components/Typography/typography";
-import StartupForm from "@/components/startupForm";
+import StartupForm from "@/components/startup-form";
 
 export default function CreateStartupForm() {
     return (
