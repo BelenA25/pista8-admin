@@ -32,7 +32,7 @@ export default function TableRowData({itemId, itemName, imageUrl, itemSector, it
                     </Typography>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <EditButton />
+                    <EditButton itemId={itemId} itemType={itemType}/>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType}/>
