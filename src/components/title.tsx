@@ -3,9 +3,10 @@ import Typography from "./Typography/typography";
 
 interface TitleProps {
     text: string;
+    typeName: string;
 }
 
-export default function Title({ text }: TitleProps) {
+export default function Title({ text, typeName }: TitleProps) {
     return (
         <div className="flex items-center justify-between p-4">
             <div className="flex-grow">
@@ -13,7 +14,7 @@ export default function Title({ text }: TitleProps) {
                     <Typography tag="h1">{text}</Typography>
                 </div>
             </div>
-            <AddButton></AddButton>
+            <AddButton typeName={typeName} ></AddButton>
         </div>
     )
 }

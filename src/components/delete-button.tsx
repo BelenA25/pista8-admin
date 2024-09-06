@@ -28,7 +28,7 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                 await set(deletedItemsRef, dataWithTimestamp);
                 await remove(itemRef);
                 onDelete();
-                toast("Item borrado correctamente!") 
+                toast.success("Item borrado correctamente!") 
             }
         } catch (error) {
             toast("Error borrando item") 
