@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import PaginationSection from "@/components/pagination-section";
 import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
@@ -13,11 +13,12 @@ import {
 } from "@/lib/utils";
 
 const TYPE = "applications";
+
 export default function Applications() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(6);
-  const [totalItems, setTotalItems] = useState<number>(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
@@ -48,6 +49,7 @@ export default function Applications() {
   useEffect(() => {
     fetchAllKeys(TYPE, setAllKeys, setTotalItems);
   }, []);
+
   useEffect(() => {
     estimateTotalItems(TYPE, setTotalItems);
     fetchDataCallback();
@@ -70,6 +72,7 @@ export default function Applications() {
       <Title
         title="Lista De Postulaciones Startups"
         href="applications/create"
+
       />
       <SearchCard onSearchClick={handleSearchClick}></SearchCard>
 
@@ -86,6 +89,7 @@ export default function Applications() {
           onPageChange={handlePageChange}
         ></PaginationSection>
       )}
+      
     </>
   );
 }

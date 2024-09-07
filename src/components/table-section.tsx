@@ -29,7 +29,7 @@ interface TableSectionProps {
 }
 
 export default function TableSection({ data, appl, searchTerm = '', itemType, onDelete }: TableSectionProps) {
-    // Filter data based on search term
+    // Filter date based on search term
     const filteredData = data?.filter(item =>
         item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.sector?.toLowerCase().includes(searchTerm.toLowerCase())

@@ -1,3 +1,4 @@
+import Typography from "./Typography/typography";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -12,17 +13,21 @@ import { Button } from "./ui/button";
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
 
 interface InformationButtonProps {
+  startup_name: string;
+  phone: string;
+  email: string;
   full_name: string;
   startup_description: string;
   city: string;
-  startup_stage: string;
 }
 
 export default function InformationButton({
   full_name,
   startup_description,
   city,
-  startup_stage,
+  startup_name,
+  phone,
+  email,
 }: InformationButtonProps) {
   return (
     <AlertDialog>
@@ -33,16 +38,26 @@ export default function InformationButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Mas Informacion</AlertDialogTitle>
-          <AlertDialogTitle>Nombre Completo:</AlertDialogTitle> {full_name}
-          <AlertDialogDescription>{startup_description}</AlertDialogDescription>
+          <AlertDialogTitle className="flex justify-center">
+            {startup_name}
+          </AlertDialogTitle>
+          <AlertDialogTitle>
+            Nombre del emprendedor o emprendedora:
+          </AlertDialogTitle>{" "}
+          {full_name}
+          <AlertDialogTitle>Descripcion:</AlertDialogTitle>{" "}
+          {startup_description}
+          <AlertDialogTitle>Email:</AlertDialogTitle> {email}
+          <AlertDialogTitle>Telefono:</AlertDialogTitle> {phone}
           <AlertDialogTitle>Ciudad:</AlertDialogTitle> {city}
-          <AlertDialogTitle>Etapa de la Startup:</AlertDialogTitle>{" "}
-          {startup_stage}
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction>Cerrar</AlertDialogAction>
-        </AlertDialogFooter>
+        <div className="flex justify-center">
+          <AlertDialogFooter>
+            <AlertDialogAction className="bg-orange-600 hover:bg-orange-400 w-40">
+              Aceptar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );

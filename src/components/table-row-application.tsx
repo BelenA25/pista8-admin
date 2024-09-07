@@ -43,10 +43,13 @@ export default function TableRowApplication({
         </TableCell>
         <TableCell className="flex justify-end items-center">
           <InformationButton
+            startup_name={startup_name}
+            phone={phone}
+            email={email}
             full_name={full_name}
             startup_description={startup_description}
             city={city}
-            startup_stage={startup_stage}
+            
           />
         </TableCell>
         <TableCell className="flex justify-end items-center">

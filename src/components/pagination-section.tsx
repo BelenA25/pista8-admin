@@ -13,6 +13,8 @@ interface PaginationSectionProps {
   onPageChange: (page: number) => void;
 }
 
+const PAGE_RANGE = 2; // number of pages to display
+
 export default function PaginationSection({
   currentPage,
   totalPages,
@@ -24,13 +26,50 @@ export default function PaginationSection({
     }
   };
 
+  
+  const getPageNumbers = () => {
+    let pages = [];
+    let startPage: number, endPage: number;
+
+    if (totalPages <= PAGE_RANGE * 2 + 1) {
+      
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+   
+      if (currentPage <= PAGE_RANGE + 1) {
+        startPage = 1;
+        endPage = PAGE_RANGE * 2 + 1;
+      } else if (currentPage + PAGE_RANGE >= totalPages) {
+        startPage = totalPages - PAGE_RANGE * 2;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - PAGE_RANGE;
+        endPage = currentPage + PAGE_RANGE;
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+   
+    if (startPage > 1) {
+      pages.unshift('...');
+    }
+    if (endPage < totalPages) {
+      pages.push('...');
+    }
+
+    return pages;
+  };
+
   return (
     <Pagination>
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
-              href="#"
               onClick={(event) => {
                 event.preventDefault();
                 handlePageChange(currentPage - 1);
@@ -38,24 +77,26 @@ export default function PaginationSection({
             />
           </PaginationItem>
         )}
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              href="#"
-              isActive={page === currentPage}
-              onClick={(event) => {
-                event.preventDefault();
-                handlePageChange(page);
-              }}
-            >
-              {page}
-            </PaginationLink>
+        {getPageNumbers().map((page, index) => (
+          <PaginationItem key={index}>
+            {page === '...' ? (
+              <PaginationLink>...</PaginationLink>
+            ) : (
+              <PaginationLink
+                isActive={page === currentPage}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handlePageChange(page as number);
+                }}
+              >
+                {page}
+              </PaginationLink>
+            )}
           </PaginationItem>
         ))}
         {currentPage < totalPages && (
           <PaginationItem>
             <PaginationNext
-              href="#"
               onClick={(event) => {
                 event.preventDefault();
                 handlePageChange(currentPage + 1);

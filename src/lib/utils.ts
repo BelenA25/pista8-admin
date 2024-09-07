@@ -9,8 +9,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const buildQuery = (dataReference: any, searchTerm: string, currentPage: number, startKey: string, itemsPerPage: number) => {
+  
   if (searchTerm) {
-    return query(dataReference, orderByChild('name' || 'startup_name'));
+    return query(dataReference, orderByChild('name'));
   } else if (currentPage === 1) {
     return query(dataReference, limitToFirst(itemsPerPage));
   } else {
@@ -24,16 +25,19 @@ const processSnapshot = (snapshot: DataSnapshot, searchTerm: string, itemsPerPag
     ? Object.entries(data).map(([id, item]) => ({ id, ...(item as Record<string, any>) }))
     : [];
   
+
   if (searchTerm) {
     const lowerSearchTerm = searchTerm.toLowerCase();
     resultData = resultData.filter((item: any) =>
       item.name.toLowerCase().includes(lowerSearchTerm)
     ).slice(0, itemsPerPage);
+
   }
   return resultData;
 }
 
 export const fetchData = async (nodeName: string, searchTerm: string, currentPage: number, itemsPerPage: number, allKeys: string[], setData: Dispatch<SetStateAction<any[]>>, setLastKeys: Dispatch<SetStateAction<string[]>>) => {
+  
   const startKey = allKeys[(currentPage - 1) * itemsPerPage];
   const dataReference  = ref(database, nodeName);
   const queryData = buildQuery(dataReference, searchTerm, currentPage, startKey, itemsPerPage);
@@ -42,13 +46,18 @@ export const fetchData = async (nodeName: string, searchTerm: string, currentPag
     try {
       const resultData = processSnapshot(snapshot, searchTerm, itemsPerPage);
 
+      console.log("Data fetched:", resultData);
+
       if (resultData.length > 0) {
         setLastKeys(prevKeys => {
           const newKeys = [...prevKeys];
           if (!newKeys[currentPage - 1]) {
             newKeys[currentPage - 1] = resultData[resultData.length - 1].id;
           }
+          console.log("Updated last keys:", newKeys);
+
           return newKeys;
+
         });
       }
 
@@ -64,17 +73,20 @@ export const fetchAllKeys = async (nodeName: string, setAllKeys: Dispatch<SetSta
   const queryKeys = query(dataReference, orderByKey());
   onValue(queryKeys, (snapshot) => {
     const data = snapshot.val();
+
+    
     if (data) {
       const keys = Object.keys(data);
       setAllKeys(keys);
       setTotalItems(keys.length);
+     
     }
   });
 }
 
 export const estimateTotalItems = async (nodeName: string, setTotalItems: Dispatch<SetStateAction<number>>) => {
   const dataReference = ref(database, nodeName);
-    const queryData = query(dataReference, orderByKey(), limitToFirst(100));
+    const queryData = query(dataReference, orderByKey());
     onValue(queryData, (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -88,5 +100,6 @@ export const handleResize = (setItemsPerPage: Dispatch<SetStateAction<number>>) 
   const tableHeight = window.innerHeight - 200;
   const itemHeight = 80;
   const newItemsPerPage = Math.floor(tableHeight / itemHeight);
+
   setItemsPerPage(newItemsPerPage);
 }
