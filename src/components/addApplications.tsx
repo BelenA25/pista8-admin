@@ -17,7 +17,6 @@ export default function AddApplications() {
     startup_stage: string;
   }) => {
     try {
-      // Use push() to generate a unique ID
       const applicationsRef = ref(database, "applications");
       const newApplicationRef = push(applicationsRef);
       await set(newApplicationRef, application);
