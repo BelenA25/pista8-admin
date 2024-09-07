@@ -12,39 +12,42 @@ import { Button } from "./ui/button";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { get, ref, set, remove } from "@firebase/database";
 import { useState } from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 interface DeleteButtonProps {
   id: string;
-  itemType: string;  
+  itemType: string;
   onClick: () => void;
 }
 
-export default function DeleteButton({ id, itemType, onClick }: DeleteButtonProps) {
-    const [open, setOpen] = useState(false);
+export default function DeleteButton({
+  id,
+  itemType,
+  onClick,
+}: DeleteButtonProps) {
+  const [open, setOpen] = useState(false);
 
-    const handleDelete = async () => {
-        const itemRef = ref(database, `${itemType}/${id}`);
-        const deletedItemsRef = ref(database, `deleted_${itemType}/${id}`);
+  const handleDelete = async () => {
+    const itemRef = ref(database, `${itemType}/${id}`);
+    const deletedItemsRef = ref(database, `deleted_${itemType}/${id}`);
 
-        try {
-            const snapshot = await get(itemRef);
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                const timestamp = new Date().toISOString();
-                const dataWithTimestamp = { ...data, deletedAt: timestamp };
-                await set(deletedItemsRef, dataWithTimestamp);
-                await remove(itemRef);
-                onClick();
-                toast.success("borrado correctamente!") 
-            }
-        } catch (error) {
-            
-            toast.error("Error borrando el item") 
-        } finally {
-            setOpen(false);
-        }
-    };
+    try {
+      const snapshot = await get(itemRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const timestamp = new Date().toISOString();
+        const dataWithTimestamp = { ...data, deletedAt: timestamp };
+        await set(deletedItemsRef, dataWithTimestamp);
+        await remove(itemRef);
+        onClick();
+        toast.success("borrado correctamente!");
+      }
+    } catch (error) {
+      toast.error("Error borrando el item");
+    } finally {
+      setOpen(false);
+    }
+  };
 
   return (
     <>

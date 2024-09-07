@@ -1,156 +1,90 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  ref,
-  onValue,
-  query,
-  limitToFirst,
-  remove,
-  orderByKey,
-  startAfter,
-  endAt,
-  orderByChild,
-  startAt,
-} from "firebase/database";
-import { database } from "@/app/firebaseConfig";
+import { useCallback, useEffect, useState } from "react";
 import PaginationSection from "@/components/pagination-section";
 import SearchCard from "@/components/search-card";
 import TableSection from "@/components/table-section";
 import Title from "@/components/title";
+import {
+  estimateTotalItems,
+  fetchAllKeys,
+  fetchData,
+  handleResize,
+} from "@/lib/utils";
 
 const TYPE = "applications";
-
 export default function Applications() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
-  const [itemsPerPage, setItemsPerPage] = useState(6); // Dynamic item count based on window size
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   const [totalItems, setTotalItems] = useState<number>(0);
-  const [lastKey, setLastKey] = useState<string | null>(null);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [lastKeys, setLastKeys] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [allKeys, setAllKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      const tableHeight = window.innerHeight - 200;
-      const itemHeight = 80;
-      const newItemsPerPage = Math.floor(tableHeight / itemHeight);
-      setItemsPerPage(newItemsPerPage);
-    };
+    const onResize = () => handleResize(setItemsPerPage);
 
-    window.addEventListener("resize", handleResize);
-    handleResize();
+    window.addEventListener("resize", onResize);
+    onResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 
-  const fetchInitialData = async () => {
-    const applicationsRef = ref(database, TYPE);
-    let queryApplications;
-
-    if (currentPage === 1) {
-      queryApplications = query(
-        applicationsRef,
-        orderByKey(),
-        limitToFirst(itemsPerPage)
-      );
-    } else {
-      queryApplications = query(
-        applicationsRef,
-        orderByKey(),
-        startAfter(lastKey),
-        limitToFirst(itemsPerPage)
-      );
-    }
-
-    onValue(queryApplications, (snapshot) => {
-      const data = snapshot.val();
-      const applicationsData = data
-        ? Object.entries(data).map(([id, value]) => ({
-            id,
-            ...(value && typeof value === "object" ? value : {}),
-          }))
-        : [];
-      setLastKey(
-        applicationsData.length
-          ? Object.keys(data)[applicationsData.length - 1]
-          : null
-      );
-      setData(applicationsData);
-    });
-  };
-
-  const estimateTotalItems = async () => {
-    const applicationsRef = ref(database, TYPE);
-    const queryApplications = query(
-      applicationsRef,
-      orderByKey(),
-      limitToFirst(100)
+  const fetchDataCallback = useCallback(() => {
+    fetchData(
+      TYPE,
+      searchTerm,
+      currentPage,
+      itemsPerPage,
+      allKeys,
+      setData,
+      setLastKeys
     );
-    onValue(queryApplications, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const keys = Object.keys(data);
-        setTotalItems(keys.length);
-      }
-    });
-  };
+  }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
   useEffect(() => {
-    estimateTotalItems();
-    fetchInitialData();
-  }, [currentPage, itemsPerPage]);
-
-  //delete application
-  const handleDelete = () => {
-   fetchInitialData();
-    
-  };
+    fetchAllKeys(TYPE, setAllKeys, setTotalItems);
+  }, []);
+  useEffect(() => {
+    estimateTotalItems(TYPE, setTotalItems);
+    fetchDataCallback();
+  }, [currentPage, itemsPerPage, searchTerm, fetchDataCallback]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleSearch = (searchTerm: string) => {
-    if (!searchTerm.trim()) {
-      setIsSearching(false);
-      setCurrentPage(1); // Set to the first page
-      fetchInitialData(); // Fetch initial data if search term is empty
-      return;
-    }
-    setIsSearching(true);
-    const applicationsRef = ref(database, TYPE);
-    const searchQuery = query(
-      applicationsRef,
-      orderByChild("startup_name"),
-      startAt(searchTerm),
-      endAt(searchTerm + "\uf8ff")
-    );
+  const handleSearchClick = (term: string) => {
+    setSearchTerm(term);
+  };
 
-    onValue(searchQuery, (snapshot) => {
-      const data = snapshot.val();
-      const applicationsData = data
-        ? Object.entries(data).map(([id, value]) => ({
-            id,
-            ...(value && typeof value === "object" ? value : {}),
-          }))
-        : [];
-      setData(applicationsData);
-    });
+  const handleDelete = () => {
+    fetchDataCallback();
   };
 
   return (
     <>
-      <Title title="Lista De Postulaciones Startups " />
-      <SearchCard onSearch={handleSearch} />
-      <TableSection appl={data} onDelete={handleDelete} itemType={"applications"} />
-      {!isSearching && (
+      <Title
+        title="Lista De Postulaciones Startups"
+        href="applications/create"
+      />
+      <SearchCard onSearchClick={handleSearchClick}></SearchCard>
+
+      <TableSection
+        appl={data}
+        onDelete={handleDelete}
+        itemType={"applications"}
+        searchTerm={searchTerm}
+      />
+      {!searchTerm && (
         <PaginationSection
           currentPage={currentPage}
           totalPages={Math.ceil(totalItems / itemsPerPage)}
           onPageChange={handlePageChange}
-        />
+        ></PaginationSection>
       )}
     </>
   );

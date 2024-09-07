@@ -3,22 +3,23 @@
 import { database } from "@/app/firebaseConfig";
 import ApplicationForm from "@/components/application-form";
 import Typography from "@/components/Typography/typography";
-import { ref, set } from "@firebase/database";
-import {Toaster, toast} from "sonner"
-
+import { ref, set, push } from "@firebase/database";
+import { toast } from "sonner";
 
 export default function AddApplications() {
   const handleSubmit = async (application: {
     startup_name: string;
     full_name: string;
     email: string;
-    phone: string; 
+    phone: string;
     city: string;
     startup_description: string;
     startup_stage: string;
   }) => {
     try {
-      const newApplicationRef = ref(database, `applications/${Date.now()}`);
+      // Use push() to generate a unique ID
+      const applicationsRef = ref(database, "applications");
+      const newApplicationRef = push(applicationsRef);
       await set(newApplicationRef, application);
       alert("Postulación agregada con éxito");
       toast.success("Postulación agregada con éxito");

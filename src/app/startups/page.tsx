@@ -85,6 +85,7 @@ export default function Startups() {
         <>
             <Title
                 title="Lista de Startups"
+                href="startups/create"
             />
             <SearchCard></SearchCard>
             <TableSection data={data}></TableSection>

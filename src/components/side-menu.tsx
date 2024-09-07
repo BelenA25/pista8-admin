@@ -44,7 +44,7 @@ export default function SideMenu() {
                   src="https://i.ibb.co/1LZ6zNV/image-2-removebg-preview.png"
                   width={125}
                   height={100}
-                  alt=""
+                  alt=" logo"
                   className="mb-3 mt-7 cursor-pointer"
                   onClick={handleImageClick}
                 />

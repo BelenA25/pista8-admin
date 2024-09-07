@@ -4,38 +4,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
-
-// Definimos el esquema de validación con Zod
-const applicationSchema = z.object({
-  startup_name: z
-    .string()
-    .min(3, {
-      message:
-        "El nombre de la startup es obligatorio o debe tener almenos 3 caracteres",
-    }),
-  full_name: z
-    .string()
-    .min(3, {
-      message:
-        "El nombre completo es obligatorio o debe tener almenos 3 caracteres",
-    }),
-  email: z.string().email({ message: "Debe ser un correo electrónico válido" }),
-  phone: z
-    .string()
-    .min(7, {
-      message: "El teléfono es obligatorio y debe tener minimo 8 dijitos",
-    })
-    .regex(/^[\d\+\-\(\) ]+$/, {
-      message: "El teléfono solo debe contener números",
-    }),
-  city: z.string().min(1, { message: "La ciudad es obligatoria" }),
-  startup_description: z
-    .string()
-    .min(1, { message: "La descripción es obligatoria" }),
-  startup_stage: z
-    .string()
-    .regex(/^[12]$/, { message: "La etapa de la startup debe ser 1 o 2" }),
-});
+import { applicationSchema } from "./shared/api/validation/applicationValidation";
 
 interface ApplicationFormProps {
   onSubmit: (application: {
@@ -60,7 +29,16 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
 
   //erros state
   const [errors, setErrors] = useState<z.ZodError | null>(null);
-
+  const clearForm = () => {
+    setStartupName("");
+    setFullName("");
+    setEmail("");
+    setPhone("");
+    setCity("");
+    setStartupDescription("");
+    setStartupStage("");
+    setErrors(null);
+  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const applicationData = {
@@ -82,17 +60,10 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
     }
 
     onSubmit(applicationData);
-    setStartupName("");
-    setFullName("");
-    setEmail("");
-    setPhone("");
-    setCity("");
-    setStartupDescription("");
-    setStartupStage("");
-    setErrors(null);
+    clearForm();
   };
 
-  return ( 
+  return (
     <form
       onSubmit={handleSubmit}
       className="p-4 border border-gray-600 rounded-lg shadow-lg"

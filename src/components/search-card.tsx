@@ -2,38 +2,33 @@ import { Input } from './ui/input';
 import Typography from './Typography/typography';
 import { Card } from './ui/card';
 import SearchButton from './search-button';
-import { useState, ChangeEvent } from 'react';
+import { useState, KeyboardEvent, ChangeEvent } from 'react';
 
 interface SearchCardProps {
-    onSearch: (searchTerm: string) => void;
+    onSearchClick: (searchTerm: string) => void;
 }
-export default function SearchCard({ onSearch }: SearchCardProps) {
 
-    const [searchTerm, setSearchTerm] = useState('');
+export default function SearchCard({ onSearchClick }: SearchCardProps) {
+    const [searchTerm, setSearchTerm] = useState("");
 
-    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setSearchTerm(value);
-        onSearch(value);
+    const handleSearchClick = () => {
+        onSearchClick(searchTerm);
     };
-    const handleSearch = () => {
-        onSearch(searchTerm);
-        searchTerm && setSearchTerm('');
-   } 
-    
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            handleSearchClick();
+        }
+    };
+    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        onSearchClick(value);
+    };
     return (
         <Card className="mx-8 p-4 flex items-center space-x-5 border-none">
             <Typography tag='h6' noWrap={true}>Buscar Startup: </Typography>
-            <Input 
-            type="text"
-            placeholder="Buscar..." 
-            className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
-            value={searchTerm}
-            onChange={handleInputChange}
-            />
-            <SearchButton
-             onClick={handleSearch}
-            />
+            <Input type="text" value={searchTerm} onChange={handleSearchChange}  placeholder="Escribe el nombre del startup..." onKeyDown={handleKeyDown} className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <SearchButton onClick={handleSearchClick}></SearchButton>
         </Card>
     );
 }
