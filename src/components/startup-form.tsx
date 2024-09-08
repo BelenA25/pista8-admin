@@ -11,34 +11,8 @@ import { ref as dbRef, get, push, set } from "firebase/database";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
 
-const formSchema = z.object({
-    year: z.string()
-        .length(4, { message: "El año debe tener 4 dígitos." })
-        .regex(/^\d{4}$/, { message: "El año debe ser un valor numérico de 4 dígitos." }),
-    name: z.string()
-        .min(1, { message: "El nombre es requerido." })
-        .max(50, { message: "El nombre no puede exceder los 50 caracteres." })
-        .regex(/^[A-Za-z\s]+$/, { message: "El nombre solo debe contener letras y espacios." }),
-    sector: z.string()
-        .min(1, { message: "El sector es requerido." })
-        .max(50, { message: "El sector no puede exceder los 50 caracteres." })
-        .regex(/^[A-Za-z\s]+$/, { message: "El sector solo debe contener letras y espacios." }),
-    description: z.string()
-        .min(1, { message: "La descripción es requerida." })
-        .max(100, { message: "La descripción no puede exceder los 100 caracteres." })
-        .regex(/^[A-Za-z0-9\s.,!?'"()_-]*$/, { message: "La descripción solo debe contener letras, números y caracteres especiales comunes." }),
-    quote: z.string()
-        .max(100, { message: "La cita no puede exceder los 100 caracteres." })
-        .regex(/^[A-Za-z0-9\s.,!?'"()_-]*$/, { message: "La cita solo debe contener letras, números y caracteres especiales comunes." })
-        .optional(),
-    author: z.string()
-        .min(1, { message: "El autor es requerido." })
-        .max(100, { message: "El autor no puede exceder los 100 caracteres." })
-        .regex(/^[A-Za-z0-9\s.,!?'"()_-]*$/, { message: "El autor solo debe contener letras, números y caracteres especiales comunes." }),
-});
-
-type FormValues = z.infer<typeof formSchema>;
 
 type StartupFormProps = {
     startupId?: string;
@@ -47,8 +21,8 @@ type StartupFormProps = {
 export default function StartupForm({ startupId }: StartupFormProps) {
     const router = useRouter();
 
-    const form = useForm<FormValues>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<StartupFormValues>({
+        resolver: zodResolver(startupSchema),
         defaultValues: {
             year: "",
             name: "",
@@ -76,7 +50,7 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             });
         }
     }, [startupId, form]);
-    const onSubmit = async (values: FormValues) => {
+    const onSubmit = async (values: StartupFormValues) => {
         try {
             const startupData = {
                 year: values.year,
