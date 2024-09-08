@@ -2,17 +2,15 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form} from "@/components/ui/form";
 import { database } from "@/app/firebaseConfig";
 import { ref as dbRef, get, push, set } from "firebase/database";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
-
+import { TextField } from "./text-field";
 
 type StartupFormProps = {
     startupId?: string;
@@ -78,74 +76,20 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             toast.error("Error al enviar el formulario");
         }
     };
-    return(
+    return (
         <>
             <div className="m-9 p-9 border border-black rounded-lg custom-shadow overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
                 <Form {...form}>
                     <div className="flex flex-col md:flex-row gap-6">
                         <div className="flex-1 flex flex-col gap-6">
-                            <FormField control={form.control} name="year" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Año</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="2024" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
-                            <FormField control={form.control} name="name" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Nombre</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Nombre del startup" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
-                            <FormField control={form.control} name="sector" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Sector</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Sector de desempeño del startup" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <TextField control={form.control} fieldName="year" label="Año" placeholder="2024" />
+                            <TextField control={form.control} fieldName="name" label="Nombre" placeholder="Nombre del startup" />
+                            <TextField control={form.control} fieldName="sector" label="Sector" placeholder="Sector de desempeño del startup" />
                         </div>
                         <div className="flex-1 flex flex-col gap-6">
-                            <FormField control={form.control} name="description" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Descripción</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Descripción del startup" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
-                            <FormField control={form.control} name="quote" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Cita</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Cita inspiradora" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
-                            <FormField control={form.control} name="author" render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Autor</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Autor de la cita" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                            />
+                            <TextField control={form.control} fieldName="description" label="Descripción" placeholder="Descripción del startup" />
+                            <TextField control={form.control} fieldName="quote" label="Cita" placeholder="Cita inspiradora" />
+                            <TextField control={form.control} fieldName="author" label="Autor" placeholder="Autor de la cita" />
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
