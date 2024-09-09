@@ -7,7 +7,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { toast } from "sonner";
 
 interface DeleteButtonProps {
-    itemId: string;
+    itemId: string; 
     itemType: string;
     onDelete: () => void;
 }

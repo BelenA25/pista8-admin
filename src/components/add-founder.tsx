@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 
 
-export default function AddFounders(){
+export default function AddFounder(){
     const handleSubmit = async (founders: {
        name: string;
        imageUrl: string;
@@ -19,10 +19,11 @@ export default function AddFounders(){
         try {
           const newApplicationRef = ref(database, `founders/${Date.now()}`);
           await set(newApplicationRef, founders);
-        
-          toast.success("Fundador agregada con éxito");
+         alert("Fundador agregado con éxito");
+          toast.success("Fundador agregado con éxito");
         } catch (error) {
-          toast.error("Error al agregar la fundador:");
+          alert("Error al agregar fundador:");
+          toast.error("Error al agregarfundador:");
         }
       };
 
@@ -34,6 +35,7 @@ export default function AddFounders(){
             <br />
             <FounderForm
               onSubmit={handleSubmit}
+              
             />
 
         </div>

@@ -4,15 +4,20 @@ import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import WebButton from './web-button';
+import { on } from "events";
 
-interface TableRowDataProps {
+interface TableRowFounderProps {
+    itemId: string;
     itemName: string;
     imageUrl: string;
-    itemSector: string;
+    itemType: string; 
+    link: string;
+    handleDelete: () => void;
+    onClickWeb: () => void;
  
   }
 
-export default function TableRowData({ itemName, imageUrl, itemSector}: TableRowDataProps) {
+export default function TableRowFounder({itemId, itemName, imageUrl, link,itemType, handleDelete , onClickWeb}: TableRowFounderProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
@@ -27,19 +32,19 @@ export default function TableRowData({ itemName, imageUrl, itemSector}: TableRow
                         {itemName}
                     </Typography>
                 </TableCell>
-                <TableCell className="flex flex-col flex-grow">
-                    <Typography tag="p" alignment="left" fontWeight="bold">
-                        {itemSector}
-                    </Typography>
-                </TableCell>
                 <TableCell>
-                    <WebButton/>
+                    <WebButton
+                    itemId={itemId}
+                    link={link}
+                    itemType={itemType}
+                    onClickWeb={onClickWeb}
+                    />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <EditButton />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <DeleteButton  itemId="" onDelete={()=>{}} itemType={""}/>
+                    <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType}/>
                 </TableCell>
             </TableRow>
         </div>
