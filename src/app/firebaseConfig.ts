@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 import { getStorage, uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
@@ -18,11 +19,4 @@ const database = getDatabase(app);
 export { database };
 export const storage = getStorage(app);
 
-
-// function uploadFile(file: Blob | Uint8Array | ArrayBuffer){
-//   const storageRef = ref(storage)
-//   uploadBytes(storageRef, file).then((snapshot) => {
-//     console.log(snapshot);
-//   })
-
-// }
+export const firestore = getFirestore(app); 

@@ -32,9 +32,7 @@ export default function TableRowData({ itemName, imageUrl, itemSector}: TableRow
                         {itemSector}
                     </Typography>
                 </TableCell>
-                <TableCell>
-                    <WebButton/>
-                </TableCell>
+               
                 <TableCell className="flex justify-end items-center">
                     <EditButton />
                 </TableCell>

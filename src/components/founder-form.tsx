@@ -1,3 +1,4 @@
+'use client'; 
 import { useState, FormEvent, ChangeEvent } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -18,7 +19,8 @@ interface FounderFormProps {
 
 export default function FounderForm({ onSubmit }: FounderFormProps) {
   const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState<File | null>(null); 
+  const [imageUrl, setImageUrl] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState('');
   const [link, setLink] = useState("");
   const [errors, setErrors] = useState<z.ZodError | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -26,6 +28,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setImageUrl(e.target.files[0]); 
+      setImagePreview(URL.createObjectURL(e.target.files[0]));
     }
   };
 
@@ -35,6 +38,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
     setImageUrl(null);
     setLink("");
     setErrors(null);
+    setImagePreview('');
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -61,7 +65,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
         name,
         imageUrl: downloadURL, 
         link,
-        iconSize: "1",
+        iconSize: "1",// "1" is value by default for iconSize
       };
 
       const result = foundersValidation.safeParse(newFounder);
@@ -89,6 +93,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full p-2 text-sm border border-gray-500"
+          placeholder="Nombre del fundador"
           required
         />
         {errors?.formErrors?.fieldErrors?.name && (
@@ -104,6 +109,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
           value={link}
           onChange={(e) => setLink(e.target.value)}
           className="w-full p-2 text-sm border border-gray-500"
+          placeholder="https://"
           required
         />
       </div>
@@ -115,7 +121,13 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
           accept="image/*"
           onChange={handleFileChange}
           className="w-full p-2 text-sm border border-gray-500"
+          placeholder="Selecciona una imagen"
         />
+         {imagePreview && (
+          <div className="mt-2 ">
+            <img src={imagePreview} alt="Previsualización" className="h-20" />
+          </div>
+        )}
         {errors?.formErrors?.fieldErrors?.imageUrl && (
           <p className="text-red-600 text-center">
             {errors.formErrors.fieldErrors.imageUrl[0]}

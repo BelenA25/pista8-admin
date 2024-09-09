@@ -1,3 +1,4 @@
+import FounderForm from '@/components/founder-form';
 import {z} from 'zod';
 
 export const foundersValidation = z.object({
@@ -8,3 +9,4 @@ export const foundersValidation = z.object({
     link: z.string().url({ message: 'La url del link no es válida' }),
  });
  
+ export type FounderFormValues = z.infer<typeof foundersValidation>;

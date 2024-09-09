@@ -12,7 +12,7 @@ interface TableRowFounderProps {
     itemType: string; 
     link: string;
     handleDelete: () => void;
-   
+  
  
   }
 
@@ -38,7 +38,10 @@ export default function TableRowFounder({itemId, itemName, imageUrl, link,itemTy
                     />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <EditButton />
+                    <EditButton 
+                    itemId={itemId}
+                    itemType={itemType}
+                    />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType}/>
