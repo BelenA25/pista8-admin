@@ -20,24 +20,7 @@ const applicationsService = {
     return newApplicationRef;
   },
 
-  // Get all applications
-  getAll: async () => {
-    const applicationsRef = ref(database, APPLICATIONS_PATH);
-    const snapshot = await get(applicationsRef);
-    return snapshot.val();
-  },
-
-  // Update an application by id
-  update: async (id: string, updatedApplication: object) => {
-    const applicationRef = ref(database, `${APPLICATIONS_PATH}/${id}`);
-    await update(applicationRef, updatedApplication);
-  },
-
-  // Delete an application by id
-  delete: async (id: string) => {
-    const applicationRef = ref(database, `${APPLICATIONS_PATH}/${id}`);
-    await remove(applicationRef);
-  }
+  
 };
 
 export default applicationsService;
