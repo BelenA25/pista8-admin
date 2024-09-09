@@ -1,4 +1,4 @@
-import { database } from "@/app/firebaseConfig";
+import { database } from "@/shared/firebaseConfig";
 import { type ClassValue, clsx } from "clsx"
 import { DataSnapshot, limitToFirst, onValue, orderByChild, orderByKey, query, ref, startAt } from "firebase/database";
 import { twMerge } from "tailwind-merge"

@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
 import { TextField } from "./text-field";
-import { createItem, getItemById, updateItem } from "@/shared/api/services/startupService";
+import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/shared/firebaseConfig";
 
 const TYPE = 'startups'
 
@@ -19,6 +21,9 @@ type StartupFormProps = {
 
 export default function StartupForm({ startupId }: StartupFormProps) {
     const router = useRouter();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+
 
     const form = useForm<StartupFormValues>({
         resolver: zodResolver(startupSchema),
@@ -47,7 +52,35 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             });
         }
     }, [startupId, form]);
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setSelectedFile(e.target.files[0]);
+        }
+    };
     const onSubmit = async (values: StartupFormValues) => {
+        setIsUploading(true);
+        let imageUrl = "";
+
+        if (selectedFile) {
+            const storageRef = ref(storage, `images/${selectedFile.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+            await new Promise((resolve, reject) => {
+                uploadTask.on(
+                    "state_changed",
+                    () => { },
+                    (error) => {
+                        toast.error("Error al subir la imagen");
+                        reject(error);
+                    },
+                    async () => {
+                        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                        resolve(true);
+                    }
+                );
+            });
+        }
+
         const startupData = {
             year: values.year,
             name: values.name,
@@ -55,6 +88,7 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             description: values.description,
             quote: values.quote || "",
             author: values.author,
+            imageUrl,
         };
         try {
             if (startupId) {
@@ -89,14 +123,13 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
+                        <input type="file" onChange={handleFileChange} accept="image/*" />
+                    </div>
+                    <div className="flex justify-center mt-4">
                         <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)}> Crear </Button>
                     </div>
                 </Form>
             </div>
         </>
     )
-}
-
-function getStartupById(startupId: string) {
-    throw new Error("Function not implemented.");
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { TrashIcon } from '@radix-ui/react-icons';
 import { get, ref, remove, set, update } from "firebase/database";
-import { database } from "@/app/firebaseConfig";
+import { database } from "@/shared/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { toast } from "sonner";
 

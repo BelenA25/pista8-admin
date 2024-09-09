@@ -1,4 +1,4 @@
-import { database } from "@/app/firebaseConfig";
+import { database } from "@/shared/firebaseConfig";
 import { ref as dbRef, get, set, push } from "firebase/database";
 
 export const getItemById = async (tableName: string, itemId: string) => {
