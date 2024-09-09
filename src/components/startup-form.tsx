@@ -3,14 +3,15 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Form} from "@/components/ui/form";
-import { database } from "@/app/firebaseConfig";
-import { ref as dbRef, get, push, set } from "firebase/database";
+import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
 import { TextField } from "./text-field";
+import { createItem, getItemById, updateItem } from "@/shared/api/services/startupService";
+
+const TYPE = 'startups'
 
 type StartupFormProps = {
     startupId?: string;
@@ -32,9 +33,7 @@ export default function StartupForm({ startupId }: StartupFormProps) {
     });
     useEffect(() => {
         if (startupId) {
-            const startupRef = dbRef(database, `startups/${startupId}`);
-            get(startupRef).then((snapshot) => {
-                const startupData = snapshot.val();
+            getItemById(TYPE, startupId).then((startupData) => {
                 if (startupData) {
                     form.reset({
                         year: startupData.year,
@@ -49,23 +48,20 @@ export default function StartupForm({ startupId }: StartupFormProps) {
         }
     }, [startupId, form]);
     const onSubmit = async (values: StartupFormValues) => {
+        const startupData = {
+            year: values.year,
+            name: values.name,
+            sector: values.sector,
+            description: values.description,
+            quote: values.quote || "",
+            author: values.author,
+        };
         try {
-            const startupData = {
-                year: values.year,
-                name: values.name,
-                sector: values.sector,
-                description: values.description,
-                quote: values.quote || "",
-                author: values.author,
-            };
-
             if (startupId) {
-                const startupRef = dbRef(database, `startups/${startupId}`);
-                await set(startupRef, startupData);
+                await updateItem(TYPE, startupId, startupData);
                 toast.success("Startup actualizado satisfactoriamente!");
             } else {
-                const newStartupRef = push(dbRef(database, "startups"));
-                await set(newStartupRef, startupData);
+                await createItem(TYPE, startupData);
                 toast.success("Startup creado satisfactoriamente!");
             }
 
@@ -99,4 +95,8 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             </div>
         </>
     )
+}
+
+function getStartupById(startupId: string) {
+    throw new Error("Function not implemented.");
 }
