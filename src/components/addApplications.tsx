@@ -1,9 +1,8 @@
 "use client";
 
-import { database } from "@/app/firebaseConfig";
+import applicationsService from '@/app/service/applicationsService'
 import ApplicationForm from "@/components/application-form";
 import Typography from "@/components/Typography/typography";
-import { ref, set, push } from "@firebase/database";
 import { toast } from "sonner";
 
 export default function AddApplications() {
@@ -17,13 +16,11 @@ export default function AddApplications() {
     startup_stage: string;
   }) => {
     try {
-      const applicationsRef = ref(database, "applications");
-      const newApplicationRef = push(applicationsRef);
-      await set(newApplicationRef, application);
+      await applicationsService.add(application);
       alert("Postulación agregada con éxito");
       toast.success("Postulación agregada con éxito");
     } catch (error) {
-      toast.error("Error al agregar la postulación:");
+      toast.error("Error al agregar la postulación");
     }
   };
 
