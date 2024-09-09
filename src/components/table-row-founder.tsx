@@ -4,7 +4,6 @@ import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import WebButton from './web-button';
-import { on } from "events";
 
 interface TableRowFounderProps {
     itemId: string;
@@ -13,11 +12,11 @@ interface TableRowFounderProps {
     itemType: string; 
     link: string;
     handleDelete: () => void;
-    onClickWeb: () => void;
+   
  
   }
 
-export default function TableRowFounder({itemId, itemName, imageUrl, link,itemType, handleDelete , onClickWeb}: TableRowFounderProps) {
+export default function TableRowFounder({itemId, itemName, imageUrl, link,itemType, handleDelete }: TableRowFounderProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
@@ -31,13 +30,11 @@ export default function TableRowFounder({itemId, itemName, imageUrl, link,itemTy
                     <Typography tag="p" alignment="left" fontWeight="bold">
                         {itemName}
                     </Typography>
+                   
                 </TableCell>
                 <TableCell>
                     <WebButton
-                    itemId={itemId}
                     link={link}
-                    itemType={itemType}
-                    onClickWeb={onClickWeb}
                     />
                 </TableCell>
                 <TableCell className="flex justify-end items-center">

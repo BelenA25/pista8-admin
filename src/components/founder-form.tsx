@@ -1,11 +1,11 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent } from "react";
 import { Input } from "./ui/input";
-import { Label } from './ui/label';
-import { Button } from './ui/button';
-import { foundersValidation } from './shared/api/validation/foundersValidation';
-import { z, ZodError, ZodIssue} from 'zod';
-import { storage } from '@/app/firebaseConfig'; // Importa la configuración de Firebase
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Label } from "./ui/label";
+import { Button } from "./ui/button";
+import { foundersValidation } from "./shared/api/validation/foundersValidation";
+import { z, ZodError, ZodIssue } from "zod";
+import { storage } from "@/app/firebaseConfig"; // Importa la configuración de Firebase
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 interface FounderFormProps {
   onSubmit: (founders: {
@@ -17,74 +17,64 @@ interface FounderFormProps {
 }
 
 export default function FounderForm({ onSubmit }: FounderFormProps) {
-  const [name, setName] = useState('');
-  const [imageUrl, setImageUrl] = useState<File | null>(null); // Almacena el archivo de imagen
-  const [link, setLink] = useState('');
+  const [name, setName] = useState("");
+  const [imageUrl, setImageUrl] = useState<File | null>(null); 
+  const [link, setLink] = useState("");
   const [errors, setErrors] = useState<z.ZodError | null>(null);
-  const [uploading, setUploading] = useState(false); // Estado para mostrar si está subiendo
+  const [uploading, setUploading] = useState(false);
 
-  // Manejador de cambios en el input de archivo
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setImageUrl(e.target.files[0]); // Guarda el archivo seleccionado
+      setImageUrl(e.target.files[0]); 
     }
   };
 
-  // Limpiar el formulario
+  
   const clearForm = () => {
-    setName('');
+    setName("");
     setImageUrl(null);
-    setLink('');
+    setLink("");
     setErrors(null);
   };
-
-  // Manejador de envío del formulario
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-  
+
     if (!imageUrl) {
       const imageIssue: ZodIssue = {
-        code: z.ZodIssueCode.custom, // Error personalizado para la imagen
-        path: ['imageUrl'],
-        message: 'Se requiere una imagen',
+        code: z.ZodIssueCode.custom,
+        path: ["imageUrl"],
+        message: "Se requiere una imagen",
       };
       setErrors(new ZodError([imageIssue]));
       return;
     }
-  
-    const newFounder = {
-      name,
-      imageUrl: "", // Placeholder, se actualizará con la URL de Firebase
-      link,
-      iconSize: "1",
-    };
-  
-    // Validar los datos con Zod
-    const result = foundersValidation.safeParse(newFounder);
-  
-    if (!result.success) {
-      setErrors(result.error);
-      return;
-    }
-  
+
     setErrors(null);
-    setUploading(true); // Inicia el estado de subida
-  
+    setUploading(true);
+
     try {
-      // Subir el archivo de imagen a Firebase Storage
       const imageRef = ref(storage, `founders/${imageUrl.name}-${Date.now()}`);
       await uploadBytes(imageRef, imageUrl);
-      const downloadURL = await getDownloadURL(imageRef); // Obtener la URL pública de la imagen
-  
-      // Actualiza la URL de la imagen en el objeto del fundador
-      newFounder.imageUrl = downloadURL;
-  
-      onSubmit(newFounder); // Envía el formulario con los datos
-      clearForm(); // Limpia el formulario después del envío
+      const downloadURL = await getDownloadURL(imageRef); 
+
+      const newFounder = {
+        name,
+        imageUrl: downloadURL, 
+        link,
+        iconSize: "1",
+      };
+
+      const result = foundersValidation.safeParse(newFounder);
+      if (!result.success) {
+        setErrors(result.error);
+        return;
+      }
+      onSubmit(newFounder);
+      clearForm();
     } catch (error) {
-      console.error('Error al subir la imagen:', error);
+      console.error("Error al subir la imagen:", error);
     } finally {
-      setUploading(false); // Finaliza el estado de subida
+      setUploading(false);
     }
   };
 
@@ -139,7 +129,7 @@ export default function FounderForm({ onSubmit }: FounderFormProps) {
           className="w-36 bg-orange-600 text-white hover:bg-orange-400"
           disabled={uploading}
         >
-          {uploading ? 'Subiendo...' : 'ACEPTAR'}
+          {uploading ? "Subiendo..." : "ACEPTAR"}
         </Button>
       </div>
     </form>

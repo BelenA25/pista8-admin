@@ -13,6 +13,7 @@ interface TableRowFounderProps {
     name: string;
     imageUrl: string;
     itemType: string; 
+    link: string;
     handleDelete: () => void;
 }
 
@@ -51,8 +52,10 @@ export default function TableSection({ data, found, searchTerm, itemType, handle
                         ) : filterfound && filterfound.length > 0 ? (
                             filterfound.map((item, index) => (
                                 <TableRowFounder
+                                    
                                     key={index}
                                     itemId={item.id}
+                                    link={item.link}
                                     handleDelete={handleDelete}
                                     itemType={itemType}
                                     itemName={item.name}

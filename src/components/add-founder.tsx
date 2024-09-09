@@ -1,15 +1,14 @@
 'use client'
 
-import { database } from "@/app/firebaseConfig";
 import FounderForm from "@/components/founder-form";
 import Typography from "@/components/Typography/typography";
-import { ref, set } from "firebase/database";
+import foundersService from "@/service/foundersService";
 import { toast } from "sonner";
 
 
 
 export default function AddFounder(){
-    const handleSubmit = async (founders: {
+    const handleSubmit = async (founder: {
        name: string;
        imageUrl: string;
        link: string;
@@ -17,8 +16,7 @@ export default function AddFounder(){
           
       }) => {
         try {
-          const newApplicationRef = ref(database, `founders/${Date.now()}`);
-          await set(newApplicationRef, founders);
+          await foundersService.add(founder);
          alert("Fundador agregado con éxito");
           toast.success("Fundador agregado con éxito");
         } catch (error) {
