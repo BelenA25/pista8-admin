@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { TrashIcon } from '@radix-ui/react-icons';
+import { Cross2Icon } from '@radix-ui/react-icons';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { useDeleteItem } from  "@/hook/useDeleteItem"
 
@@ -23,7 +23,7 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
         <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
                 <Button className="w-10 h-10 p-2 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-[#FE420A]">
-                    <TrashIcon className="w-11 h-11" />
+                    <Cross2Icon className="w-11 h-11" />
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
