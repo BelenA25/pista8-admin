@@ -76,6 +76,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={startupName}
             onChange={(e) => setStartupName(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Nombre de la startup"
             required
           />
           {errors?.formErrors.fieldErrors.startup_name && (
@@ -92,6 +93,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Nombre completo"
             required
           />
           {errors?.formErrors.fieldErrors.full_name && (
@@ -109,6 +111,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Correo electrónico"
             required
           />
           {errors?.formErrors.fieldErrors.email && (
@@ -126,6 +129,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Teléfono"
             required
           />
           {errors?.formErrors.fieldErrors.phone && (
@@ -142,6 +146,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={city}
             onChange={(e) => setCity(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Ciudad"
             required
           />
           {errors?.formErrors.fieldErrors.city && (
@@ -158,6 +163,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={startupDescription}
             onChange={(e) => setStartupDescription(e.target.value)}
             className="w-64 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Descripción de la startup"
             required
           />
           {errors?.formErrors.fieldErrors.startup_description && (
@@ -177,6 +183,7 @@ export default function ApplicationForm({ onSubmit }: ApplicationFormProps) {
             value={startupStage}
             onChange={(e) => setStartupStage(e.target.value)}
             className="w-40 p-2 text-sm mt-2 border border-gray-500"
+            placeholder="Etapa de la startup 1 o 2"
             required
           />
           {errors?.formErrors.fieldErrors.startup_stage && (

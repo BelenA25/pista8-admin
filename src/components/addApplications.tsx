@@ -1,6 +1,6 @@
 "use client";
 
-import applicationsService from '@/app/service/applicationsService'
+import applicationsService from '@/service/applicationsService'
 import ApplicationForm from "@/components/application-form";
 import Typography from "@/components/Typography/typography";
 import { toast } from "sonner";
