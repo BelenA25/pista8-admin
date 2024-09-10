@@ -1,35 +1,50 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import TableRowData from "./table-row-data";
+import { ReactNode } from "react";
 
-interface TableRowDataProps {
-    id: string; 
-    name: string;
-    imageUrl: string;
-    sector: string;
-}
-
-interface TableSectionProps {
-    data: TableRowDataProps[];
+interface TableSectionProps<T> {
+    data: T[];
     searchTerm: string;
     itemType: string; 
     handleDelete: () => void;
+    mapItemToRowDataProps: (item: T) => {
+        itemId: string;
+        itemName: string;
+        imageUrl: string;
+        itemGeneric1: string;
+        itemGeneric2?: string;
+        LinkedInButton?: ReactNode;
+    };
 }
 
-export default function TableSection({ data, searchTerm, itemType, handleDelete }: TableSectionProps) {
+export default function TableSection<T>({data, searchTerm, itemType, handleDelete, mapItemToRowDataProps}: TableSectionProps<T>) {
     return (
         <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg custom-shadow overflow-hidden">
             <Table className="w-full">
                 <TableBody>
-                    {searchTerm && data.length == 0 ? (
+                    {searchTerm && data.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={4} className="text-center py-4">
                                 No se encontraron resultados para la búsqueda.
                             </TableCell>
                         </TableRow>
                     ) : (
-                        data.map((item, index) => (
-                            <TableRowData key={index} itemName={item.name} imageUrl={item.imageUrl} itemSector={item.sector} itemId={item.id}  itemType={itemType} handleDelete={handleDelete}/>
-                        ))
+                        data.map((item, index) => {
+                            const rowDataProps = mapItemToRowDataProps(item);
+                            return (
+                                <TableRowData
+                                    key={index}
+                                    itemId={rowDataProps.itemId}
+                                    itemName={rowDataProps.itemName}
+                                    imageUrl={rowDataProps.imageUrl}
+                                    itemGeneric1={rowDataProps.itemGeneric1}
+                                    itemGeneric2={rowDataProps.itemGeneric2 || ""}
+                                    itemType={itemType}
+                                    handleDelete={handleDelete}
+                                    LinkedInButton={rowDataProps.LinkedInButton}
+                                />
+                            );
+                        })
                     )}
                 </TableBody>
             </Table>
