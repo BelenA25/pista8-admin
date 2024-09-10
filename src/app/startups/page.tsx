@@ -87,8 +87,8 @@ export default function Startups() {
                 title="Lista de Startups"
                 href="startups/create"
             />
-            <SearchCard></SearchCard>
-            <TableSection data={data}></TableSection>
+            <SearchCard ></SearchCard>
+            <TableSection data={data} ></TableSection>
             <PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>        
         </>
     )
