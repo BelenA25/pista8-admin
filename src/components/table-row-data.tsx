@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
 import Typography from "./Typography/typography";
@@ -8,18 +9,20 @@ interface TableRowDataProps {
     itemId: string;
     itemName: string;
     imageUrl: string;
-    itemSector: string;
-    itemType: string; 
+    itemGeneric1: string;
+    itemGeneric2: string;
+    itemType: string;
+    LinkedInButton?: ReactNode;
     handleDelete: () => void;
-  }
+}
 
-export default function TableRowData({itemId, itemName, imageUrl, itemSector, itemType, handleDelete }: TableRowDataProps) {
+export default function TableRowData({ itemId, itemName, imageUrl, itemGeneric1, itemGeneric2, itemType, handleDelete, LinkedInButton }: TableRowDataProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
                 <TableCell className="w-1/18 flex items-center">
                     <Avatar>
-                        <AvatarImage src={imageUrl}/>
+                        <AvatarImage src={imageUrl} />
                         <AvatarFallback>{itemName.charAt(0)}</AvatarFallback>
                     </Avatar>
                 </TableCell>
@@ -28,14 +31,17 @@ export default function TableRowData({itemId, itemName, imageUrl, itemSector, it
                         {itemName}
                     </Typography>
                     <Typography tag="p" alignment="left">
-                        {itemSector}
+                        {itemGeneric1}{itemGeneric2 && ` - ${itemGeneric2}`}
                     </Typography>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <EditButton itemId={itemId} itemType={itemType}/>
+                    {LinkedInButton && LinkedInButton}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType}/>
+                    <EditButton itemId={itemId} itemType={itemType} />
+                </TableCell>
+                <TableCell className="flex justify-end items-center">
+                    <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType} />
                 </TableCell>
             </TableRow>
         </div>
