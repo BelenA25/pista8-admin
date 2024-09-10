@@ -63,7 +63,14 @@ export default function Startups() {
         <>
             <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"startups"} mapItemToRowDataProps={mapStartupsToRowDataProps}></TableSection>
+            <TableSection
+                data={data}
+                searchTerm={searchTerm}
+                handleDelete={handleDelete}
+                itemType={"startups"}
+                mapItemToRowDataProps={mapStartupsToRowDataProps}
+            >
+            </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )

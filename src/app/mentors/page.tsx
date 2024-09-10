@@ -69,7 +69,14 @@ export default function Mentors() {
         <>
             <Title text={"Lista de Mentores"} typeName={TYPE} ></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"mentors"} mapItemToRowDataProps={mapMentorsToRowDataProps}></TableSection>
+            <TableSection
+                data={data}
+                searchTerm={searchTerm}
+                handleDelete={handleDelete}
+                itemType={"mentors"}
+                mapItemToRowDataProps={mapMentorsToRowDataProps}
+            >
+            </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )
