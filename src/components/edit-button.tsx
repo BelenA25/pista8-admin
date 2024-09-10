@@ -13,7 +13,7 @@ export default function EditButton({ itemId, itemType }: EditButtonProps) {
 const router = useRouter();
 
 const handleClick =() => {
-  router.push(`/fundadores/edit/${itemId}`);
+  router.push(`/${itemType}/edit/${itemId}`);
 }
 
   return (

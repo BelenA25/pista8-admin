@@ -64,8 +64,8 @@ export default function Founders() {
 
   return (
     <>
-      <Title text="Lista De Fundadores"  href="/fundadores/create"/>
-      <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
+      <Title text="Lista De Fundadores"  href="/founders/create"/>
+      <SearchCard onSearchClick={handleSearchClick} text="Buscar Fundador" ></SearchCard>
             <TableSection found={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"founders"}></TableSection>
 
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}

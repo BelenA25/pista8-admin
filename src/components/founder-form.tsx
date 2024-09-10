@@ -5,7 +5,7 @@ import {
   foundersValidation,
 } from "./shared/api/validation/foundersValidation";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { createItem, getItemById, updateItem } from "@/service/foundersService";
 import { Form } from "./ui/form";
 import { Input } from "./ui/input";
@@ -14,6 +14,8 @@ import { Button } from "./ui/button";
 import { useImageUpload } from "@/hook/useImageUpload";
 import { toast } from "sonner";
 import { TextField } from "./text-field";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 
 const TYPE = "founders";
 
@@ -79,7 +81,7 @@ export default function FounderForm({ founderId }: FounderFormProps) {
         toast.success("Fundador creado");
       }
       form.reset();
-      router.push("/fundadores");
+      router.push("/founders");
     } catch (error) {
       console.error("Error al guardar el fundador:", error);
     }
@@ -138,3 +140,4 @@ export default function FounderForm({ founderId }: FounderFormProps) {
     </div>
   );
 }
+

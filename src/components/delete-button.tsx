@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { TrashIcon } from '@radix-ui/react-icons';
-import { get, ref, remove, set, update } from "firebase/database";
-import { database } from "@/app/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
-import { toast } from "sonner";
+import { useDeleteItem } from  "@/hook/useDeleteItem"
 
 interface DeleteButtonProps {
     itemId: string; 
@@ -14,27 +12,11 @@ interface DeleteButtonProps {
 
 export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButtonProps) {
     const [open, setOpen] = useState(false);
+    const { deleteItem, loading } = useDeleteItem();  
 
     const handleDelete = async () => {
-        const itemRef = ref(database, `${itemType}/${itemId}`);
-        const deletedItemsRef = ref(database, `deleted_${itemType}/${itemId}`);
-
-        try {
-            const snapshot = await get(itemRef);
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                const timestamp = new Date().toISOString();
-                const dataWithTimestamp = { ...data, deletedAt: timestamp };
-                await set(deletedItemsRef, dataWithTimestamp);
-                await remove(itemRef);
-                onDelete();
-                toast("Item borrado correctamente!") 
-            }
-        } catch (error) {
-            toast("Error borrando item") 
-        } finally {
-            setOpen(false);
-        }
+        await deleteItem(itemId, itemType, onDelete);  
+        setOpen(false);
     };
 
     return (
@@ -53,10 +35,12 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                 </AlertDialogHeader>
                 <div className="flex justify-end space-x-2">
                     <AlertDialogCancel asChild>
-                        <button>Cancelar</button>
+                        <button disabled={loading}>Cancelar</button>
                     </AlertDialogCancel>
                     <AlertDialogAction asChild>
-                        <button onClick={handleDelete}>Eliminar</button>
+                        <button onClick={handleDelete} disabled={loading}>
+                            Eliminar
+                        </button>
                     </AlertDialogAction>
                 </div>
             </AlertDialogContent>

@@ -34,7 +34,7 @@ const MENU_ITEMS = {
   FUNDADORES: {
     label: "Fundadores",
     icon: <BriefcaseIcon className="h-4 w-4 mt-1" />,
-    path: "/fundadores",
+    path: "/founders",
   },
   PARTNERS: {
     label: "Partners",
