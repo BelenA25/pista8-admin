@@ -6,9 +6,10 @@ import { useState, KeyboardEvent, ChangeEvent } from "react";
 
 interface SearchCardProps {
   onSearchClick: (searchTerm: string) => void;
+  text:string;
 }
 
-export default function SearchCard({ onSearchClick }: SearchCardProps) {
+export default function SearchCard({ onSearchClick , text}: SearchCardProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchClick = () => {
@@ -27,7 +28,7 @@ export default function SearchCard({ onSearchClick }: SearchCardProps) {
   return (
     <Card className="mx-8 p-4 flex items-center space-x-5 border-none">
       <Typography tag="h6" noWrap={true}>
-        Buscar Startup:{" "}
+       {text}{" "}
       </Typography>
       <Input
         type="text"
@@ -37,7 +38,7 @@ export default function SearchCard({ onSearchClick }: SearchCardProps) {
         onKeyDown={handleKeyDown}
         className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500"
       />
-      <SearchButton onClick={handleSearchClick}></SearchButton>
+      <SearchButton ></SearchButton>
     </Card>
   );
 }

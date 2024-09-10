@@ -74,7 +74,7 @@ export default function Applications() {
         href="applications/create"
 
       />
-      <SearchCard onSearchClick={handleSearchClick}></SearchCard>
+      <SearchCard onSearchClick={handleSearchClick} text="Buscar Startup"></SearchCard>
 
       <TableSection
         appl={data}
