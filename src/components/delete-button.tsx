@@ -1,86 +1,49 @@
-import { database } from "@/app/firebaseConfig";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
-import { TrashIcon } from "@radix-ui/react-icons";
-import { get, ref, set, remove } from "@firebase/database";
 import { useState } from "react";
-import { toast } from "sonner";
+import { Button } from "./ui/button";
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+import { useDeleteItem } from "@/hooks/useDeleteItem";  
 
 interface DeleteButtonProps {
-  id: string;
-  itemType: string;
-  onClick: () => void;
+    itemId: string; 
+    itemType: string;
+    onDelete: () => void;
 }
 
-export default function DeleteButton({
-  id,
-  itemType,
-  onClick,
-}: DeleteButtonProps) {
-  const [open, setOpen] = useState(false);
+export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButtonProps) {
+    const [open, setOpen] = useState(false);
+    const { deleteItem, loading } = useDeleteItem();  
 
-  const handleDelete = async () => {
-    const itemRef = ref(database, `${itemType}/${id}`);
-    const deletedItemsRef = ref(database, `deleted_${itemType}/${id}`);
+    const handleDelete = async () => {
+        await deleteItem(itemId, itemType, onDelete); 
+        setOpen(false);
+    };
 
-    try {
-      const snapshot = await get(itemRef);
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const timestamp = new Date().toISOString();
-        const dataWithTimestamp = { ...data, deletedAt: timestamp };
-        await set(deletedItemsRef, dataWithTimestamp);
-        await remove(itemRef);
-        onClick();
-        toast.success("borrado correctamente!");
-      }
-    } catch (error) {
-      toast.error("Error borrando el item");
-    } finally {
-      setOpen(false);
-    }
-  };
-
-  return (
-    <>
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogTrigger asChild>
-          <Button className="w-10 h-10 p-2 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-[#FE420A]">
-            <TrashIcon className="w-11 h-11" />
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-4 shadow-lg max-w-md w-full">
-          <AlertDialogTitle>Confirmar Eliminación</AlertDialogTitle>
-          <AlertDialogDescription>
-            ¿Estás seguro de que deseas eliminar esta startup?
-          </AlertDialogDescription>
-
-          <div className="mt-4 flex justify-end space-x-2">
-            <AlertDialogCancel asChild>
-              <Button className="bg-gray-500 text-white hover:bg-gray-600 hover:text-white">
-                Cancelar
-              </Button>
-            </AlertDialogCancel>
-
-            <AlertDialogAction asChild>
-              <Button
-                className="bg-red-600 text-white hover:bg-[#FE420A]"
-                onClick={handleDelete}
-              >
-                Eliminar
-              </Button>
-            </AlertDialogAction>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
-  );
+    return (
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild>
+                <Button className="w-10 h-10 p-2 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-[#FE420A]">
+                    <Cross2Icon className="w-11 h-11" />
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Confirmar Eliminación</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        ¿Está seguro de que desea eliminar este elemento? Esta acción no se puede deshacer.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <div className="flex justify-end space-x-2">
+                    <AlertDialogCancel asChild>
+                        <button disabled={loading}>Cancelar</button>
+                    </AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                        <button onClick={handleDelete} disabled={loading}>
+                            Eliminar
+                        </button>
+                    </AlertDialogAction>
+                </div>
+            </AlertDialogContent>
+        </AlertDialog>
+    );
 }

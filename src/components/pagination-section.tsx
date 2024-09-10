@@ -13,67 +13,42 @@ interface PaginationSectionProps {
   onPageChange: (page: number) => void;
 }
 
-// Number of pages to display around the current page
-const PAGE_RANGE = 2;
-
-// Constants for adjusting page range
-const ADJACENT_PAGES = PAGE_RANGE * 2;
-const FIRST_PAGE = 1;
-const ELLIPSIS = '...';
-
 export default function PaginationSection({
   currentPage,
   totalPages,
   onPageChange,
 }: PaginationSectionProps) {
   const handlePageChange = (page: number) => {
-    if (page >= FIRST_PAGE && page <= totalPages) {
+    if (page >= 1 && page <= totalPages) {
       onPageChange(page);
     }
   };
+  const pageRange = (current: number, total: number) => {
+    const delta = 2;
+    const range: number[] = [];
+    let start = Math.max(current - delta, 1);
+    let end = Math.min(current + delta, total);
 
-  const getPageNumbers = () => {
-    let pages = [];
-    let startPage: number, endPage: number;
-
-    if (totalPages <= ADJACENT_PAGES + 1) {
-      // If total pages is less than or equal to the range we want to show
-      startPage = FIRST_PAGE;
-      endPage = totalPages;
-    } else {
-      // Calculate the start and end page ranges dynamically
-      if (currentPage <= PAGE_RANGE + 1) {
-        startPage = FIRST_PAGE;
-        endPage = ADJACENT_PAGES + 1;
-      } else if (currentPage + PAGE_RANGE >= totalPages) {
-        startPage = totalPages - ADJACENT_PAGES;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - PAGE_RANGE;
-        endPage = currentPage + PAGE_RANGE;
-      }
+    if (start > 1) {
+      range.push(1);
+      if (start > 2) range.push(-1);
     }
 
-    // Push the page numbers to display
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+    for (let i = start; i <= end; i++) {
+      range.push(i);
     }
 
-    // Add ellipsis if necessary
-    if (startPage > FIRST_PAGE) {
-      pages.unshift(ELLIPSIS);
-    }
-    if (endPage < totalPages) {
-      pages.push(ELLIPSIS);
+    if (end < total) {
+      if (end < total - 1) range.push(-1);
+      range.push(total);
     }
 
-    return pages;
+    return range;
   };
-
   return (
     <Pagination>
       <PaginationContent>
-        {currentPage > FIRST_PAGE && (
+        {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
               onClick={(event) => {
@@ -83,16 +58,16 @@ export default function PaginationSection({
             />
           </PaginationItem>
         )}
-        {getPageNumbers().map((page, index) => (
+        {pageRange(currentPage, totalPages).map((page, index) => (
           <PaginationItem key={index}>
-            {page === ELLIPSIS ? (
-              <PaginationLink>...</PaginationLink>
+            {page === -1 ? (
+              <span className="pagination-ellipsis">…</span>
             ) : (
               <PaginationLink
                 isActive={page === currentPage}
                 onClick={(event) => {
                   event.preventDefault();
-                  handlePageChange(page as number);
+                  handlePageChange(page);
                 }}
               >
                 {page}
