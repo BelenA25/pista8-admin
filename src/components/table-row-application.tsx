@@ -22,7 +22,6 @@ export default function TableRowApplication({
   phone,
   city,
   startup_description,
-  startup_stage,
   id,
   onDelete,
   itemType,

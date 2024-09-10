@@ -28,23 +28,21 @@ interface TableSectionProps {
     onDelete: () => void;
 }
 
-export default function TableSection({ data, appl, searchTerm = '', itemType, onDelete }: TableSectionProps) {
+export default function TableSection({ data, appl, searchTerm, itemType, onDelete }: TableSectionProps) {
     // Filter date based on search term
     const filteredData = data?.filter(item =>
-        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.sector?.toLowerCase().includes(searchTerm.toLowerCase())
+        item.name?.toLowerCase().includes(searchTerm.toLowerCase()) 
     );
 
     const filteredAppl = appl?.filter(item =>
-        item.startup_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.full_name?.toLowerCase().includes(searchTerm.toLowerCase())
+        item.startup_name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg shadow-[0px_5px_5px_rgba(0,0,0,0.5)] overflow-hidden">
             <Table className="w-full">
                 <TableBody>
-                    {searchTerm && (filteredData?.length === 0 && filteredAppl?.length === 0) ? (
+                    {searchTerm && (filteredData?.length || filteredAppl?.length === 0) ? (
                         <TableRow>
                             <TableCell colSpan={filteredData ? 3 : 4} className="text-center py-4">
                                 No se encontraron resultados para la búsqueda.

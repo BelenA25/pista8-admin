@@ -1,4 +1,4 @@
-import {z} from "zod";
+import {z} from "zod"; 
 
 export const applicationSchema = z.object({
   startup_name: z
@@ -28,3 +28,6 @@ export const applicationSchema = z.object({
     .string()
     .regex(/^[12]$/, { message: "La etapa de la startup debe ser 1 o 2" }),
 });
+
+
+export type ApplicationFormValues = z.infer<typeof applicationSchema>

@@ -1,12 +1,14 @@
 "use client";
 
-import AddApplications from "@/components/addApplications";
-import { LayautCreate } from "@/components/layautCreate";
+import ApplicationsForm from "@/components/applications-form";
+import Typography from "@/components/Typography/typography";
 
 export default function Create() {
   return (
-    <LayautCreate>
-      <AddApplications />
-    </LayautCreate>
+   
+    <>
+      <Typography tag="h1">Agregar Postulaciones</Typography>
+      <ApplicationsForm />
+    </>
   );
 }
