@@ -52,12 +52,18 @@ export default function Startups() {
     const handleDelete = () => {
         fetchDataCallback();
     };
+    const mapStartupsToRowDataProps = (item: any) => ({
+        itemId: item.id,
+        itemName: item.name,
+        imageUrl: item.imageUrl,
+        itemGeneric1: item.sector
+    });
 
     return (
         <>
             <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"startups"}></TableSection>
+            <TableSection data={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"startups"} mapItemToRowDataProps={mapStartupsToRowDataProps}></TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
     )
