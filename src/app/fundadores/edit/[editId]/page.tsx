@@ -1,6 +1,6 @@
 'use client'
 
-import EditFounderForm from "@/components/editFounderForm"
+import FounderForm from "@/components/founder-form"
 import Typography from "@/components/Typography/typography"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -24,7 +24,7 @@ if(!founderId){
     return(
         <div>
             <Typography tag="h1"> Editar Fundador</Typography>
-            <EditFounderForm
+            <FounderForm
              founderId={founderId}
             />
         </div>

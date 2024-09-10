@@ -1,10 +1,14 @@
   'use client'
 
-import AddFounder from "@/components/add-founder"
+import FounderForm from "@/components/founder-form"
+import Typography from "@/components/Typography/typography"
 
   export default function Createfounder(){
 
     return(
-        <AddFounder/>
+      <>
+        <Typography tag="h1"> Agregar Fundadores</Typography>
+        <FounderForm/>
+      </>
     )
   }

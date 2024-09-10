@@ -65,7 +65,8 @@ export default function TableSection({ data, found, searchTerm, itemType, handle
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={3} className="text-center">
-                                    Datos no encontrados
+                                    Datos no encontrados 
+                                    recargue la página porfavor
                                 </TableCell>
                             </TableRow>
                         )

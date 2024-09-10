@@ -1,149 +1,140 @@
-'use client'; 
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import {
+  FounderFormValues,
+  foundersValidation,
+} from "./shared/api/validation/foundersValidation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createItem, getItemById, updateItem } from "@/service/foundersService";
+import { Form } from "./ui/form";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
-import { foundersValidation } from "./shared/api/validation/foundersValidation";
-import { z, ZodError, ZodIssue } from "zod";
-import { storage } from "@/app/firebaseConfig"; // Importa la configuración de Firebase
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useImageUpload } from "@/hook/useImageUpload";
+import { toast } from "sonner";
+import { TextField } from "./text-field";
 
-interface FounderFormProps {
-  onSubmit: (founders: {
-    name: string;
-    imageUrl: string;
-    link: string;
-    iconSize: string;
-  }) => void;
-}
+const TYPE = "founders";
 
-export default function FounderForm({ onSubmit }: FounderFormProps) {
-  const [name, setName] = useState("");
-  const [imageUrl, setImageUrl] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState('');
-  const [link, setLink] = useState("");
-  const [errors, setErrors] = useState<z.ZodError | null>(null);
-  const [uploading, setUploading] = useState(false);
+type FounderFormProps = {
+  founderId?: string;
+};
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImageUrl(e.target.files[0]); 
-      setImagePreview(URL.createObjectURL(e.target.files[0]));
+export default function FounderForm({ founderId }: FounderFormProps) {
+  const router = useRouter();
+  const form = useForm<FounderFormValues>({
+    resolver: zodResolver(foundersValidation),
+    defaultValues: {
+      name: "",
+      imageUrl: "",
+      link: "",
+     
+    },
+  });
+
+  const {
+    imagePreviewUrl,
+    handleFileChange,
+    uploadImage,
+    isUploading,
+    setImagePreviewUrl,
+  } = useImageUpload();
+
+  useEffect(() => {
+    if (founderId) {
+      getItemById(TYPE, founderId).then((founderData) => {
+        if (founderData) {
+          form.reset({
+            name: founderData.name,
+            imageUrl: founderData.imageUrl,
+            link: founderData.link,
+          });
+          setImagePreviewUrl(founderData.imageUrl);
+        }
+      });
     }
-  };
+  }, [founderId, form, setImagePreviewUrl]);
 
-  
-  const clearForm = () => {
-    setName("");
-    setImageUrl(null);
-    setLink("");
-    setErrors(null);
-    setImagePreview('');
-  };
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (values: FounderFormValues) => {
+    let imageUrl = form.getValues("imageUrl");
 
-    if (!imageUrl) {
-      const imageIssue: ZodIssue = {
-        code: z.ZodIssueCode.custom,
-        path: ["imageUrl"],
-        message: "Se requiere una imagen",
-      };
-      setErrors(new ZodError([imageIssue]));
-      return;
+    if (imagePreviewUrl) {
+      imageUrl = await uploadImage();
     }
 
-    setErrors(null);
-    setUploading(true);
+    const founderData = {
+      name: values.name,
+      imageUrl,
+      link: values.link,
+      iconSize: "1"//is value for defect in the form
+    };
 
     try {
-      const imageRef = ref(storage, `founders/${imageUrl.name}-${Date.now()}`);
-      await uploadBytes(imageRef, imageUrl);
-      const downloadURL = await getDownloadURL(imageRef); 
-
-      const newFounder = {
-        name,
-        imageUrl: downloadURL, 
-        link,
-        iconSize: "1",// "1" is value by default for iconSize
-      };
-
-      const result = foundersValidation.safeParse(newFounder);
-      if (!result.success) {
-        setErrors(result.error);
-        return;
+      if (founderId) {
+        await updateItem(TYPE, founderId, founderData);
+        toast.success("Fundador actualizado");
+      } else {
+        await createItem(TYPE, founderData);
+        toast.success("Fundador creado");
       }
-      onSubmit(newFounder);
-      clearForm();
+      form.reset();
+      router.push("/fundadores");
     } catch (error) {
-      console.error("Error al subir la imagen:", error);
-    } finally {
-      setUploading(false);
+      console.error("Error al guardar el fundador:", error);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-6 border border-gray-600 rounded-lg shadow-lg flex flex-col items-center justify-center space-y-4 w-full max-w-md mx-auto"
-    >
-      <div className="w-full">
-        <Label className="block text-start mb-2">Nombre</Label>
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 text-sm border border-gray-500"
-          placeholder="Nombre del fundador"
-          required
-        />
-        {errors?.formErrors?.fieldErrors?.name && (
-          <p className="text-red-600 text-center">
-            {errors.formErrors.fieldErrors.name[0]}
-          </p>
-        )}
-      </div>
-
-      <div className="w-full">
-        <Label className="block text-start mb-2">Link</Label>
-        <Input
-          value={link}
-          onChange={(e) => setLink(e.target.value)}
-          className="w-full p-2 text-sm border border-gray-500"
-          placeholder="https://"
-          required
-        />
-      </div>
-
-      <div className="w-full">
-        <Label className="block text-start mb-2">Icono del Fundador</Label>
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="w-full p-2 text-sm border border-gray-500"
-          placeholder="Selecciona una imagen"
-        />
-         {imagePreview && (
-          <div className="mt-2 ">
-            <img src={imagePreview} alt="Previsualización" className="h-20" />
+    <div className="m-9 p-9 border border-black rounded-lg custom-shadow overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
+      <Form {...form}>
+        <div className="flex flex-col items-center gap-6 w-full">
+          <div className="w-80">
+            <TextField
+              control={form.control}
+              fieldName="name"
+              label="Nombre"
+              placeholder="La Papelera"
+            />
+            <TextField
+              control={form.control}
+              fieldName="link"
+              label="Link"
+              placeholder="https://"
+            />
+            <Label className="block text-start mb-2 mt-4" htmlFor="image">
+              Icono del fundador
+            </Label>
+            {imagePreviewUrl && (
+              <div className="flex justify-center mb-4">
+                <img
+                  src={imagePreviewUrl}
+                  alt="Vista previa de la imagen"
+                  className="w-32 h-32 object-cover border border-gray-500"
+                />
+              </div>
+            )}
+            <Input
+              className="w-64 p-2 text-sm border border-gray-500"
+              type="file"
+              id="image"
+              onChange={handleFileChange}
+              accept="image/*"
+            />
           </div>
-        )}
-        {errors?.formErrors?.fieldErrors?.imageUrl && (
-          <p className="text-red-600 text-center">
-            {errors.formErrors.fieldErrors.imageUrl[0]}
-          </p>
-        )}
-      </div>
-
-      <div className="flex justify-center">
-        <Button
-          type="submit"
-          className="w-36 bg-orange-600 text-white hover:bg-orange-400"
-          disabled={uploading}
-        >
-          {uploading ? "Subiendo..." : "ACEPTAR"}
-        </Button>
-      </div>
-    </form>
+          
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              onClick={form.handleSubmit(onSubmit)}
+              className="w-32 bg-orange-500 hover:bg-orange-400"
+              disabled={isUploading}
+            >
+              ACEPTAR
+            </Button>
+          </div>
+        </div>
+      </Form>
+    </div>
   );
 }
