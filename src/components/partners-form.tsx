@@ -94,7 +94,7 @@ export default function PartnerForm({ founderId }: FounderFormProps) {
               control={form.control}
               fieldName="name"
               label="Nombre"
-              placeholder="La Papelera"
+              placeholder="Nombre partner"
             />
             <TextField
               control={form.control}

@@ -60,9 +60,7 @@ export default function Partners() {
   return (
     <>
       <Title title="Lista de Partners" href="/partners/create" />
-      <SearchCard 
-      onSearchClick={setSearchTerm}
-      text="Buscar Partner" />
+      <SearchCard onSearchClick={setSearchTerm} text="Buscar Partner" />
       <TableSection
         part={data}
         searchTerm={searchTerm}

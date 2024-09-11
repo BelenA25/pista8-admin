@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 
 export default function editFounders(){
     const  {editId} = useParams()
-    const [founderId, setFounderId] = useState<string | null>(null)
+    const  [founderId, setFounderId] = useState<string | null>(null)
 
 useEffect(() => {
     if(editId){
