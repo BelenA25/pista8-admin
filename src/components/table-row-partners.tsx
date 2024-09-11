@@ -41,8 +41,8 @@ export default function TableRowPartners({ itemId, itemName, imageUrl, link, ite
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton
                         itemId={itemId}
-                        itemType={itemType}
                         onDelete={handleDelete}
+                        itemType={itemType}
                     />
                 </TableCell>
             </TableRow>
