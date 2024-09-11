@@ -53,9 +53,9 @@ export default function TableRowApplication({
         </TableCell>
         <TableCell className="flex justify-end items-center">
           <DeleteButton 
-            id={id} 
+            itemId={id} 
             itemType={itemType} 
-            onClick={onDelete}
+            onDelete={onDelete}
           />
         </TableCell>
       </TableRow>
