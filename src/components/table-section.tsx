@@ -13,7 +13,7 @@ interface TableRowPartnersProps {
     name: string;
     imageUrl: string;
     link: string;
-    itemtype: string;
+    itemType: string;
     handleDelete: () => void;
 }
 interface TableSectionProps {
@@ -23,7 +23,7 @@ interface TableSectionProps {
     handleDelete: () => void;
 }
 
-export default function TableSection({ data , part, handleDelete}: TableSectionProps) {
+export default function TableSection({ data , part, itemType, handleDelete}: TableSectionProps) {
        
     return (
         <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg shadow-[0px_5px_5px_rgba(0,0,0,0.5)] overflow-hidden">
@@ -35,7 +35,7 @@ export default function TableSection({ data , part, handleDelete}: TableSectionP
                     ))}
 
                     {part?.map((item, index)=>(
-                        <TableRowPartners key={index} itemName={item.name} ImageUrl={item.imageUrl} link={item.link} itemType={item.itemtype} itemId={item.id} handleDelete={handleDelete}/>
+                        <TableRowPartners key={index} itemName={item.name} imageUrl={item.imageUrl} link={item.link} itemType={itemType} itemId={item.id} handleDelete={handleDelete}/>
                     ))}
                 </TableBody>
             </Table>

@@ -8,19 +8,19 @@ import DeleteButton from './delete-button';
 interface TableRowPartnersProps {
     itemId: string;
     itemName: string;
-    ImageUrl: string;
+    imageUrl: string;
     link: string;
     itemType: string;
     handleDelete: () => void;
 }
 
-export default function TableRowPartners({ itemId, itemName, ImageUrl, link, itemType, handleDelete }: TableRowPartnersProps) {
+export default function TableRowPartners({ itemId, itemName, imageUrl, link, itemType, handleDelete }: TableRowPartnersProps) {
      return(
         <div className='border border-black rounded-lg'>
             <TableRow className="w-full flex  border border-gray-400">
                 <TableCell className="w-1/18 flex items-center">
                     <Avatar>
-                        <AvatarImage src={ImageUrl}/>
+                        <AvatarImage src={imageUrl}/>
                         <AvatarFallback>{itemName.charAt(0)}</AvatarFallback>
                     </Avatar>
                 </TableCell>
@@ -38,8 +38,8 @@ export default function TableRowPartners({ itemId, itemName, ImageUrl, link, ite
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton
                         itemId={itemId}
-                        itemType={itemType}
                         onDelete={handleDelete}
+                        itemType={itemType}
                     />
                 </TableCell>
             </TableRow>
