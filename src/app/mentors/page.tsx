@@ -1,12 +1,12 @@
 "use client"
 
-import PaginationSection from "@/components/pagination-section";
-import SearchCard from "@/components/search-card";
-import TableSection from "@/components/table-section";
-import Title from "@/components/title";
+import PaginationSection from "@/components/PaginationSection";
+import TableSection from "@/components/TableSection";
+import Title from "@/components/Title";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import LinkedInButton from "@/components/linkedin-button";
+import LinkedInButton from "@/components/LinkedinButton";
+import SearchCard from "@/components/SearchCard";
 
 const TYPE = 'mentors'
 

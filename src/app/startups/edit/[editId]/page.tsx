@@ -1,7 +1,7 @@
 "use client"
 
 import Typography from "@/components/Typography/typography";
-import StartupForm from "@/components/startup-form";
+import StartupForm from "@/components/StartupForm";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
