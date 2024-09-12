@@ -5,16 +5,23 @@ import DeleteButton from "./DeleteButton";
 import Typography from "./Typography/typography";
 
 interface TableNewsProps {
-    itemId: string;
-    imageUrl: string;
-    link: string;
-    itemName: string;
-    itemType: string;
-    handleDelete: () => void;
+  itemId: string;
+  imageUrl: string;
+  link: string;
+  itemName: string;
+  itemType: string;
+  handleDelete: () => void;
 }
-export default function SectionNewsCard({ itemId, imageUrl, link, itemName, itemType, handleDelete }: TableNewsProps) {
+export default function SectionNewsCard({
+  itemId,
+  imageUrl,
+  link,
+  itemName,
+  itemType,
+  handleDelete,
+}: TableNewsProps) {
   return (
-    <Card  className=" shadow-md border-black ">
+    <Card className=" shadow-md border-black overflow-hidden ">
       <CardContent className="p-0">
         <Image
           src={imageUrl}
@@ -24,9 +31,13 @@ export default function SectionNewsCard({ itemId, imageUrl, link, itemName, item
           className="w-full h-60 object-cover"
         />
         <div className="p-3 ">
-          <Typography tag="h3" alignment="left">{itemName}</Typography>
+          <Typography tag="h4" alignment="left">
+            {itemName}
+          </Typography>
           <Typography tag="h6" alignment="left">
-            <a href={link} target="_blank" rel="noopener noreferrer">Lee la Noticia Completa</a>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+              Lee la Noticia Completa
+            </a>
           </Typography>
         </div>
       </CardContent>

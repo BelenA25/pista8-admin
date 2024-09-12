@@ -1,31 +1,28 @@
-'use client'
+"use client";
 
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import SectionNews from "@/components/SectionNews";
 import Title from "@/components/Title";
-import { estimateTotalItems, fetchAllKeysNews, fetchDataNews, handleResize } from "@/lib/utils";
+import {
+  estimateTotalItems,
+  fetchAllKeysNews,
+  fetchDataNews,
+} from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
 
 const TYPE = "news";
 export default function NewsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
-  const [itemsPerPage] = useState(4); // Cambiado para usar siempre 4 elementos
+  const [itemsPerPage] = useState(6);
   const [totalItems, setTotalItems] = useState(0);
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
 
   const fetchDataCallback = useCallback(() => {
-    fetchDataNews(
-      TYPE,
-      searchTerm,
-      currentPage,
-      allKeys,
-      setData,
-      setLastKeys
-    );
+    fetchDataNews(TYPE, searchTerm, currentPage, allKeys, setData, setLastKeys);
   }, [searchTerm, currentPage, allKeys]);
 
   useEffect(() => {
@@ -52,12 +49,12 @@ export default function NewsPage() {
   return (
     <>
       <Title title="Noticias" href="news/create" />
-      <SearchCard text="Buscar Noticias"  />
+      <SearchCard text="Buscar Noticias" />
       <SectionNews news={data} handleDelete={handleDelete} itemType="news" />
-      <PaginationSection 
-        currentPage={currentPage} 
-        totalPages={Math.ceil(totalItems / 4)} 
-        onPageChange={handlePageChange} 
+      <PaginationSection
+        currentPage={currentPage}
+        totalPages={Math.ceil(totalItems / 4)}
+        onPageChange={handlePageChange}
       />
     </>
   );
