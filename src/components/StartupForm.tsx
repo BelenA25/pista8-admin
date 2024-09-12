@@ -111,6 +111,11 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             setIsUploading(false);
         }
     };
+    const handleCancel = () => {
+        form.reset();
+        toast.info("Ningún cambio realizado");
+        router.push("/startups");
+    };
     return (
         <>
             <div className="m-9 p-9 border border-black rounded-lg custom-shadow overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
@@ -141,8 +146,20 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                             <Input type="file" onChange={handleFileChange} accept="image/*" />
                         )}
                     </div>
-                    <div className="flex justify-center mt-4">
-                        <Button type="button" onClick={form.handleSubmit(onSubmit)} disabled={isUploading}>
+                    <div className="flex justify-center mt-4 space-x-8">
+                        <Button
+                            type="button"
+                            className="bg-black text-white"
+                            onClick={handleCancel}
+                            disabled={isUploading}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button 
+                        type="button" 
+                        onClick={form.handleSubmit(onSubmit)} 
+                        disabled={isUploading}
+                        className="bg-custom-orange text-white">
                             {isUploading ? (
                                 <>
                                     <svg

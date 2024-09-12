@@ -134,6 +134,11 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
             setIsUploading(false);
         }
     };
+    const handleCancel = () => {
+        form.reset();
+        toast.info("Ningún cambio realizado");
+        router.push("/mentors");
+    };
     return (
         <>
             <div className="m-9 p-9 border border-black rounded-lg custom-shadow overflow-hidden max-w-6xl mx-auto flex flex-col gap-6 min-h-3.5">
@@ -165,7 +170,15 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
                             {!flagImageUrl && <input type="file" onChange={(e) => handleFileChange(e, 'flag')} accept="image/*" />}
                         </div>
                     </div>
-                    <div className="flex justify-center mt-4">
+                    <div className="flex justify-center mt-4 space-x-8">
+                        <Button
+                            type="button"
+                            className="bg-black text-white"
+                            onClick={handleCancel}
+                            disabled={isUploading}
+                        >
+                            Cancelar
+                        </Button>
                         <Button
                             type="button"
                             className="bg-custom-orange text-white"
