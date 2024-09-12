@@ -65,8 +65,8 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
     };
     const onSubmit = async (values: MentorFormValues) => {
         setIsUploading(true);
-        let imageUrl =mentorImageUrl || "";
-        let flagUrl =flagImageUrl || "";
+        let imageUrl = mentorImageUrl || "";
+        let flagUrl = flagImageUrl || "";
 
         if (mentorImage) {
             const mentorImageRef = ref(storage, `images/mentor-${mentorImage.name}`);
@@ -166,10 +166,35 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
-                        <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)} disabled={isUploading}>
+                        <Button
+                            type="button"
+                            className="bg-custom-orange text-white"
+                            onClick={form.handleSubmit(onSubmit)}
+                            disabled={isUploading}
+                        >
                             {isUploading ? (
                                 <>
-                                    <svg className="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 0116 0H4z"></path></svg>
+                                    <svg
+                                        className="animate-spin h-5 w-5 mr-3 text-white"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <circle
+                                            className="opacity-25"
+                                            cx="12"
+                                            cy="12"
+                                            r="10"
+                                            stroke="currentColor"
+                                            strokeWidth="4"
+                                        >
+                                        </circle>
+                                        <path
+                                            className="opacity-75"
+                                            fill="currentColor"
+                                            d="M4 12a8 8 0 0116 0H4z"
+                                        >
+                                        </path>
+                                    </svg>
                                     {mentorId ? 'Actualizando...' : 'Creando...'}
                                 </>
                             ) : (
