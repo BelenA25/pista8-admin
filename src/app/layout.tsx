@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Lato, Lexend } from '@next/font/google';
 import "./globals.css";
-import SideMenu from "@/components/side-menu";
 import { Toaster } from "@/components/ui/sonner";
+import SideMenu from "@/components/SideMenu";
 
 const lato = Lato({
   subsets: ['latin'],

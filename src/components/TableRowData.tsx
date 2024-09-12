@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
-import DeleteButton from "./delete-button";
-import EditButton from "./edit-button";
-import Typography from "./Typography/typography";
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Typography from "./Typography/typography";
 
 interface TableRowDataProps {
     itemId: string;

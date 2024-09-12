@@ -1,7 +1,7 @@
 import { Input } from './ui/input';
 import Typography from './Typography/typography';
 import { Card } from './ui/card';
-import SearchButton from './search-button';
+import SearchButton from './SearchButton';
 import { useState } from 'react';
 
 interface SearchCardProps {

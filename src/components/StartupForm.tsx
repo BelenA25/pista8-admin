@@ -8,10 +8,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
-import { TextField } from "./text-field";
+import { TextField } from "./TextField";
 import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/shared/firebaseConfig";
+import { Input } from "./ui/input";
 
 const TYPE = 'startups'
 
@@ -123,7 +124,7 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                         </div>
                     </div>
                     <div className="flex justify-center mt-4">
-                        <input type="file" onChange={handleFileChange} accept="image/*" />
+                        <Input type="file" id="image" onChange={handleFileChange} accept="image/*" />
                     </div>
                     <div className="flex justify-center mt-4">
                         <Button type="button" className="bg-custom-orange text-white" onClick={form.handleSubmit(onSubmit)}> Crear </Button>
