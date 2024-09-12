@@ -6,10 +6,11 @@ import TableSection from "@/components/table-section";
 import Title from "@/components/title";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
+import LinkedInButton from "@/components/linkedin-button";
 
-const TYPE = 'startups'
+const TYPE = 'mentors'
 
-export default function Startups() {
+export default function Mentors() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -52,23 +53,28 @@ export default function Startups() {
     const handleDelete = () => {
         fetchDataCallback();
     };
-    const mapStartupsToRowDataProps = (item: any) => ({
+
+    const mapMentorsToRowDataProps = (item: any) => ({
         itemId: item.id,
         itemName: item.name,
         imageUrl: item.imageUrl,
-        itemGeneric1: item.sector
+        itemGeneric1: item.title,
+        itemGeneric2: item.city,
+        LinkedInButton: item.linkedin_link ? (
+            <LinkedInButton link={item.linkedin_link} />
+        ) : undefined
     });
 
     return (
         <>
-            <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
+            <Title text={"Lista de Mentores"} typeName={TYPE} ></Title>
             <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}
                 handleDelete={handleDelete}
-                itemType={"startups"}
-                mapItemToRowDataProps={mapStartupsToRowDataProps}
+                itemType={"mentors"}
+                mapItemToRowDataProps={mapMentorsToRowDataProps}
             >
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
