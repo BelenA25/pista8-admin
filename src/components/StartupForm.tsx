@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
 import { TextField } from "./TextField";
 import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
@@ -55,7 +55,7 @@ export default function StartupForm({ startupId }: StartupFormProps) {
             });
         }
     }, [startupId, form]);
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
             setSelectedFile(e.target.files[0]);
         }

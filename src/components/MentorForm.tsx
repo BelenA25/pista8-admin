@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/shared/firebaseConfig";
@@ -53,7 +53,7 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
         }
     }, [mentorId, form]);
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'mentor' | 'flag') => {
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>, type: 'mentor' | 'flag') => {
         if (e.target.files && e.target.files.length > 0) {
             const file = e.target.files[0];
             if (type === 'mentor') {
