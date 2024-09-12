@@ -18,6 +18,7 @@ import Image from "next/image";
 import { Accordion, AccordionContent, AccordionTrigger } from "./ui/accordion";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import { usePathname } from "next/navigation";
+import { combineClasses } from "@/lib/utils";
 
 // Define constants for menu items
 const MENU_ITEMS = {
@@ -85,9 +86,9 @@ export default function SideMenu() {
               </NavigationMenuItem>
               <Accordion type="single" collapsible>
                 <NavigationMenuItem
-                  className={`w-full py-1 p-7 rounded-md transition-colors hover:bg-[#F2A594] ${getActiveClass(
+                  className = {combineClasses('w-full py-1 p-7 rounded-md transition-colors hover:bg-[#F2A594] ', getActiveClass(
                     MENU_ITEMS.STARTUPS.path
-                  )}`}
+                    ))}
                 >
                   <AccordionItem value={"item-1"}>
                     <AccordionTrigger style={{ textDecoration: "none" }}>
@@ -119,9 +120,11 @@ export default function SideMenu() {
                   </AccordionItem>
                 </NavigationMenuItem>
                 <NavigationMenuItem
-                  className={`w-full py-2 p-7 rounded-md transition-colors hover:bg-[#F2A594] ${getActiveClass(
+                  className = {combineClasses('w-full py-2 p-7 rounded-md transition-colors hover:bg-[#F2A594]', getActiveClass(
                     MENU_ITEMS.MENTORES.path
-                  )}`}
+                  ))}
+                
+
                 >
                   <AccordionItem value={"item-2"}>
                     <AccordionTrigger style={{ textDecoration: "none" }}>
@@ -158,9 +161,9 @@ export default function SideMenu() {
                 .map(({ label, icon, path }) => (
                   <NavigationMenuItem
                     key={label}
-                    className={`w-full py-2 p-7 rounded-md hover:bg-[#F2A594] transition-colors ${getActiveClass(
+                    className = {combineClasses('w-full py-2 p-7 rounded-md hover:bg-[#F2A594] transition-colors', getActiveClass(
                       path
-                    )}`}
+                    ))}       
                   >
                     <a href={path} className="flex space-x-4">
                       <span>{icon}</span>

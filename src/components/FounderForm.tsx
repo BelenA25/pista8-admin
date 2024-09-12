@@ -6,14 +6,14 @@ import {
 } from "./shared/api/validation/foundersValidation";
 import { useForm } from "react-hook-form";
 
-import { createItem, getItemById, updateItem } from "@/service/foundersService";
+import { createItem, getFounderById, updateItem } from "@/service/foundersService";
 import { Form } from "./ui/form";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { useImageUpload } from "@/hook/useImageUpload";
 import { toast } from "sonner";
-import { TextField } from "./text-field";
+import { TextField } from "./TextField";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 
@@ -45,7 +45,7 @@ export default function FounderForm({ founderId }: FounderFormProps) {
 
   useEffect(() => {
     if (founderId) {
-      getItemById(TYPE, founderId).then((founderData) => {
+      getFounderById(TYPE, founderId).then((founderData) => {
         if (founderData) {
           form.reset({
             name: founderData.name,

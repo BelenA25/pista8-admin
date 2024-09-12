@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import PaginationSection from "@/components/pagination-section";
-import SearchCard from "@/components/search-card";
-import TableSection from "@/components/table-section";
-import Title from "@/components/title";
+import PaginationSection from "@/components/PaginationSection";
+import SearchCard from "@/components/SearchCard";
+import TableSection from "@/components/TableSection";
+import Title from "@/components/Title";
 import { useCallback, useEffect, useState } from "react";
 import {
   estimateTotalItems,
@@ -57,18 +57,32 @@ export default function Founders() {
   const handleSearchClick = (term: string) => {
     setSearchTerm(term);
   };
-
+  const totalPages = Math.ceil(totalItems / itemsPerPage); 
   const handleDelete = () => {
     fetchDataCallback();
   };
 
   return (
     <>
-      <Title text="Lista De Fundadores"  href="/founders/create"/>
-      <SearchCard onSearchClick={handleSearchClick} text="Buscar Fundador" ></SearchCard>
-            <TableSection found={data} searchTerm={searchTerm} handleDelete={handleDelete} itemType={"founders"}></TableSection>
+      <Title text="Lista De Fundadores" href="/founders/create" />
+      <SearchCard
+        onSearchClick={handleSearchClick}
+        text="Buscar Fundador"
+      ></SearchCard>
+      <TableSection
+        found={data}
+        searchTerm={searchTerm}
+        handleDelete={handleDelete}
+        itemType={"founders"}
+      ></TableSection>
 
-            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
+      {!searchTerm && (
+        <PaginationSection
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalItems / itemsPerPage)}
+          onPageChange={handlePageChange}
+        ></PaginationSection>
+      )}
     </>
   );
 }

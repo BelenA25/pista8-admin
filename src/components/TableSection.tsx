@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import TableRowData from "./table-row-data";
-import TableRowFounder from './table-row-founder';
+import TableRowData from "./TableRowData";
+import TableRowFounder from './TableRowFounder';
 
 interface TableRowDataProps {
     id: string; 

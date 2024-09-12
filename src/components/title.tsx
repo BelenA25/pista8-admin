@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AddButton from "./add-button";
+import AddButton from "./AddButton";
 import Typography from "./Typography/typography";
 
 interface TitleProps {

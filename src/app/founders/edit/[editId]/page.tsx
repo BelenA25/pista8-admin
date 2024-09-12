@@ -1,6 +1,6 @@
 'use client'
 
-import FounderForm from "@/components/founder-form"
+import FounderForm from "@/components/FounderForm"
 import Typography from "@/components/Typography/typography"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"

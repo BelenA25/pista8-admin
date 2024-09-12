@@ -1,6 +1,6 @@
   'use client'
 
-import FounderForm from "@/components/founder-form"
+import FounderForm from "@/components/FounderForm"
 import Typography from "@/components/Typography/typography"
 
   export default function Createfounder(){
