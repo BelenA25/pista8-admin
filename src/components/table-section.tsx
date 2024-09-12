@@ -41,6 +41,7 @@ export default function TableSection({
     <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg shadow-[0px_5px_5px_rgba(0,0,0,0.5)] overflow-hidden">
       <Table className="w-full">
         <TableBody>
+
           {searchTerm && (filterData?.length || filterPart?.length === 0) ? (
             <TableRow>
               <TableCell
@@ -78,6 +79,7 @@ export default function TableSection({
               </TableCell>
             </TableRow>
           )}
+
         </TableBody>
       </Table>
     </div>

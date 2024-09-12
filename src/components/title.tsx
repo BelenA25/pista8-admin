@@ -3,6 +3,7 @@ import AddButton from "./add-button";
 import Typography from "./Typography/typography";
 
 interface TitleProps {
+
   title: string;
   href: string;
 }

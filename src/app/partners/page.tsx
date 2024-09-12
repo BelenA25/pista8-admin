@@ -1,4 +1,5 @@
-"use client";
+
+'use client'
 
 import PaginationSection from "@/components/pagination-section";
 import SearchCard from "@/components/search-card";
@@ -10,6 +11,7 @@ import {
   fetchData,
   handleResize,
 } from "@/lib/utils";
+
 import { useCallback, useEffect, useState } from "react";
 
 const TYPE = "partners";

@@ -1,3 +1,4 @@
+
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Typography from "./Typography/typography";
@@ -53,3 +54,4 @@ export default function TableRowPartners({
     </div>
   );
 }
+

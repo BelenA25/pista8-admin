@@ -35,6 +35,7 @@ export default function SearchCard({onSearchClick, text}: SearchCardProps) {
             onChange={handleSearchChange}
             onKeyDown={handleKeyDown}
             />
+
             <SearchButton></SearchButton>
         </Card>
     );
