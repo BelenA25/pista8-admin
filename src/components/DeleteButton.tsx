@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { TrashIcon } from '@radix-ui/react-icons';
-import { get, ref, remove, set, update } from "firebase/database";
-import { database } from "@/shared/firebaseConfig";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
 import { toast } from "sonner";
+import { deleteItem } from "@/shared/api/services/itemService";
 
 interface DeleteButtonProps {
     itemId: string;
@@ -16,22 +15,12 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
     const [open, setOpen] = useState(false);
 
     const handleDelete = async () => {
-        const itemRef = ref(database, `${itemType}/${itemId}`);
-        const deletedItemsRef = ref(database, `deleted_${itemType}/${itemId}`);
-
         try {
-            const snapshot = await get(itemRef);
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                const timestamp = new Date().toISOString();
-                const dataWithTimestamp = { ...data, deletedAt: timestamp };
-                await set(deletedItemsRef, dataWithTimestamp);
-                await remove(itemRef);
-                onDelete();
-                toast.success("Item borrado correctamente!") 
-            }
+            await deleteItem(itemType, itemId);
+            onDelete();
+            toast.success("Item borrado correctamente!");
         } catch (error) {
-            toast("Error borrando item") 
+            toast.error("Error borrando item");
         } finally {
             setOpen(false);
         }
