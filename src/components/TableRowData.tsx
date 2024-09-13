@@ -1,5 +1,5 @@
-import DeleteButton from "./delete-button";
-import EditButton from "./edit-button";
+import DeleteButton from "./DeleteButton";
+import EditButton from "./EditButton";
 import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";

@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
-import TableRowData from "./table-row-data";
+import TableRowData from "./TableRowData";
 
 interface TableRowDataProps {
     name: string;
