@@ -83,8 +83,6 @@ export const fetchData = async (
     try {
       const resultData = processSnapshot(snapshot, searchTerm, itemsPerPage);
 
-      console.log("Data fetched:", resultData);
-
       if (resultData.length > 0) {
         setLastKeys((prevKeys) => {
           const newKeys = [...prevKeys];
@@ -98,7 +96,6 @@ export const fetchData = async (
 
       setData(resultData);
     } catch (error) {
-      console.error("Error processing snapshot:", error);
     }
   });
 };
@@ -144,8 +141,6 @@ export const fetchDataNews = async (
     try {
       const resultData = processSnapshot(snapshot, searchTerm, itemsPerPage);
 
-      console.log("Data fetched with fixed 4 items:", resultData);
-
       if (resultData.length > 0) {
         setLastKeys((prevKeys) => {
           const newKeys = [...prevKeys];
@@ -158,7 +153,6 @@ export const fetchDataNews = async (
 
       setData(resultData);
     } catch (error) {
-      console.error("Error processing snapshot:", error);
     }
   });
 };
@@ -175,12 +169,9 @@ export const fetchAllKeysNews = async (
 
     if (data) {
       const keys = Object.keys(data);
-      console.log("Claves obtenidas en fetchAllKeysFixed:", keys);
       setAllKeys(keys);
       setTotalItems(keys.length);
-    } else {
-      console.log("No se encontraron datos en fetchAllKeysFixed");
-    }
+    } 
   });
 };
 
@@ -194,11 +185,8 @@ export const estimateTotalItems = async (
     const data = snapshot.val();
     if (data) {
       const keys = Object.keys(data);
-      console.log("claves estimadas:", keys);
       setTotalItems(keys.length);
-    } else {
-      console.log("no se encontraron datos estimados ");
-    }
+    } 
   });
 };
 
