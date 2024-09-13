@@ -1,9 +1,9 @@
 "use client"
 
-import PaginationSection from "@/components/pagination-section";
-import SearchCard from "@/components/search-card";
-import TableSection from "@/components/table-section";
-import Title from "@/components/title";
+import PaginationSection from "@/components/PaginationSection";
+import SearchCard from "@/components/SearchCard";
+import TableSection from "@/components/TableSection";
+import Title from "@/components/Title";
 import { useEffect, useState } from "react";
 import { database } from "../firebaseConfig";
 import { onValue, ref } from "firebase/database";

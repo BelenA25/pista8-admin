@@ -3,7 +3,7 @@
 import { ReactNode, CSSProperties } from 'react';
 import * as S from './styled';
 
-type TagVariants = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+type TagVariants = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span' ;
 
 interface TypographyProps {
     tag?: TagVariants;

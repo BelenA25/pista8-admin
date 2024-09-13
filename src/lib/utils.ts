@@ -13,7 +13,6 @@ import {
 import { Dispatch, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
 
-
 export function combineClasses(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -90,13 +89,13 @@ export const fetchData = async (
           if (!newKeys[currentPage - 1]) {
             newKeys[currentPage - 1] = resultData[resultData.length - 1].id;
           }
+
           return newKeys;
         });
       }
 
       setData(resultData);
     } catch (error) {
-      console.error("Error processing snapshot:", error);
     }
   });
 };
@@ -110,6 +109,7 @@ export const fetchAllKeys = async (
   const queryKeys = query(dataReference, orderByKey());
   onValue(queryKeys, (snapshot) => {
     const data = snapshot.val();
+
     if (data) {
       const keys = Object.keys(data);
       setAllKeys(keys);
@@ -118,18 +118,75 @@ export const fetchAllKeys = async (
   });
 };
 
+export const fetchDataNews = async (
+  nodeName: string,
+  searchTerm: string,
+  currentPage: number,
+  allKeys: string[],
+  setData: Dispatch<SetStateAction<any[]>>,
+  setLastKeys: Dispatch<SetStateAction<string[]>>
+) => {
+  const itemsPerPage = 4;
+  const startKey = allKeys[(currentPage - 1) * itemsPerPage];
+  const dataReference = ref(database, nodeName);
+  const queryData = buildQuery(
+    dataReference,
+    searchTerm,
+    currentPage,
+    startKey,
+    itemsPerPage
+  );
+
+  onValue(queryData, (snapshot) => {
+    try {
+      const resultData = processSnapshot(snapshot, searchTerm, itemsPerPage);
+
+      if (resultData.length > 0) {
+        setLastKeys((prevKeys) => {
+          const newKeys = [...prevKeys];
+          if (!newKeys[currentPage - 1]) {
+            newKeys[currentPage - 1] = resultData[resultData.length - 1].id;
+          }
+          return newKeys;
+        });
+      }
+
+      setData(resultData);
+    } catch (error) {
+    }
+  });
+};
+
+export const fetchAllKeysNews = async (
+  nodeName: string,
+  setAllKeys: Dispatch<SetStateAction<string[]>>,
+  setTotalItems: Dispatch<SetStateAction<number>>
+) => {
+  const dataReference = ref(database, nodeName);
+  const queryKeys = query(dataReference, orderByKey());
+  onValue(queryKeys, (snapshot) => {
+    const data = snapshot.val();
+
+    if (data) {
+      const keys = Object.keys(data);
+      setAllKeys(keys);
+      setTotalItems(keys.length);
+    } 
+  });
+};
+
 export const estimateTotalItems = async (
   nodeName: string,
   setTotalItems: Dispatch<SetStateAction<number>>
 ) => {
   const dataReference = ref(database, nodeName);
-  const queryData = query(dataReference, orderByKey(), limitToFirst(100));
+  const queryData = query(dataReference, orderByKey());
   onValue(queryData, (snapshot) => {
     const data = snapshot.val();
     if (data) {
       const keys = Object.keys(data);
       setTotalItems(keys.length);
-    }
+    } 
   });
 };
 
@@ -139,5 +196,6 @@ export const handleResize = (
   const tableHeight = window.innerHeight - 200;
   const itemHeight = 80;
   const newItemsPerPage = Math.floor(tableHeight / itemHeight);
+
   setItemsPerPage(newItemsPerPage);
 };
