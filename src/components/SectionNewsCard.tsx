@@ -42,8 +42,15 @@ export default function SectionNewsCard({
         </div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2 p-2">
-        <EditButton />
-        <DeleteButton />
+        <EditButton 
+          itemId={itemId} 
+          itemType={itemType}
+        />
+        <DeleteButton
+         itemId={itemId}
+         onDelete={handleDelete}
+         itemType={itemType}
+        />
       </CardFooter>
     </Card>
   );
