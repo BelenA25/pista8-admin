@@ -1,12 +1,12 @@
 "use client"
 
 import PaginationSection from "@/components/PaginationSection";
-import TableSection from "@/components/TableSection";
-import Title from "@/components/Title";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
 import LinkedInButton from "@/components/LinkedinButton";
+import Title from "@/components/title";
 import SearchCard from "@/components/SearchCard";
+import TableSection from "@/components/TableSection";
 
 const TYPE = 'mentors'
 
