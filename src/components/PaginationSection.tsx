@@ -12,7 +12,28 @@ export default function PaginationSection({ currentPage, totalPages, onPageChang
             onPageChange(page);
         }
     };
+    const pageRange = (current: number, total: number) => {
+        const delta = 2;
+        const range: number[] = [];
+        let start = Math.max(current - delta, 1);
+        let end = Math.min(current + delta, total);
 
+        if (start > 1) {
+            range.push(1);
+            if (start > 2) range.push(-1); 
+        }
+
+        for (let i = start; i <= end; i++) {
+            range.push(i);
+        }
+
+        if (end < total) {
+            if (end < total - 1) range.push(-1);
+            range.push(total);
+        }
+
+        return range;
+    };
     return (
         <Pagination>
             <PaginationContent>
@@ -21,11 +42,18 @@ export default function PaginationSection({ currentPage, totalPages, onPageChang
                         <PaginationPrevious onClick={(event) => { event.preventDefault(); handlePageChange(currentPage - 1); }} />
                     </PaginationItem>
                 )}
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <PaginationItem key={page}>
-                        <PaginationLink isActive={page === currentPage} onClick={(event) => {event.preventDefault();  handlePageChange(page);}}>
-                            {page}
-                        </PaginationLink>
+                {pageRange(currentPage, totalPages).map((page, index) => (
+                    <PaginationItem key={index}>
+                        {page === -1 ? (
+                            <span className="pagination-ellipsis">…</span>
+                        ) : (
+                            <PaginationLink
+                                isActive={page === currentPage}
+                                onClick={(event) => { event.preventDefault(); handlePageChange(page); }}
+                            >
+                                {page}
+                            </PaginationLink>
+                        )}
                     </PaginationItem>
                 ))}
                 {currentPage < totalPages && (
