@@ -1,3 +1,4 @@
+
 import { Input } from "./ui/input";
 import Typography from "./Typography/typography";
 import { Card } from "./ui/card";
@@ -40,4 +41,5 @@ export default function SearchCard({ onSearchClick, text }: SearchCardProps) {
       <SearchButton></SearchButton>
     </Card>
   );
+
 }

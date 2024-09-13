@@ -42,6 +42,7 @@ export default function SectionNewsCard({
         </div>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2 p-2">
+
         <EditButton 
           itemId={itemId} 
           itemType={itemType}
@@ -55,3 +56,5 @@ export default function SectionNewsCard({
     </Card>
   );
 }
+
+

@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Cross2Icon } from '@radix-ui/react-icons';
@@ -46,4 +47,5 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
             </AlertDialogContent>
         </AlertDialog>
     );
+
 }

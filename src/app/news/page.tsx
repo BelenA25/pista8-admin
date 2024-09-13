@@ -3,8 +3,7 @@
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import SectionNews from "@/components/SectionNews";
-import Title from "@/components/title";
-
+import Title from "@/components/Title";
 import {
   estimateTotalItems,
   fetchAllKeysNews,
@@ -24,16 +23,17 @@ export default function NewsPage() {
   const [allKeys, setAllKeys] = useState<string[]>([]);
 
   const fetchDataCallback = useCallback(() => {
+
     fetchDataNews(
       TYPE, 
       searchTerm, 
       currentPage, 
-      // itemsPerPage,
       allKeys, 
       setData, 
       setLastKeys
     );
   }, [searchTerm, currentPage, itemsPerPage, allKeys]);
+
 
   useEffect(() => {
     fetchAllKeysNews(TYPE, setAllKeys, setTotalItems);
@@ -55,6 +55,7 @@ export default function NewsPage() {
   return (
     <>
       <Title title="Noticias" href="news/create" />
+
       <SearchCard onSearchClick={setSearchTerm} text="Buscar Noticias" />
       <SectionNews
         news={data}
