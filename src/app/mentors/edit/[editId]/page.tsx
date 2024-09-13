@@ -1,28 +1,28 @@
 "use client"
 
+import MentorsForm from "@/components/MentorForm";
 import Typography from "@/components/Typography/typography";
-import StartupForm from "@/components/StartupForm";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function EditStartupForm() {
+export default function EditMentorForm() {
     const { editId } = useParams();
-    const [startupId, setStartupId] = useState<string | null>(null);
+    const [mentorId, setMentorId] = useState<string | null>(null);
 
     useEffect(() => {
         if (editId) {
-            setStartupId(editId as string);
+            setMentorId(editId as string);
         }
     }, [editId]);
 
-    if (!startupId) {
+    if (!mentorId) {
         return <div>Cargando...</div>;
     }
 
     return (
         <>
-            <Typography tag="h1">Editar Startup</Typography>
-            <StartupForm startupId={startupId}></StartupForm>
+            <Typography tag="h1">Editar Mentor</Typography>
+            <MentorsForm mentorId={mentorId}></MentorsForm>
         </>
     );
 }
