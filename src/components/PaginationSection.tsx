@@ -1,3 +1,4 @@
+
 import {
   Pagination,
   PaginationContent,
@@ -89,3 +90,4 @@ export default function PaginationSection({
     </Pagination>
   );
 }
+

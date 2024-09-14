@@ -1,17 +1,18 @@
 "use client"
 
+import PaginationSection from "@/components/PaginationSection";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import TitleSection from "@/components/TitleSection";
+import LinkedInButton from "@/components/LinkedinButton";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-import PaginationSection from "@/components/PaginationSection";
 import EditButton from "@/components/EditButton";
+import TitleSection from "@/components/TitleSection";
 
 
-const TYPE = 'startups'
+const TYPE = 'mentors'
 
-export default function Startups() {
+export default function Mentors() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -32,7 +33,7 @@ export default function Startups() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name", allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name",  allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -54,25 +55,30 @@ export default function Startups() {
     const handleDelete = () => {
         fetchDataCallback();
     };
-    const mapStartupsToRowDataProps = (item: any) => ({
+
+    const mapMentorsToRowDataProps = (item: any) => ({
         itemId: item.id,
         itemName: item.name,
         imageUrl: item.imageUrl,
-        itemGeneric1: item.sector,
+        itemGeneric1: item.title,
+        itemGeneric2: item.city,
+        genericButton: item.linkedin_link ? (
+            <LinkedInButton link={item.linkedin_link} />
+        ) : undefined,
         detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
     });
 
     return (
         <>
-            <TitleSection text={"Lista de Startups"} typeName={TYPE} ></TitleSection>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
-            <TableSection 
-            data={data} 
-            searchTerm={searchTerm} 
-            handleDelete={handleDelete} 
-            itemType={"startups"} 
-            mapItemToRowDataProps={mapStartupsToRowDataProps}
-            >   
+            <TitleSection text={"Lista de Mentores"} typeName={TYPE} ></TitleSection>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"postulacion mentor"} ></SearchCard>
+            <TableSection
+                data={data}
+                searchTerm={searchTerm}
+                handleDelete={handleDelete}
+                itemType={TYPE}
+                mapItemToRowDataProps={mapMentorsToRowDataProps}
+            >
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>

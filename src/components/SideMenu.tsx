@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
@@ -13,13 +14,13 @@ import {
   MailIcon,
   NewspaperIcon,
   UserIcon,
+
 } from "lucide-react";
 import Image from "next/image";
 import { Accordion, AccordionContent, AccordionTrigger } from "./ui/accordion";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import { usePathname } from "next/navigation";
 
-// Define constants for menu items
 const MENU_ITEMS = {
   STARTUPS: {
     label: "Startups",
@@ -189,3 +190,4 @@ export default function SideMenu() {
     </div>
   );
 }
+

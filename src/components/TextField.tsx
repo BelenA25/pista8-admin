@@ -16,7 +16,7 @@ export const TextField = <T extends FieldValues>({ control, fieldName, label, pl
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            <Input  placeholder={placeholder} {...field} className={className} />
+            <Input placeholder={placeholder} {...field} className={className} />
           </FormControl>
           <FormMessage />
         </FormItem>
