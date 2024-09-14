@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
+import TitleSection from "@/components/TitleSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
 import EditButton from "@/components/EditButton";
-import TitleSection from "@/components/TitleSection";
 
 const TYPE = 'startups'
 

@@ -9,6 +9,7 @@ import TableSection from "@/components/TableSection";
 import EditButton from "@/components/EditButton";
 import TitleSection from "@/components/TitleSection";
 
+
 const TYPE = 'mentors'
 
 export default function Mentors() {
