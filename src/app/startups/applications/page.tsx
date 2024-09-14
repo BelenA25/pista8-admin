@@ -1,16 +1,19 @@
 "use client";
 
 import { use, useCallback, useEffect, useState } from "react";
-import PaginationSection from "@/components/pagination-section";
-import SearchCard from "@/components/search-card";
-import TableSection from "@/components/table-section";
-import Title from "@/components/title";
+import PaginationSection from "@/components/PaginationSection";
+import SearchCard from "@/components/SearchCard";
+import TableSection from "@/components/TableSection";
+
 import {
   estimateTotalItems,
   fetchAllKeys,
   fetchData,
   handleResize,
 } from "@/lib/utils";
+import TitleSection from "@/components/TitleSection";
+import InformationButton from "@/components/InformationButton";
+import QuestionButton from "@/components/QuestionButton";
 
 const TYPE = "applications";
 
@@ -40,6 +43,7 @@ export default function Applications() {
       searchTerm,
       currentPage,
       itemsPerPage,
+      "startup_name",
       allKeys,
       setData,
       setLastKeys
@@ -66,21 +70,38 @@ export default function Applications() {
   const handleDelete = () => {
     fetchDataCallback();
   };
-
+  const mapStartupsApplicationsToRowDataProps = (item: any) => ({
+    itemId: item.id,
+    itemName: item.startup_name,
+    itemGeneric1: item.full_name,
+    itemGeneric2: item.email,
+    itemGeneric3: item.phone,
+    detailButton: (
+      <QuestionButton
+          mentorDetails={{
+              name: item.full_name,
+              city: item.city,
+              phone: item.phone,
+              email: item.email,
+              experience: item.statup_description,
+              satisfaction: item.startup_stage
+          }}
+      />)
+});
   return (
     <>
-      <Title
-        title="Lista De Postulaciones Startups"
-        href="applications/create"
-
+      <TitleSection
+        text="Lista De Postulaciones Startups"
+        typeName= {`startups/applications/`}
       />
-      <SearchCard onSearchClick={handleSearchClick} text="Buscar Startup"></SearchCard>
+      <SearchCard onSearchClick={handleSearchClick} entityName="Startup"></SearchCard>
 
       <TableSection
-        appl={data}
-        onDelete={handleDelete}
-        itemType={"applications"}
+        mapItemToRowDataProps={mapStartupsApplicationsToRowDataProps}
+        data={data}
+        handleDelete={handleDelete}
         searchTerm={searchTerm}
+        itemType={"applications"}
       />
       {!searchTerm && (
         <PaginationSection
