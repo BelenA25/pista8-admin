@@ -6,7 +6,7 @@ import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib
 import LinkedInButton from "@/components/LinkedinButton";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-import Title from "@/components/Title";
+import Title from "@/components/TitleSection";
 
 const TYPE = 'mentors'
 

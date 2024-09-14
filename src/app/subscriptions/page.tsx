@@ -5,7 +5,7 @@ import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
-import Title from "@/components/Title";
+import Title from "@/components/TitleSection";
 
 const TYPE = 'subscriptions'
 
