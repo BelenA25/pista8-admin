@@ -9,9 +9,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
 import { TextField } from "./TextField";
-import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "@/shared/firebaseConfig";
+import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
 import { Input } from "./ui/input";
 
 const TYPE = 'startups'
@@ -65,23 +63,8 @@ export default function StartupForm({ startupId }: StartupFormProps) {
         let imageUrl = startupImageUrl || "";
 
         if (selectedFile) {
-            const storageRef = ref(storage, `images/${selectedFile.name}`);
-            const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+            imageUrl = await uploadImage(selectedFile);
 
-            await new Promise((resolve, reject) => {
-                uploadTask.on(
-                    "state_changed",
-                    () => { },
-                    (error) => {
-                        toast.error("Error al subir la imagen");
-                        reject(error);
-                    },
-                    async () => {
-                        imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                        resolve(true);
-                    }
-                );
-            });
         }
 
         const startupData = {
@@ -155,11 +138,11 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                         >
                             Cancelar
                         </Button>
-                        <Button 
-                        type="button" 
-                        onClick={form.handleSubmit(onSubmit)} 
-                        disabled={isUploading}
-                        className="bg-custom-orange text-white">
+                        <Button
+                            type="button"
+                            onClick={form.handleSubmit(onSubmit)}
+                            disabled={isUploading}
+                            className="bg-custom-orange text-white">
                             {isUploading ? (
                                 <>
                                     <svg

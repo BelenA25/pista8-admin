@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 
 interface TableRowDataProps {

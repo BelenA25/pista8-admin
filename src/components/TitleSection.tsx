@@ -7,13 +7,11 @@ interface TitleProps {
     showAddButton?: boolean;
 }
 
-export default function TitleSection({ text, typeName, showAddButton = true}: TitleProps) {
+export default function TitleSection({ text, typeName, showAddButton = true }: TitleProps) {
     return (
         <div className="flex items-center justify-between p-4">
-            <div className="flex-grow">
-                <div className="text-2xl">
-                    <Typography tag="h1">{text}</Typography>
-                </div>
+            <div className="flex-grow text-2xl">
+                <Typography tag="h1">{text}</Typography>
             </div>
             {showAddButton && <AddButton typeName={typeName} />}
         </div>

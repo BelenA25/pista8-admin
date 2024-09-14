@@ -39,7 +39,7 @@ export default function DetailedViewDialog({ mentorDetails, onClose }: DetailedV
                     </Typography >
                     <Typography alignment="left" >Teléfono: {mentorDetails.phone}</Typography>
                     <Typography alignment="left">
-                        Email:
+                        Email:{' '}
                         <a href={`mailto:${mentorDetails.email}?subject=Contacto desde plataforma`} className="text-blue-500 underline ml-2">
                             {mentorDetails.email}
                         </a>
