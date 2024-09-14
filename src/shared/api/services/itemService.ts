@@ -1,5 +1,8 @@
 import { database } from "@/shared/firebaseConfig";
 import { ref as dbRef, get, set, push, remove } from "firebase/database";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/shared/firebaseConfig";
+import { toast } from "sonner";
 
 export const getItemById = async (tableName: string, itemId: string) => {
     const itemRef = dbRef(database, `${tableName}/${itemId}`);
@@ -29,4 +32,24 @@ export const deleteItem = async (tableName: string, itemId: string) => {
         await set(deletedItemsRef, dataWithTimestamp);
         await remove(itemRef);
     }
+};
+
+export const uploadImage = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+
+        uploadTask.on(
+            "state_changed",
+            () => {},
+            (error) => {
+                toast.error("Error al subir la imagen");
+                reject(error);
+            },
+            async () => {
+                const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve(downloadURL);
+            }
+        );
+    });
 };

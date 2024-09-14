@@ -6,7 +6,8 @@ import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib
 import LinkedInButton from "@/components/LinkedinButton";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-import Title from "@/components/Title";
+import EditButton from "@/components/EditButton";
+import TitleSection from "@/components/TitleSection";
 
 const TYPE = 'mentors'
 
@@ -60,15 +61,16 @@ export default function Mentors() {
         imageUrl: item.imageUrl,
         itemGeneric1: item.title,
         itemGeneric2: item.city,
-        LinkedInButton: item.linkedin_link ? (
+        genericButton: item.linkedin_link ? (
             <LinkedInButton link={item.linkedin_link} />
-        ) : undefined
+        ) : undefined,
+        detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
     });
 
     return (
         <>
-            <Title text={"Lista de Mentores"} typeName={TYPE} ></Title>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
+            <TitleSection text={"Lista de Mentores"} typeName={TYPE} ></TitleSection>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"postulacion mentor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}

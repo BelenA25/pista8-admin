@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import Title from "@/components/Title";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
+import EditButton from "@/components/EditButton";
+import TitleSection from "@/components/TitleSection";
 
 const TYPE = 'startups'
 
@@ -56,12 +57,13 @@ export default function Startups() {
         itemId: item.id,
         itemName: item.name,
         imageUrl: item.imageUrl,
-        itemGeneric1: item.sector
+        itemGeneric1: item.sector,
+        detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
     });
 
     return (
         <>
-            <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
+            <TitleSection text={"Lista de Startups"} typeName={TYPE} ></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
             <TableSection 
             data={data} 
