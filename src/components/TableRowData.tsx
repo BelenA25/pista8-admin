@@ -37,6 +37,7 @@ export default function TableRowData({ itemId, data, itemType, handleDelete }: T
                 <TableCell className="flex justify-end items-center">
                     {data.questionButton ? data.questionButton : data.detailButton ? data.detailButton : null}
                 </TableCell>
+                
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType} />
                 </TableCell>

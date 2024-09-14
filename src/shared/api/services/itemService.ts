@@ -13,7 +13,7 @@ export const getItemById = async (tableName: string, itemId: string) => {
 export const updateItem = async (tableName: string, itemId: string, itemData: any) => {
     const itemRef = dbRef(database, `${tableName}/${itemId}`);
     return await set(itemRef, itemData);
-};
+}; 
 
 export const createItem = async (tableName: string, itemData: any) => {
     const newItemRef = push(dbRef(database, tableName));

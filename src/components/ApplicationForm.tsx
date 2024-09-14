@@ -1,13 +1,13 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createItem } from "@/service/applicationsService";
 import { toast } from "sonner";
 import { Form } from "./ui/form";
 import { TextField } from "./TextField";
 import { Button } from "./ui/button";
 import { ApplicationFormValues, applicationSchema } from "@/shared/api/validation/applicationValidation";
 import { useState } from "react";
+import { createItem } from "@/shared/api/services/itemService";
 
 const TYPE = "applications";
 

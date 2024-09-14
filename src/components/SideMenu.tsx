@@ -29,12 +29,12 @@ const MENU_ITEMS = {
   MENTORES: {
     label: "Mentores",
     icon: <UserIcon className="h-4 w-4 mt-1" />,
-    path: "/mentores",
+    path: "/mentors",
   },
   FUNDADORES: {
     label: "Fundadores",
     icon: <BriefcaseIcon className="h-4 w-4 mt-1" />,
-    path: "/fundadores",
+    path: "/founders",
   },
   PARTNERS: {
     label: "Partners",
@@ -44,12 +44,12 @@ const MENU_ITEMS = {
   SUSCRIPCIONES: {
     label: "Suscripciones",
     icon: <MailIcon className="h-4 w-4 mt-1" />,
-    path: "/suscripciones",
+    path: "/subscriptions",
   },
   NOTICIAS: {
     label: "Noticias",
     icon: <NewspaperIcon className="h-4 w-4 mt-1" />,
-    path: "/noticias",
+    path: "/news",
   },
 };
 

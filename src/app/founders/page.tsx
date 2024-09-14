@@ -1,10 +1,9 @@
 "use client";
 
-import { use, useCallback, useEffect, useState } from "react";
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-
+import { useCallback, useEffect, useState } from "react";
 import {
   estimateTotalItems,
   fetchAllKeys,
@@ -12,28 +11,25 @@ import {
   handleResize,
 } from "@/lib/utils";
 import TitleSection from "@/components/TitleSection";
-import QuestionButton from "@/components/QuestionButton";
+import WebButton from "@/components/WebButton";
+import EditButton from "@/components/EditButton";
 
-const TYPE = "applications";
+const TYPE = "founders";
 
-export default function Applications() {
+export default function Founders() {
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(6);
-  const [totalItems, setTotalItems] = useState(0);
+  const [totalItems, setTotalItems] = useState<number>(0);
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
 
   useEffect(() => {
     const onResize = () => handleResize(setItemsPerPage);
-
     window.addEventListener("resize", onResize);
     onResize();
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const fetchDataCallback = useCallback(() => {
@@ -42,7 +38,7 @@ export default function Applications() {
       searchTerm,
       currentPage,
       itemsPerPage,
-      "startup_name",
+      "name",
       allKeys,
       setData,
       setLastKeys
@@ -52,7 +48,6 @@ export default function Applications() {
   useEffect(() => {
     fetchAllKeys(TYPE, setAllKeys, setTotalItems);
   }, []);
-
   useEffect(() => {
     estimateTotalItems(TYPE, setTotalItems);
     fetchDataCallback();
@@ -69,55 +64,31 @@ export default function Applications() {
   const handleDelete = () => {
     fetchDataCallback();
   };
-  const mapStartupsApplicationsToRowDataProps = (item: any) => ({
+  const mapFoundersToRowDataProps = (item: any) => ({
     itemId: item.id,
-    itemName: item.startup_name,
-    itemGeneric1: item.full_name,
-    itemGeneric2: item.email,
-    itemGeneric3: item.phone,
-    detailButton: (
-      <QuestionButton
-      details={{
-        title: item.startup_name,
-        subtitle: item.city,
-        sections: [
-            {
-                title: "Datos personales",
-                items: [
-                  { label: "Nombre", value: item.full_name },
-                    { label: "Teléfono", value: item.phone },
-                    { label: "Email", value: <a href={`mailto:${item.email}`}>{item.email}</a> },
-
-                ].filter(Boolean),
-            },
-            {
-                title: "Datos del startup",
-                items: [
-                    { label: "Nombre", value: item.startup_name },
-                    { label: "Descripcion", value: item.startup_description },
-                    { label: "Stage", value: item.startup_stage },
-                ].filter(Boolean),
-            }
-          
-        ],
-    }}
-      />)
+    itemName: item.name,
+    imageUrl: item.imageUrl,
+    genericButton: item.link ? (
+        <WebButton link={item.link} />
+    ) : undefined,   
+    detailButton: <EditButton itemId={item.id} itemType={TYPE} />
 });
+
   return (
     <>
-      <TitleSection
-        text="Lista De Postulaciones Startups"
-        typeName= {`startups/applications/`}
-      />
-      <SearchCard onSearchClick={handleSearchClick} entityName="Startup"></SearchCard>
-
+      <TitleSection text="Lista De Fundadores" typeName={TYPE} />
+      <SearchCard
+        onSearchClick={handleSearchClick}
+        entityName="fundador"   
+      ></SearchCard>
       <TableSection
-        mapItemToRowDataProps={mapStartupsApplicationsToRowDataProps}
         data={data}
-        handleDelete={handleDelete}
         searchTerm={searchTerm}
-        itemType={"applications"}
-      />
+        handleDelete={handleDelete}
+        itemType={"founders"}
+        mapItemToRowDataProps={mapFoundersToRowDataProps}
+      ></TableSection>
+
       {!searchTerm && (
         <PaginationSection
           currentPage={currentPage}
@@ -125,7 +96,6 @@ export default function Applications() {
           onPageChange={handlePageChange}
         ></PaginationSection>
       )}
-      
     </>
   );
 }
