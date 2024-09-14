@@ -1,16 +1,15 @@
 "use client"
 
-import PaginationSection from "@/components/PaginationSection";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import LinkedInButton from "@/components/LinkedinButton";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
+import PaginationSection from "@/components/PaginationSection";
 import Title from "@/components/TitleSection";
 
-const TYPE = 'mentors'
+const TYPE = 'subscriptions'
 
-export default function Mentors() {
+export default function Subscriptions() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -31,7 +30,7 @@ export default function Mentors() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name",  allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "email", allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -53,28 +52,21 @@ export default function Mentors() {
     const handleDelete = () => {
         fetchDataCallback();
     };
-
-    const mapMentorsToRowDataProps = (item: any) => ({
+    const mapSubscriptionsToRowDataProps = (item: any) => ({
         itemId: item.id,
-        itemName: item.name,
-        imageUrl: item.imageUrl,
-        itemGeneric1: item.title,
-        itemGeneric2: item.city,
-        LinkedInButton: item.linkedin_link ? (
-            <LinkedInButton link={item.linkedin_link} />
-        ) : undefined
+        itemName: item.email,
     });
 
     return (
         <>
-            <Title text={"Lista de Mentores"} typeName={TYPE} ></Title>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
+            <Title text={"Lista de Suscripciones"} typeName={TYPE} ></Title>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"suscriptor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}
                 handleDelete={handleDelete}
                 itemType={TYPE}
-                mapItemToRowDataProps={mapMentorsToRowDataProps}
+                mapItemToRowDataProps={mapSubscriptionsToRowDataProps}
             >
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}

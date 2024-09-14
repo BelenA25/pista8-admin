@@ -1,11 +1,11 @@
 "use client"
 
-import PaginationSection from "@/components/PaginationSection";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import Title from "@/components/title";
+import Title from "@/components/TitleSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
+import PaginationSection from "@/components/PaginationSection";
 
 const TYPE = 'startups'
 
@@ -30,7 +30,7 @@ export default function Startups() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name", allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -62,14 +62,14 @@ export default function Startups() {
     return (
         <>
             <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
-            <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
-            <TableSection
-                data={data}
-                searchTerm={searchTerm}
-                handleDelete={handleDelete}
-                itemType={"startups"}
-                mapItemToRowDataProps={mapStartupsToRowDataProps}
-            >
+            <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
+            <TableSection 
+            data={data} 
+            searchTerm={searchTerm} 
+            handleDelete={handleDelete} 
+            itemType={"startups"} 
+            mapItemToRowDataProps={mapStartupsToRowDataProps}
+            >   
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>
