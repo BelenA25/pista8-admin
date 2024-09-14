@@ -61,7 +61,7 @@ export default function Mentors() {
         imageUrl: item.imageUrl,
         itemGeneric1: item.title,
         itemGeneric2: item.city,
-        LinkedInButton: item.linkedin_link ? (
+        genericButton: item.linkedin_link ? (
             <LinkedInButton link={item.linkedin_link} />
         ) : undefined,
         detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
@@ -70,7 +70,7 @@ export default function Mentors() {
     return (
         <>
             <TitleSection text={"Lista de Mentores"} typeName={TYPE} ></TitleSection>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"postulacion mentor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}

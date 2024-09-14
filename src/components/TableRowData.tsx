@@ -32,7 +32,7 @@ export default function TableRowData({ itemId, data, itemType, handleDelete }: T
                     </Typography>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    {data.LinkedInButton && data.LinkedInButton}
+                    {data.genericButton && data.genericButton}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     {data.questionButton ? data.questionButton : data.detailButton ? data.detailButton : null}

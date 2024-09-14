@@ -63,21 +63,33 @@ export default function MentorApplications() {
         itemGeneric2: item.email,
         itemGeneric3: item.phone,
         imageUrl: item.imageUrl || "",
-        LinkedInButton: item.linkedin_link ? (
+        genericButton: item.linkedin_link ? (
             <LinkedInButton link={item.linkedin_link} />
         ) : undefined,
         detailButton: (
             <QuestionButton
-                mentorDetails={{
-                    name: item.full_name,
-                    city: item.city,
-                    phone: item.phone,
-                    email: item.email,
-                    linkedin: item.linkedin_link || "",
-                    facebook: item.facebook_link || "",
-                    twitter: item.twitter_link || "",
-                    experience: item.areas_of_experience || "",
-                    satisfaction: item.startup_appreciation || ""
+                details={{
+                    title: item.full_name,
+                    subtitle: item.city,
+                    sections: [
+                        {
+                            title: "Datos personales",
+                            items: [
+                                { label: "Teléfono", value: item.phone },
+                                { label: "Email", value: <a href={`mailto:${item.email}`}>{item.email}</a> },
+                                item.linkedin_link && { label: "LinkedIn", value: <a href={item.linkedin_link}>Perfil de LinkedIn</a> },
+                                item.facebook_link && { label: "Facebook", value: <a href={item.facebook_link}>Perfil de Facebook</a> },
+                                item.twitter_link && { label: "Twitter", value: <a href={item.twitter_link}>Perfil de Twitter</a> },
+                            ].filter(Boolean),
+                        },
+                        {
+                            title: "Experiencia",
+                            items: [
+                                { label: "Áreas de experiencia", value: item.areas_of_experience || "N/A" },
+                                { label: "Apreciación de startups", value: item.startup_appreciation || "N/A" },
+                            ],
+                        },
+                    ],
                 }}
             />)
     });
