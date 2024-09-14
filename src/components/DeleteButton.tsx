@@ -2,21 +2,28 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
-import { useDeleteItem } from "@/hooks/useDeleteItem";  
+import { toast } from "sonner";
+import { deleteItem } from "@/shared/api/services/itemService";
 
 interface DeleteButtonProps {
-    itemId: string; 
+    itemId: string;
     itemType: string;
     onDelete: () => void;
 }
 
 export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButtonProps) {
     const [open, setOpen] = useState(false);
-    const { deleteItem, loading } = useDeleteItem();  
 
     const handleDelete = async () => {
-        await deleteItem(itemId, itemType, onDelete); 
-        setOpen(false);
+        try {
+            await deleteItem(itemType, itemId);
+            onDelete();
+            toast.success("Item borrado correctamente!");
+        } catch (error) {
+            toast.error("Error borrando item");
+        } finally {
+            setOpen(false);
+        }
     };
 
     return (
@@ -35,12 +42,10 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                 </AlertDialogHeader>
                 <div className="flex justify-end space-x-2">
                     <AlertDialogCancel asChild>
-                        <button disabled={loading}>Cancelar</button>
+                        <button>Cancelar</button>
                     </AlertDialogCancel>
                     <AlertDialogAction asChild>
-                        <button onClick={handleDelete} disabled={loading}>
-                            Eliminar
-                        </button>
+                        <button onClick={handleDelete}>Eliminar</button>
                     </AlertDialogAction>
                 </div>
             </AlertDialogContent>

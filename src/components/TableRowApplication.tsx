@@ -1,5 +1,5 @@
-import DeleteButton from "./delete-button";
-import InformationButton from "./information-button";
+import DeleteButton from "./DeleteButton";
+import InformationButton from "./InformationButton";
 import Typography from "./Typography/typography";
 import { TableRow, TableCell } from "./ui/table";
 

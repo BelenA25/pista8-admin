@@ -1,6 +1,6 @@
 "use client";
 
-import ApplicationsForm from "@/components/applications-form";
+import ApplicationsForm from "@/components/ApplicationForm";
 import Typography from "@/components/Typography/typography";
 
 export default function Create() {
