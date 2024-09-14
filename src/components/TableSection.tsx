@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import TableRowData from "./TableRowData";
-import { ReactNode } from "react";
 
 interface TableSectionProps<T> {
     data: T[];
@@ -9,15 +8,17 @@ interface TableSectionProps<T> {
     handleDelete: () => void;
     mapItemToRowDataProps: (item: T) => {
         itemId: string;
-        itemName: string;
-        imageUrl: string;
-        itemGeneric1: string;
-        itemGeneric2?: string;
-        LinkedInButton?: ReactNode;
+        [key: string]: any; 
     };
 }
 
-export default function TableSection<T>({data, searchTerm, itemType, handleDelete, mapItemToRowDataProps}: TableSectionProps<T>) {
+export default function TableSection<T>({
+    data,
+    searchTerm,
+    itemType,
+    handleDelete,
+    mapItemToRowDataProps
+}: TableSectionProps<T>) {
     return (
         <div className="mb-4 ml-8 mr-8 mt-5 p-4 border border-black rounded-lg custom-shadow overflow-hidden">
             <Table className="w-full">
@@ -35,13 +36,9 @@ export default function TableSection<T>({data, searchTerm, itemType, handleDelet
                                 <TableRowData
                                     key={index}
                                     itemId={rowDataProps.itemId}
-                                    itemName={rowDataProps.itemName}
-                                    imageUrl={rowDataProps.imageUrl}
-                                    itemGeneric1={rowDataProps.itemGeneric1}
-                                    itemGeneric2={rowDataProps.itemGeneric2 || ""}
+                                    data={rowDataProps}
                                     itemType={itemType}
                                     handleDelete={handleDelete}
-                                    LinkedInButton={rowDataProps.LinkedInButton}
                                 />
                             );
                         })

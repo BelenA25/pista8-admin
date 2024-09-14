@@ -1,41 +1,39 @@
 import { ReactNode } from "react";
-import DeleteButton from "./DeleteButton";
-import EditButton from "./EditButton";
+import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import Typography from "./Typography/typography";
+import EditButton from "./EditButton";
+import DeleteButton from "./DeleteButton";
 
 interface TableRowDataProps {
     itemId: string;
-    itemName: string;
-    imageUrl: string;
-    itemGeneric1: string;
-    itemGeneric2: string;
+    data: { [key: string]: string | ReactNode };
     itemType: string;
-    LinkedInButton?: ReactNode;
     handleDelete: () => void;
 }
 
-export default function TableRowData({ itemId, itemName, imageUrl, itemGeneric1, itemGeneric2, itemType, handleDelete, LinkedInButton }: TableRowDataProps) {
+export default function TableRowData({ itemId, data, itemType, handleDelete }: TableRowDataProps) {
     return (
         <div className="border border-black rounded-lg">
             <TableRow className="w-full flex  border border-gray-400">
                 <TableCell className="w-1/18 flex items-center">
                     <Avatar>
-                        <AvatarImage src={imageUrl} />
-                        <AvatarFallback>{itemName.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={data.imageUrl as string} />
+                        <AvatarFallback>{(data.itemName as string).charAt(0)}</AvatarFallback>
                     </Avatar>
                 </TableCell>
                 <TableCell className="flex flex-col flex-grow">
                     <Typography tag="p" alignment="left" fontWeight="bold">
-                        {itemName}
+                        {data.itemName}
                     </Typography>
                     <Typography tag="p" alignment="left">
-                        {itemGeneric1}{itemGeneric2 && ` - ${itemGeneric2}`}
+                        {data.itemGeneric1}
+                        {data.itemGeneric2 && ` - ${data.itemGeneric2}`}
+                        {data.itemGeneric3 && ` - ${data.itemGeneric3}`}
                     </Typography>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    {LinkedInButton && LinkedInButton}
+                    {data.LinkedInButton && data.LinkedInButton}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <EditButton itemId={itemId} itemType={itemType} />

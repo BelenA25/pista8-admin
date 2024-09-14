@@ -4,9 +4,9 @@ import PaginationSection from "@/components/PaginationSection";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
 import LinkedInButton from "@/components/LinkedinButton";
-import Title from "@/components/title";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
+import Title from "@/components/Title";
 
 const TYPE = 'mentors'
 
@@ -31,7 +31,7 @@ export default function Mentors() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name",  allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -68,12 +68,12 @@ export default function Mentors() {
     return (
         <>
             <Title text={"Lista de Mentores"} typeName={TYPE} ></Title>
-            <SearchCard onSearchClick={handleSearchClick} ></SearchCard>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}
                 handleDelete={handleDelete}
-                itemType={"mentors"}
+                itemType={TYPE}
                 mapItemToRowDataProps={mapMentorsToRowDataProps}
             >
             </TableSection>

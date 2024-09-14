@@ -64,13 +64,13 @@ export default function SideMenu() {
                                     </AccordionItem>
                                 </NavigationMenuItem>
                             </Accordion>
-                            {["Fundadores", "Partners", "Suscripciones", "Noticias"].map((item) => (
+                            {["Fundadores", "Partners", "Subscriptions", "Noticias"].map((item) => (
                                 <NavigationMenuItem key={item} className={`w-full py-2 p-7 rounded-md hover:bg-[#F2A594] transition-colors ${getActiveClass(`/${item.toLowerCase()}`)}`} >
-                                    <a href={`${item.toLowerCase()}`} className="flex space-x-4">
+                                    <a href={`/${item.toLowerCase()}`} className="flex space-x-4">
                                         <span>
                                             {item === "Fundadores" && <BriefcaseIcon className="h-4 w-4 mt-1" />}
                                             {item === "Partners" && <HandshakeIcon className="h-4 w-4 mt-1" />}
-                                            {item === "Suscripciones" && <MailIcon className="h-4 w-4 mt-1" />}
+                                            {item === "Subscriptions" && <MailIcon className="h-4 w-4 mt-1" />}
                                             {item === "Noticias" && <NewspaperIcon className="h-4 w-4 mt-1" />}
                                         </span>
                                         <span>{item}</span>

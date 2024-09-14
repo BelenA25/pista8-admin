@@ -2,14 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import Title from "@/components/Title";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
+import Title from "@/components/Title";
 
-const TYPE = 'startups'
+const TYPE = 'subscriptions'
 
-export default function Startups() {
+export default function Subscriptions() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -30,7 +30,7 @@ export default function Startups() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name", allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "email", allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -52,24 +52,22 @@ export default function Startups() {
     const handleDelete = () => {
         fetchDataCallback();
     };
-    const mapStartupsToRowDataProps = (item: any) => ({
+    const mapSubscriptionsToRowDataProps = (item: any) => ({
         itemId: item.id,
-        itemName: item.name,
-        imageUrl: item.imageUrl,
-        itemGeneric1: item.sector
+        itemName: item.email,
     });
 
     return (
         <>
-            <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
-            <TableSection 
-            data={data} 
-            searchTerm={searchTerm} 
-            handleDelete={handleDelete} 
-            itemType={"startups"} 
-            mapItemToRowDataProps={mapStartupsToRowDataProps}
-            >   
+            <Title text={"Lista de Suscripciones"} typeName={TYPE} ></Title>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"suscriptor"} ></SearchCard>
+            <TableSection
+                data={data}
+                searchTerm={searchTerm}
+                handleDelete={handleDelete}
+                itemType={TYPE}
+                mapItemToRowDataProps={mapSubscriptionsToRowDataProps}
+            >
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
         </>

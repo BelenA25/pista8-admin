@@ -6,9 +6,10 @@ import { useState } from 'react';
 
 interface SearchCardProps {
     onSearchClick: (searchTerm: string) => void;
+    entityName: string;
 }
 
-export default function SearchCard({ onSearchClick }: SearchCardProps) {
+export default function SearchCard({ onSearchClick, entityName }: SearchCardProps) {
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchClick = () => {
@@ -26,8 +27,8 @@ export default function SearchCard({ onSearchClick }: SearchCardProps) {
     };
     return (
         <Card className="mx-8 p-4 flex items-center space-x-5 border-none">
-            <Typography tag='h6' noWrap={true}>Buscar Startup: </Typography>
-            <Input type="text" value={searchTerm} onChange={handleSearchChange}  placeholder="Escribe el nombre del startup..." onKeyDown={handleKeyDown} className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <Typography tag='h6' noWrap={true}>Buscar {entityName}: </Typography>
+            <Input type="text" value={searchTerm} onChange={handleSearchChange}  placeholder={`Escribe el nombre del ${entityName.toLowerCase()}...`} onKeyDown={handleKeyDown} className="flex-grow p-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-green-500" />
             <SearchButton onClick={handleSearchClick}></SearchButton>
         </Card>
     );
