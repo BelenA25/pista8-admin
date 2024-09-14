@@ -3,7 +3,9 @@ import Typography from "./Typography/typography";
 
 interface TitleProps {
     text: string;
-    typeName: string; showAddButton?: boolean;
+    typeName: string;
+    showAddButton?: boolean;
+
 }
 
 export default function TitleSection({ text, typeName, showAddButton = true }: TitleProps) {

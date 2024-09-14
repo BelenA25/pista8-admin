@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import Typography from "./Typography/typography";
 import { TableCell, TableRow } from "./ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 
 interface TableRowDataProps {
@@ -33,10 +32,10 @@ export default function TableRowData({ itemId, data, itemType, handleDelete }: T
                     </Typography>
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    {data.LinkedInButton && data.LinkedInButton}
+                    {data.genericButton && data.genericButton}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <EditButton itemId={itemId} itemType={itemType} />
+                    {data.questionButton ? data.questionButton : data.detailButton ? data.detailButton : null}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType} />

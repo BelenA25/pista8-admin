@@ -6,6 +6,7 @@ import TitleSection from "@/components/TitleSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
+import EditButton from "@/components/EditButton";
 
 const TYPE = 'startups'
 
@@ -56,7 +57,8 @@ export default function Startups() {
         itemId: item.id,
         itemName: item.name,
         imageUrl: item.imageUrl,
-        itemGeneric1: item.sector
+        itemGeneric1: item.sector,
+        detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
     });
 
     return (

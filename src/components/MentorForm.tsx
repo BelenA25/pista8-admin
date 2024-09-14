@@ -7,9 +7,7 @@ import { Form, FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "@/shared/firebaseConfig";
+import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
 import { MentorFormValues, mentorSchema } from "@/shared/api/validations/mentorSchema";
 import { TextField } from "./TextField";
 
@@ -69,43 +67,11 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
         let flagUrl = flagImageUrl || "";
 
         if (mentorImage) {
-            const mentorImageRef = ref(storage, `images/mentor-${mentorImage.name}`);
-            const uploadMentorTask = uploadBytesResumable(mentorImageRef, mentorImage);
-
-            await new Promise((resolve, reject) => {
-                uploadMentorTask.on(
-                    "state_changed",
-                    () => { },
-                    (error) => {
-                        toast.error("Error al subir la imagen del mentor");
-                        reject(error);
-                    },
-                    async () => {
-                        imageUrl = await getDownloadURL(uploadMentorTask.snapshot.ref);
-                        resolve(true);
-                    }
-                );
-            });
+            imageUrl = await uploadImage(mentorImage);
         }
 
         if (flagImage) {
-            const flagImageRef = ref(storage, `images/flag-${flagImage.name}`);
-            const uploadFlagTask = uploadBytesResumable(flagImageRef, flagImage);
-
-            await new Promise((resolve, reject) => {
-                uploadFlagTask.on(
-                    "state_changed",
-                    () => { },
-                    (error) => {
-                        toast.error("Error al subir la imagen de la bandera");
-                        reject(error);
-                    },
-                    async () => {
-                        flagUrl = await getDownloadURL(uploadFlagTask.snapshot.ref);
-                        resolve(true);
-                    }
-                );
-            });
+            flagUrl = await uploadImage(flagImage);
         }
 
         const mentorData = {
