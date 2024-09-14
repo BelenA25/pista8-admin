@@ -1,41 +1,79 @@
 "use client"
 
-import PaginationSection from "@/components/pagination-section";
-import SearchCard from "@/components/search-card";
-import TableSection from "@/components/table-section";
-import Title from "@/components/title";
-import { useEffect, useState } from "react";
-import { database } from "../firebaseConfig";
-import { onValue, ref } from "firebase/database";
+import { useCallback, useEffect, useState } from "react";
+import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
+import SearchCard from "@/components/SearchCard";
+import TableSection from "@/components/TableSection";
+import PaginationSection from "@/components/PaginationSection";
+import EditButton from "@/components/EditButton";
+import TitleSection from "@/components/TitleSection";
 
-const ITEMS_PAGE = 6;
+const TYPE = 'startups'
 
 export default function Startups() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
+    const [itemsPerPage, setItemsPerPage] = useState(6);
+    const [totalItems, setTotalItems] = useState<number>(0);
+    const [lastKeys, setLastKeys] = useState<string[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [allKeys, setAllKeys] = useState<string[]>([]);
 
     useEffect(() => {
-        const startupsRef = ref(database, 'startups');
-        onValue(startupsRef, (snapshot) => {
-            const data = snapshot.val();
-            const startupList = data ? Object.values(data) : [];
-            setData(startupList);
-        });
+        const onResize = () => handleResize(setItemsPerPage);
+
+        window.addEventListener('resize', onResize);
+        onResize();
+
+        return () => {
+            window.removeEventListener('resize', onResize);
+        };
     }, []);
 
-    const totalPages = Math.ceil(data.length / ITEMS_PAGE);
-    const paginatedData = data.slice((currentPage - 1) * ITEMS_PAGE, currentPage * ITEMS_PAGE);
+    const fetchDataCallback = useCallback(() => {
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name", allKeys, setData, setLastKeys);
+    }, [searchTerm, currentPage, itemsPerPage, allKeys]);
+
+    useEffect(() => {
+        fetchAllKeys(TYPE, setAllKeys, setTotalItems);
+    }, []);
+    useEffect(() => {
+        estimateTotalItems(TYPE, setTotalItems);
+        fetchDataCallback();
+    }, [currentPage, itemsPerPage, searchTerm, fetchDataCallback]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
 
+    const handleSearchClick = (term: string) => {
+        setSearchTerm(term);
+    };
+
+    const handleDelete = () => {
+        fetchDataCallback();
+    };
+    const mapStartupsToRowDataProps = (item: any) => ({
+        itemId: item.id,
+        itemName: item.name,
+        imageUrl: item.imageUrl,
+        itemGeneric1: item.sector,
+        detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
+    });
 
     return (
         <>
-            <Title></Title>
-            <SearchCard></SearchCard>
-            <TableSection data={paginatedData}></TableSection>
-            <PaginationSection currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange}></PaginationSection>        </>
+            <TitleSection text={"Lista de Startups"} typeName={TYPE} ></TitleSection>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
+            <TableSection 
+            data={data} 
+            searchTerm={searchTerm} 
+            handleDelete={handleDelete} 
+            itemType={"startups"} 
+            mapItemToRowDataProps={mapStartupsToRowDataProps}
+            >   
+            </TableSection>
+            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
+        </>
     )
 }
