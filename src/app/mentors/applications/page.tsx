@@ -1,17 +1,17 @@
 "use client"
 
-import PaginationSection from "@/components/PaginationSection";
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
 import LinkedInButton from "@/components/LinkedinButton";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-import EditButton from "@/components/EditButton";
+import PaginationSection from "@/components/PaginationSection";
+import QuestionButton from "@/components/QuestionButton";
 import TitleSection from "@/components/TitleSection";
 
-const TYPE = 'mentors'
+const TYPE = 'mentor-applications'
 
-export default function Mentors() {
+export default function MentorApplications() {
     const [currentPage, setCurrentPage] = useState(1);
     const [data, setData] = useState<any[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -32,7 +32,7 @@ export default function Mentors() {
     }, []);
 
     const fetchDataCallback = useCallback(() => {
-        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "name",  allKeys, setData, setLastKeys);
+        fetchData(TYPE, searchTerm, currentPage, itemsPerPage, "full_name", allKeys, setData, setLastKeys);
     }, [searchTerm, currentPage, itemsPerPage, allKeys]);
 
     useEffect(() => {
@@ -41,6 +41,7 @@ export default function Mentors() {
     useEffect(() => {
         estimateTotalItems(TYPE, setTotalItems);
         fetchDataCallback();
+        console.log(totalItems);
     }, [currentPage, itemsPerPage, searchTerm, fetchDataCallback]);
 
     const handlePageChange = (page: number) => {
@@ -55,31 +56,50 @@ export default function Mentors() {
         fetchDataCallback();
     };
 
-    const mapMentorsToRowDataProps = (item: any) => ({
+    const mapMentorApplicationsToRowDataProps = (item: any) => ({
         itemId: item.id,
-        itemName: item.name,
-        imageUrl: item.imageUrl,
-        itemGeneric1: item.title,
-        itemGeneric2: item.city,
+        itemName: item.full_name,
+        itemGeneric1: item.city,
+        itemGeneric2: item.email,
+        itemGeneric3: item.phone,
+        imageUrl: item.imageUrl || "",
         LinkedInButton: item.linkedin_link ? (
             <LinkedInButton link={item.linkedin_link} />
         ) : undefined,
-        detailButton: <EditButton itemId={item.id} itemType={TYPE} /> 
+        detailButton: (
+            <QuestionButton
+                mentorDetails={{
+                    name: item.full_name,
+                    city: item.city,
+                    phone: item.phone,
+                    email: item.email,
+                    linkedin: item.linkedin_link || "",
+                    facebook: item.facebook_link || "",
+                    twitter: item.twitter_link || "",
+                    experience: item.areas_of_experience || "",
+                    satisfaction: item.startup_appreciation || ""
+                }}
+            />)
     });
 
     return (
         <>
-            <TitleSection text={"Lista de Mentores"} typeName={TYPE} ></TitleSection>
+            <TitleSection text={"Lista de Postulaciones a Mentores"} typeName={TYPE} showAddButton={false}></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}
                 handleDelete={handleDelete}
                 itemType={TYPE}
-                mapItemToRowDataProps={mapMentorsToRowDataProps}
-            >
-            </TableSection>
-            {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
+                mapItemToRowDataProps={mapMentorApplicationsToRowDataProps}
+            />
+            {!searchTerm && (
+                <PaginationSection
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(totalItems / itemsPerPage)}
+                    onPageChange={handlePageChange}
+                />
+            )}
         </>
     )
 }

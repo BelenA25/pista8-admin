@@ -58,7 +58,7 @@ export default function SideMenu() {
                                         <AccordionContent className="pl-8">
                                             <ul className="space-y-2">
                                                 <li><a href="/mentors" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Mentores</a></li>
-                                                <li><a href="/mentors/postulaciones" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Postulaciones</a></li>
+                                                <li><a href="/mentors/applications" className={`block p-2 rounded-md hover:bg-[#F2A594] `}>Lista de Postulaciones</a></li>
                                             </ul>
                                         </AccordionContent>
                                     </AccordionItem>

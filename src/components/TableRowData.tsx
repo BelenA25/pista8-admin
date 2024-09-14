@@ -36,7 +36,7 @@ export default function TableRowData({ itemId, data, itemType, handleDelete }: T
                     {data.LinkedInButton && data.LinkedInButton}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
-                    <EditButton itemId={itemId} itemType={itemType} />
+                    {data.questionButton ? data.questionButton : data.detailButton ? data.detailButton : null}
                 </TableCell>
                 <TableCell className="flex justify-end items-center">
                     <DeleteButton itemId={itemId} onDelete={handleDelete} itemType={itemType} />
