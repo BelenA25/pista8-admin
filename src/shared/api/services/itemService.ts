@@ -1,5 +1,5 @@
 import { database } from "@/shared/firebaseConfig";
-import { ref as dbRef, get, set, push, remove } from "firebase/database";
+import { ref as dbRef, get, set, push, remove, query, orderByChild, equalTo } from "firebase/database";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/shared/firebaseConfig";
 import { toast } from "sonner";
@@ -53,3 +53,16 @@ export const uploadImage = async (file: File): Promise<string> => {
         );
     });
 };
+
+export async function checkEmailExists(email: string): Promise<boolean> {
+    try {
+        const subscriptionsRef = dbRef(database, "subscriptions");
+        const emailQuery = query(subscriptionsRef, orderByChild("email"), equalTo(email));
+        const snapshot = await get(emailQuery);
+
+        return snapshot.exists();
+    } catch (error) {
+        toast.error("Error checking email existence.");
+        throw error;
+    }
+}

@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
+import { checkEmailExists, createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
 import { TextField } from "./TextField";
 import { SubscriptionFormValues, SubscriptionSchema } from "@/shared/api/validations/subscriptionSchema";
 
@@ -43,6 +43,13 @@ export default function SubscriptionsForm({ subscriptionId }: SubscriptionFormPr
     const onSubmit = async (values: SubscriptionFormValues) => {
         setIsSubmitting(true);
         try {
+            const emailExists = await checkEmailExists(values.email);
+
+            if (emailExists) {
+                toast.error("No puede registrar un correo electrónico que ya está registrado.");
+                return;
+            }
+
             if (subscriptionId) {
                 await updateItem(TYPE, subscriptionId, { email: values.email });
                 toast.success("Suscriptor actualizado satisfactoriamente!");
