@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
-import Title from "@/components/TitleSection";
+import TitleSection from "@/components/TitleSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
@@ -61,7 +61,7 @@ export default function Startups() {
 
     return (
         <>
-            <Title text={"Lista de Startups"} typeName={TYPE} ></Title>
+            <TitleSection text={"Lista de Startups"} typeName={TYPE} ></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
             <TableSection 
             data={data} 
