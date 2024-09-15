@@ -56,7 +56,7 @@ export default function NewsPage() {
     <>
       <TitleSection text="Noticias" typeName={TYPE} />
 
-      <SearchCard onSearchClick={setSearchTerm} entityName="Noticias" />
+      <SearchCard onSearchClick={setSearchTerm} entityName="Noticia" />
       <SectionNews
         news={data}
         searchTerm={searchTerm}

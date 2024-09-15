@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import FounderForm from "@/components/FounderForm"
 import Typography from "@/components/Typography/typography"
@@ -6,7 +6,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
-export default function editFounders(){
+export default function EditFounders(){
     const  {editId} = useParams()
     const [founderId, setFounderId] = useState<string | null>(null)
 

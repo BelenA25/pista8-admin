@@ -6,7 +6,7 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 
-export default function editFounders(){
+export default function EditPartners(){
     const  {editId} = useParams()
     const  [partnerId, setPartnerId] = useState<string | null>(null)
 
