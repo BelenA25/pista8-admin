@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./ui/command";
 import { cn } from "@/lib/utils";
-import { countries } from "@/lib/countries";
+import { listCountries } from "countries-ts";
 
 type ComboboxProps = {
     onSelect: (value: string) => void;
@@ -14,6 +14,15 @@ type ComboboxProps = {
 export function Combobox({ onSelect, selectedValue }: ComboboxProps) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("");
+    const [countries, setCountries] = useState<{ value: string, label: string }[]>([]);
+
+    useEffect(() => {
+        const countryList = listCountries().map(country => ({
+            value: country.label.toLowerCase(),
+            label: country.label,
+        }));
+        setCountries(countryList);
+    }, []);
 
     useEffect(() => {
         setValue(selectedValue || "");
@@ -29,7 +38,7 @@ export function Combobox({ onSelect, selectedValue }: ComboboxProps) {
                     className="w-[200px] justify-between"
                 >
                     {value
-                        ? countries.find((country) => country.value === value)?.label
+                        ? countries.find((country) => country.label === value)?.label
                         : "Select country..."}
                     <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -42,8 +51,8 @@ export function Combobox({ onSelect, selectedValue }: ComboboxProps) {
                         <CommandGroup>
                             {countries.map((country) => (
                                 <CommandItem
-                                    key={country.value}
-                                    value={country.value}
+                                    key={country.label}
+                                    value={country.label}
                                     onSelect={(currentValue) => {
                                         setValue(currentValue === value ? "" : currentValue);
                                         onSelect(currentValue === value ? "" : currentValue);
@@ -54,7 +63,7 @@ export function Combobox({ onSelect, selectedValue }: ComboboxProps) {
                                     <CheckIcon
                                         className={cn(
                                             "ml-auto h-4 w-4",
-                                            value === country.value ? "opacity-100" : "opacity-0"
+                                            value === country.label ? "opacity-100" : "opacity-0"
                                         )}
                                     />
                                 </CommandItem>

@@ -12,9 +12,7 @@ export const mentorSchema = z.object({
         .regex(/^[A-Za-z\s]+$/, { message: "El título solo debe contener letras y espacios." }),
 
     city: z.string()
-        .min(1, { message: "El país es requerido." })
-        .max(50, { message: "El país no puede exceder los 50 caracteres." })
-        .regex(/^[A-Za-z\s]+$/, { message: "El país solo debe contener letras y espacios." }),
+        .min(1, { message: "El país es requerido." }),
 
     linkedin: z.string()
         .url({ message: "El enlace de LinkedIn debe ser una URL válida." })
