@@ -8,19 +8,17 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/shared/firebaseConfig";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Typography from "./Typography/typography";
-import {
-  LoginFormValues,
-  LoginSchema,
-} from "@/shared/api/validation/loginSchema";
+import { LoginFormValues, LoginSchema } from "@/shared/api/validation/loginSchema";
 import { LoginField } from "./loginField";
 
 export default function LoginForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [attemptCount, setAttemptCount] = useState(0);
-  const [isBlocked, setIsBlocked] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0); 
+  const [isBlocked, setIsBlocked] = useState(false); 
+  const [blockEndTime, setBlockEndTime] = useState<number | null>(null);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -29,37 +27,70 @@ export default function LoginForm() {
       password: "",
     },
   });
-  const MAX_ATTEMPTS = 3;
-  const BLOCK_DURATION = 30 * 1000;
+
+  const MAX_ATTEMPTS = 3; 
+  const BLOCK_DURATION = 30 * 1000; 
+
+  useEffect(() => {
+    const storedAttempts = localStorage.getItem("attemptCount");
+    const storedBlockEndTime = localStorage.getItem("blockEndTime");
+
+    if (storedAttempts) {
+      setAttemptCount(parseInt(storedAttempts, 10));
+    }
+
+    if (storedBlockEndTime) {
+      const endTime = parseInt(storedBlockEndTime, 10);
+      setBlockEndTime(endTime);
+
+      if (Date.now() < endTime) {
+        setIsBlocked(true);
+        const remainingTime = endTime - Date.now();
+        setTimeout(() => {
+          setIsBlocked(false);
+          setAttemptCount(0);
+          localStorage.removeItem("blockEndTime");
+          localStorage.removeItem("attemptCount");
+        }, remainingTime);
+      } else {
+        // Si ya ha pasado el tiempo de bloqueo, desbloquea el formulario
+        setIsBlocked(false);
+        setAttemptCount(0);
+        localStorage.removeItem("blockEndTime");
+        localStorage.removeItem("attemptCount");
+      }
+    }
+  }, []);
+
   const onSubmit = async (values: LoginFormValues) => {
     setIsSubmitting(true);
 
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
-      console.log(values.email, values.password);
       router.push("/startups");
     } catch (error) {
-      setAttemptCount(attemptCount + 1);
+      const newAttemptCount = attemptCount + 1;
+      setAttemptCount(newAttemptCount);
+      localStorage.setItem("attemptCount", newAttemptCount.toString());
 
-      if (attemptCount + 1 >= MAX_ATTEMPTS) {
-        setIsBlocked(true);
-        toast.error(
-          `Demasiados intentos fallidos. El formulario está bloqueado por 30 segundos.`
-        );
+      if (newAttemptCount >= MAX_ATTEMPTS) {
+        const blockEnd = Date.now() + BLOCK_DURATION;
+        setBlockEndTime(blockEnd);
+        localStorage.setItem("blockEndTime", blockEnd.toString());
+
+        setIsBlocked(true); 
+        toast.error(`Demasiados intentos fallidos. El formulario está bloqueado por 30 segundos.`);
+
 
         setTimeout(() => {
-          setAttemptCount(0);
           setIsBlocked(false);
+          setAttemptCount(0);
+          localStorage.removeItem("blockEndTime");
+          localStorage.removeItem("attemptCount");
         }, BLOCK_DURATION);
       } else {
-        toast.error(
-          `Credenciales inválidas. Intentos restantes: ${
-            MAX_ATTEMPTS - (attemptCount + 1)
-          }`
-        );
+        toast.error(`Credenciales inválidas. Intentos restantes: ${MAX_ATTEMPTS - newAttemptCount}`);
       }
-
-      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -78,7 +109,7 @@ export default function LoginForm() {
               label="Email"
               placeholder="Email"
               type="email"
-              disabled={isBlocked}
+              disabled={isBlocked} 
             />
             <LoginField
               control={form.control}
@@ -86,14 +117,14 @@ export default function LoginForm() {
               label="Contraseña"
               placeholder="Contraseña"
               type="password"
-              disabled={isBlocked}
+              disabled={isBlocked} 
             />
           </div>
           <div className="flex justify-center mt-4">
             <Button
               type="button"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isSubmitting || isBlocked}
+              disabled={isSubmitting || isBlocked} 
               className="bg-custom-orange text-white"
             >
               {isSubmitting ? (
