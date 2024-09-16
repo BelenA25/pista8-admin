@@ -1,5 +1,5 @@
-"use client"
-
+"use client" 
+  
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
 import SearchCard from "@/components/SearchCard";
