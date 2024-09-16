@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "./ui/card";
 import EditButton from "./EditButton";
 import DeleteButton from "./DeleteButton";
 import Typography from "./Typography/typography";
-
+ 
 interface TableNewsProps {
   itemId: string;
   imageUrl: string;
