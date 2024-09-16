@@ -10,7 +10,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
 import { MentorFormValues, mentorSchema } from "@/shared/api/validation/mentorSchema";
 import { TextField } from "./TextField";
-import { set } from "firebase/database";
 import { Input } from "./ui/input";
 
 const TYPE = 'mentors'
@@ -91,10 +90,10 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
         try {
             if (mentorId) {
                 await updateItem(TYPE, mentorId, mentorData);
-                toast.success("Mentor  actualizado satisfactoriamente!");
+                toast.success("Mentor actualizado satisfactoriamente!");
             } else {
                 await createItem(TYPE, mentorData);
-                toast.success("Mentor  creado satisfactoriamente!");
+                toast.success("Mentor creado satisfactoriamente!");
             }
 
             form.reset();

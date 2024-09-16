@@ -74,7 +74,7 @@ export default function Mentors() {
     return (
         <AuthHandler user={user} loading={loading}>
             <TitleSection text={"Lista de Mentores"} typeName={TYPE} ></TitleSection>
-            <SearchCard onSearchClick={handleSearchClick} entityName={"postulacion mentor"} ></SearchCard>
+            <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
             <TableSection
                 data={data}
                 searchTerm={searchTerm}
