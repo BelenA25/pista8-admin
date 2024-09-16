@@ -7,7 +7,7 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from "./ui/navigation-menu";
-import { RocketIcon } from "@radix-ui/react-icons";
+import { LockOpen1Icon, RocketIcon } from "@radix-ui/react-icons";
 import {
   BriefcaseIcon,
   HandshakeIcon,
@@ -20,6 +20,7 @@ import Image from "next/image";
 import { Accordion, AccordionContent, AccordionTrigger } from "./ui/accordion";
 import { AccordionItem } from "@radix-ui/react-accordion";
 import { usePathname } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
 
 const MENU_ITEMS = {
   STARTUPS: {
@@ -57,6 +58,7 @@ const MENU_ITEMS = {
 export default function SideMenu() {
   const [isSidebarVisible, setSidebarVisible] = useState(true);
   const asPath = usePathname();
+  const { handleLogout } = useAuth();
 
   const handleImageClick = () => {
     setSidebarVisible(!isSidebarVisible);
@@ -169,6 +171,15 @@ export default function SideMenu() {
                     </a>
                   </NavigationMenuItem>
                 ))}
+                <NavigationMenuItem
+                className={`w-full py-2 p-7 rounded-md hover:bg-[#F2A594] transition-colors cursor-pointer`}
+                onClick={handleLogout}
+              >
+                <div className="flex items-center space-x-4">
+                  <LockOpen1Icon className="h-4 w-4 mt-1" />
+                  <span>Cerrar sesión</span>
+                </div>
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>

@@ -3,7 +3,7 @@
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, use } from 'react';
 import {
   estimateTotalItems,
   fetchAllKeys,
@@ -13,10 +13,14 @@ import {
 import TitleSection from "@/components/TitleSection";
 import WebButton from "@/components/WebButton";
 import EditButton from "@/components/EditButton";
+import useAuth from "@/hooks/useAuth";
+import AuthHandler from "@/components/AuthHandler";
 
 const TYPE = "founders";
 
 export default function Founders() {
+  const { user, loading} = useAuth();
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<any[]>([]);
   const [itemsPerPage, setItemsPerPage] = useState(6);
@@ -73,9 +77,8 @@ export default function Founders() {
     ) : undefined,   
     detailButton: <EditButton itemId={item.id} itemType={TYPE} />
 });
-
   return (
-    <>
+    <AuthHandler loading={loading} user={user}>
       <TitleSection text="Lista De Fundadores" typeName={TYPE} />
       <SearchCard
         onSearchClick={handleSearchClick}
@@ -96,6 +99,6 @@ export default function Founders() {
           onPageChange={handlePageChange}
         ></PaginationSection>
       )}
-    </>
+    </AuthHandler>
   );
 }

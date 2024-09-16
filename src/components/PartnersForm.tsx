@@ -20,6 +20,7 @@ import {
   PartnerFormValidation,
   partnersValidation,
 } from "@/shared/api/validation/partnersValidation";
+import { set } from "firebase/database";
 
 const TYPE = "partners";
 
@@ -66,6 +67,7 @@ export default function PartnerForm({ partnerId }: PartnersFormProps) {
   };
 
   const onSubmit = async (values: PartnerFormValidation) => {
+    setIsUploading(true);
     let imageUrl = imagePreviewUrl || "";
 
     if (partnerImage) {

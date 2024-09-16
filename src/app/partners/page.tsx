@@ -1,12 +1,14 @@
 
 'use client'
 
+import AuthHandler from "@/components/AuthHandler";
 import EditButton from "@/components/EditButton";
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import TitleSection from "@/components/TitleSection";
 import WebButton from "@/components/WebButton";
+import useAuth from "@/hooks/useAuth";
 import {
   estimateTotalItems,
   fetchAllKeys,
@@ -26,6 +28,7 @@ export default function Partners() {
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
+  const { user, loading} = useAuth();
 
   useEffect(() => {
     const onResize = () => handleResize(setItemsPerPage);
@@ -72,7 +75,7 @@ export default function Partners() {
     detailButton: <EditButton itemId={item.id} itemType={TYPE} />
 });
   return (
-    <>
+    <AuthHandler user={user} loading={loading}>
       <TitleSection text="Lista de Partners" typeName={TYPE} />
       <SearchCard onSearchClick={setSearchTerm} entityName="Partner" />
       <TableSection
@@ -89,6 +92,6 @@ export default function Partners() {
           onPageChange={handlePageChange}
         ></PaginationSection>
       )}
-    </>
+    </AuthHandler>
   );
 }

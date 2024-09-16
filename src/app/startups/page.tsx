@@ -7,6 +7,8 @@ import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
 import EditButton from "@/components/EditButton";
+import useAuth from "@/hooks/useAuth";
+import AuthHandler from "@/components/AuthHandler";
 
 
 const TYPE = 'startups'
@@ -19,6 +21,8 @@ export default function Startups() {
     const [lastKeys, setLastKeys] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [allKeys, setAllKeys] = useState<string[]>([]);
+    const { user, loading} = useAuth();
+
 
     useEffect(() => {
         const onResize = () => handleResize(setItemsPerPage);
@@ -63,7 +67,7 @@ export default function Startups() {
     });
 
     return (
-        <>
+        <AuthHandler user={user} loading={loading}>
             <TitleSection text={"Lista de Startups"} typeName={TYPE} ></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"startup"} ></SearchCard>
             <TableSection 
@@ -75,6 +79,6 @@ export default function Startups() {
             >   
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
-        </>
+        </AuthHandler>
     )
 }

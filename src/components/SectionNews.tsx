@@ -41,7 +41,7 @@ export default function SectionNews({
             key={index}
             itemId={item.id}
             imageUrl={item.imageUrl}
-            link={item.link}
+            link={item.link} 
             itemName={item.name}
             itemType={itemType}
             handleDelete={handleDelete}

@@ -1,29 +1,33 @@
-'use client';
+"use client";
 
+import AuthHandler from "@/components/AuthHandler";
 import FormNews from "@/components/FormNews";
 import Typography from "@/components/Typography/typography";
+import useAuth from "@/hooks/useAuth";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function EditNews() {
-   const {editId} = useParams()
-   const [newsId, setNewsId] = useState<string | null>(null);
-   
-   useEffect(() => {
-     if(editId){
-         setNewsId(editId as string)
-     }
-   },[editId])
+  const { editId } = useParams();
+  const [newsId, setNewsId] = useState<string | null>(null);
+  const { user, loading } = useAuth();
 
-   if(!newsId){
-       return <div>...Cargando</div>
-   }
+  useEffect(() => {
+    if (editId) {
+      setNewsId(editId as string);
+    }
+  }, [editId]);
 
-   return(
-    <div>
+  if (!newsId) {
+    return <div>...Cargando</div>;
+  }
+
+  return (
+    <AuthHandler user={user} loading={loading}>
+      <div>
         <Typography tag="h1">Editar Noticia</Typography>
-        <FormNews newsId={newsId}/>
-     
-    </div>
-   )
+        <FormNews newsId={newsId} />
+      </div>
+    </AuthHandler>
+  );
 }

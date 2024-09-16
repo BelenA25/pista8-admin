@@ -8,6 +8,8 @@ import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
 import QuestionButton from "@/components/QuestionButton";
 import TitleSection from "@/components/TitleSection";
+import useAuth from "@/hooks/useAuth";
+import AuthHandler from "@/components/AuthHandler";
 
 const TYPE = 'mentor-applications'
 
@@ -19,6 +21,8 @@ export default function MentorApplications() {
     const [lastKeys, setLastKeys] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [allKeys, setAllKeys] = useState<string[]>([]);
+    const { user, loading} = useAuth();
+
 
     useEffect(() => {
         const onResize = () => handleResize(setItemsPerPage);
@@ -95,7 +99,7 @@ export default function MentorApplications() {
     });
 
     return (
-        <>
+        <AuthHandler user={user} loading={loading}>
             <TitleSection text={"Lista de Postulaciones a Mentores"} typeName={TYPE} showAddButton={false}></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"mentor"} ></SearchCard>
             <TableSection
@@ -112,6 +116,6 @@ export default function MentorApplications() {
                     onPageChange={handlePageChange}
                 />
             )}
-        </>
+        </AuthHandler>
     )
 }

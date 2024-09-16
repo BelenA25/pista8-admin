@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
-import { MentorFormValues, mentorSchema } from "@/shared/api/validations/mentorSchema";
+import { MentorFormValues, mentorSchema } from "@/shared/api/validation/mentorSchema";
 import { TextField } from "./TextField";
 
 const TYPE = 'mentors'

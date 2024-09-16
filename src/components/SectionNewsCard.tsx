@@ -11,7 +11,7 @@ interface TableNewsProps {
   itemName: string;
   itemType: string;
   handleDelete: () => void;
-}
+} 
 export default function SectionNewsCard({
   itemId,
   imageUrl,
@@ -21,7 +21,7 @@ export default function SectionNewsCard({
   handleDelete,
 }: TableNewsProps) {
   return (
-    <Card className=" shadow-md border-black overflow-hidden ">
+    <Card className=" shadow-md border-black overflow-hidden  mb-4 ml-4 mr-4 mt-4 ">
       <CardContent className="p-0">
         <Image
           src={imageUrl}
@@ -30,7 +30,7 @@ export default function SectionNewsCard({
           height={150}
           className="w-full h-40 object-cover"
         />
-        <div className="p-2">
+        <div className="p-1">
           <Typography tag="h4" alignment="left">
             {itemName}
           </Typography>

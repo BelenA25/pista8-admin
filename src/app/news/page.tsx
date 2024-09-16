@@ -1,9 +1,11 @@
 "use client";
 
+import AuthHandler from "@/components/AuthHandler";
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import SectionNews from "@/components/SectionNews";
 import TitleSection from "@/components/TitleSection";
+import useAuth from "@/hooks/useAuth";
 import {
   estimateTotalItems,
   fetchAllKeysNews,
@@ -21,6 +23,8 @@ export default function NewsPage() {
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
+  const { user, loading} = useAuth();
+
 
   const fetchDataCallback = useCallback(() => {
 
@@ -53,7 +57,7 @@ export default function NewsPage() {
   };
 
   return (
-    <>
+    <AuthHandler user={user} loading={loading}>
       <TitleSection text="Noticias" typeName={TYPE} />
 
       <SearchCard onSearchClick={setSearchTerm} entityName="Noticia" />
@@ -68,6 +72,6 @@ export default function NewsPage() {
         totalPages={Math.ceil(totalItems / 4)}
         onPageChange={handlePageChange}
       />
-    </>
+    </AuthHandler>
   );
 }

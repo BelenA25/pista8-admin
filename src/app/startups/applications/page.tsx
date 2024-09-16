@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState } from "react";
 import PaginationSection from "@/components/PaginationSection";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
@@ -13,6 +13,8 @@ import {
 } from "@/lib/utils";
 import TitleSection from "@/components/TitleSection";
 import QuestionButton from "@/components/QuestionButton";
+import useAuth from "@/hooks/useAuth";
+import AuthHandler from "@/components/AuthHandler";
 
 const TYPE = "applications";
 
@@ -24,6 +26,8 @@ export default function Applications() {
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
+  const { user, loading} = useAuth();
+
 
   useEffect(() => {
     const onResize = () => handleResize(setItemsPerPage);
@@ -104,7 +108,7 @@ export default function Applications() {
       />)
 });
   return (
-    <>
+    <AuthHandler user={user} loading={loading}>
       <TitleSection
         text="Lista De Postulaciones Startups"
         typeName= {`startups/applications/`}
@@ -126,6 +130,6 @@ export default function Applications() {
         ></PaginationSection>
       )}
       
-    </>
+    </AuthHandler>
   );
 }
