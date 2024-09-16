@@ -6,13 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/shared/firebaseConfig";
 import { useState } from "react";
-import { LoginField } from "./LoginField";
 import Typography from "./Typography/typography";
 import { LoginFormValues, LoginSchema } from "@/shared/api/validation/loginSchema";
+import { LoginField } from "./loginField";
 
 export default function LoginForm() {
   const router = useRouter();
