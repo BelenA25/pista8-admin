@@ -11,6 +11,7 @@ import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/s
 import { MentorFormValues, mentorSchema } from "@/shared/api/validation/mentorSchema";
 import { TextField } from "./TextField";
 import { Input } from "./ui/input";
+import { Combobox } from "./Combobox";
 
 const TYPE = 'mentors'
 
@@ -65,6 +66,9 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
                 setFlagImageUrl(previewUrl);
             }
         }
+    };
+    const handleCountrySelect = (country: string) => {
+        form.setValue("city", country);
     };
     const onSubmit = async (values: MentorFormValues) => {
         setIsUploading(true);
@@ -121,7 +125,11 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
                             <TextField control={form.control} fieldName="linkedin" label="Linkedin (link)" placeholder="Enlace del perfil de linkedin" />
                         </div>
                         <div className="flex-1 flex flex-col gap-6">
-                            <TextField control={form.control} fieldName="city" label="País" placeholder="País del mentor" />
+                            <FormLabel>País</FormLabel>
+                            <Combobox
+                                onSelect={handleCountrySelect}
+                                selectedValue={form.watch("city")}
+                            />
                             <FormLabel>Imagen del mentor</FormLabel>
                             {mentorImageUrl && (
                                 <div className="mb-4">
