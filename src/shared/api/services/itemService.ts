@@ -1,7 +1,6 @@
-import { database } from "@/shared/firebaseConfig";
+import { database, storage } from '@/shared/firebaseConfig';
 import { ref as dbRef, get, set, push, remove, query, orderByChild, equalTo } from "firebase/database";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from "@/shared/firebaseConfig";
 import { toast } from "sonner";
 
 export const getItemById = async (tableName: string, itemId: string) => {
@@ -13,7 +12,7 @@ export const getItemById = async (tableName: string, itemId: string) => {
 export const updateItem = async (tableName: string, itemId: string, itemData: any) => {
     const itemRef = dbRef(database, `${tableName}/${itemId}`);
     return await set(itemRef, itemData);
-};
+}; 
 
 export const createItem = async (tableName: string, itemData: any) => {
     const newItemRef = push(dbRef(database, tableName));

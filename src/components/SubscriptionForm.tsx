@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { checkEmailExists, createItem, getItemById, updateItem } from "@/shared/api/services/itemService";
 import { TextField } from "./TextField";
-import { SubscriptionFormValues, SubscriptionSchema } from "@/shared/api/validations/subscriptionSchema";
+import { SubscriptionFormValues, SubscriptionSchema } from "@/shared/api/validation/subscriptionSchema";
 
 const TYPE = 'subscriptions';
 

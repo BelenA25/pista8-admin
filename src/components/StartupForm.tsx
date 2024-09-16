@@ -7,7 +7,7 @@ import { Form, FormLabel } from "@/components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import { StartupFormValues, startupSchema } from "@/shared/api/validations/startupSchema";
+import { StartupFormValues, startupSchema } from "@/shared/api/validation/startupSchema";
 import { TextField } from "./TextField";
 import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
 import { Input } from "./ui/input";

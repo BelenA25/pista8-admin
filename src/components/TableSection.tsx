@@ -26,7 +26,7 @@ export default function TableSection<T>({
                     {searchTerm && data.length === 0 ? (
                         <TableRow>
                             <TableCell colSpan={4} className="text-center py-4">
-                                No se encontraron resultados para la búsqueda.
+                                No se encontraron resultados para la busqueda.
                             </TableCell>
                         </TableRow>
                     ) : (
