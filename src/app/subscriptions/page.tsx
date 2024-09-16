@@ -1,11 +1,13 @@
-"use client"
-
+"use client" 
+  
 import { useCallback, useEffect, useState } from "react";
 import { estimateTotalItems, fetchAllKeys, fetchData, handleResize } from "@/lib/utils";
 import SearchCard from "@/components/SearchCard";
 import TableSection from "@/components/TableSection";
 import PaginationSection from "@/components/PaginationSection";
 import TitleSection from "@/components/TitleSection";
+import useAuth from "@/hooks/useAuth";
+import AuthHandler from "@/components/AuthHandler";
 
 const TYPE = 'subscriptions'
 
@@ -17,6 +19,9 @@ export default function Subscriptions() {
     const [lastKeys, setLastKeys] = useState<string[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [allKeys, setAllKeys] = useState<string[]>([]);
+    const { user, loading} = useAuth();
+    
+
 
     useEffect(() => {
         const onResize = () => handleResize(setItemsPerPage);
@@ -58,7 +63,7 @@ export default function Subscriptions() {
     });
 
     return (
-        <>
+        <AuthHandler user={user} loading={loading} >
             <TitleSection text={"Lista de Suscripciones"} typeName={TYPE} ></TitleSection>
             <SearchCard onSearchClick={handleSearchClick} entityName={"suscriptor"} ></SearchCard>
             <TableSection
@@ -70,6 +75,6 @@ export default function Subscriptions() {
             >
             </TableSection>
             {!searchTerm && (<PaginationSection currentPage={currentPage} totalPages={Math.ceil(totalItems / itemsPerPage)} onPageChange={handlePageChange}></PaginationSection>)}
-        </>
+        </AuthHandler>
     )
 }

@@ -67,6 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
 .bg-custom-orange {
   background-color: #FE420A;
 }
