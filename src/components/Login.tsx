@@ -29,9 +29,11 @@ export default function LoginForm() {
     setIsSubmitting(true);
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
+      console.log(values.email, values.password);
       router.push("/startups");
     } catch (error) {
       toast.error("Credenciales inválidas");
+      console.log(error);
     } finally {
       setIsSubmitting(false);
     }
