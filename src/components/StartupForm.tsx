@@ -129,7 +129,11 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                                 />
                             </div>
                         )}
-                        <Input type="file" onChange={handleFileChange} accept="image/*" />
+                        <Input
+                            className="w-64 p-2 text-sm border border-gray-500"
+                            type="file"
+                            onChange={handleFileChange}
+                            accept="image/*" />
                     </div>
                     <div className="flex justify-center mt-4 space-x-8">
                         <Button

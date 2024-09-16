@@ -10,6 +10,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { createItem, getItemById, updateItem, uploadImage } from "@/shared/api/services/itemService";
 import { MentorFormValues, mentorSchema } from "@/shared/api/validation/mentorSchema";
 import { TextField } from "./TextField";
+import { set } from "firebase/database";
+import { Input } from "./ui/input";
 
 const TYPE = 'mentors'
 
@@ -56,8 +58,12 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
             const file = e.target.files[0];
             if (type === 'mentor') {
                 setMentorImage(file);
+                const previewUrl = URL.createObjectURL(file);
+                setMentorImageUrl(previewUrl);
             } else if (type === 'flag') {
                 setFlagImage(file);
+                const previewUrl = URL.createObjectURL(file);
+                setFlagImageUrl(previewUrl);
             }
         }
     };
@@ -121,19 +127,24 @@ export default function MentorsForm({ mentorId }: MentorFormProps) {
                             {mentorImageUrl && (
                                 <div className="mb-4">
                                     <img src={mentorImageUrl} alt="Mentor" className="w-32 h-32 object-cover border rounded-lg" />
-                                    <input type="file" onChange={(e) => handleFileChange(e, 'mentor')} accept="image/*" />
                                 </div>
                             )}
-                            {!mentorImageUrl && <input type="file" onChange={(e) => handleFileChange(e, 'mentor')} accept="image/*" />}
-
+                            <Input
+                                className="w-64 p-2 text-sm border border-gray-500"
+                                type="file"
+                                onChange={(e) => handleFileChange(e, 'mentor')}
+                                accept="image/*" />
                             <FormLabel>Imagen bandera</FormLabel>
                             {flagImageUrl && (
                                 <div className="mb-4">
                                     <img src={flagImageUrl} alt="Bandera" className="w-32 h-32 object-cover border rounded-lg" />
-                                    <input type="file" onChange={(e) => handleFileChange(e, 'flag')} accept="image/*" />
                                 </div>
                             )}
-                            {!flagImageUrl && <input type="file" onChange={(e) => handleFileChange(e, 'flag')} accept="image/*" />}
+                            <Input
+                                className="w-64 p-2 text-sm border border-gray-500"
+                                type="file"
+                                onChange={(e) => handleFileChange(e, 'flag')}
+                                accept="image/*" />
                         </div>
                     </div>
                     <div className="flex justify-center mt-4 space-x-8">
