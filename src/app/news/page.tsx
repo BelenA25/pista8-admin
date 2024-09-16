@@ -23,21 +23,11 @@ export default function NewsPage() {
   const [lastKeys, setLastKeys] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [allKeys, setAllKeys] = useState<string[]>([]);
-  const { user, loading} = useAuth();
-
+  const { user, loading } = useAuth();
 
   const fetchDataCallback = useCallback(() => {
-
-    fetchDataNews(
-      TYPE, 
-      searchTerm, 
-      currentPage, 
-      allKeys, 
-      setData, 
-      setLastKeys
-    );
+    fetchDataNews(TYPE, searchTerm, currentPage, allKeys, setData, setLastKeys);
   }, [searchTerm, currentPage, itemsPerPage, allKeys]);
-
 
   useEffect(() => {
     fetchAllKeysNews(TYPE, setAllKeys, setTotalItems);
@@ -67,11 +57,13 @@ export default function NewsPage() {
         handleDelete={handleDelete}
         itemType="news"
       />
-      <PaginationSection
-        currentPage={currentPage}
-        totalPages={Math.ceil(totalItems / 4)}
-        onPageChange={handlePageChange}
-      />
+      {!searchTerm && (
+        <PaginationSection
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalItems / 4)}
+          onPageChange={handlePageChange}
+        />
+      )}
     </AuthHandler>
   );
 }

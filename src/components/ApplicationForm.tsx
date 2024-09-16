@@ -93,13 +93,13 @@ export default function ApplicationsForm() {
             <TextField
               control={form.control}
               fieldName="startup_description"
-              label="escripción de la Startup"
-              placeholder="Descripcion de la statup"
+              label="Descripción de la Startup"
+              placeholder="Descripcion de la startup"
             />
             <TextField
               control={form.control}
               fieldName="startup_stage"
-              label="Nombre de la Statup"
+              label="Etapa"
               placeholder="Etapa de la startup 1 o 2"
             />
           </div>

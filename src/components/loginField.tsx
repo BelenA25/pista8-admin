@@ -11,6 +11,7 @@ type LoginFieldProps<T extends FieldValues> = {
   label: string;
   placeholder: string;
   type: "text" | "password" | "email" ; 
+  disabled: boolean;
 } & PropsWithClassName;
 
 export const LoginField = <T extends FieldValues>({
@@ -19,7 +20,8 @@ export const LoginField = <T extends FieldValues>({
   label,
   placeholder,
   type = "text", 
-  className
+  className,
+  disabled = false
 }: LoginFieldProps<T>) => {
   const [showPassword, setShowPassword] = useState(false);
 
