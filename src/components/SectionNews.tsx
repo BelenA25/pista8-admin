@@ -29,27 +29,29 @@ export default function SectionNews({
 
   return (
     <div className="mb-1 ml-2 mr-2 mt-1 p-1 border border-black rounded-lg shadow-[0px_2px_2px_rgba(0,0,0,0.3)] overflow-visible">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-4">
-      
-      {searchTerm && filterNews?.length === 0 ? (
-        <Typography tag="span" alignment="right">
-          No se encontraron resultados de la busqueda{" "}
-        </Typography>
-      ) : (
-        filterNews?.map((item, index) => (
-          <SectionNewsCard
-            key={index}
-            itemId={item.id}
-            imageUrl={item.imageUrl}
-            link={item.link} 
-            itemName={item.name}
-            itemType={itemType}
-            handleDelete={handleDelete}
-          />
-        ))
-      )}
+      <div className={`grid ${filterNews?.length === 0 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2'} gap-4`}>
+        
+        {searchTerm && filterNews?.length === 0 ? (
+          <div className="flex justify-center items-center w-full h-32 col-span-full">
+            <p className="text-center">
+              No se encontraron resultados de la búsqueda
+            </p>
+          </div>
+        ) : (
+          filterNews?.map((item, index) => (
+            <SectionNewsCard
+              key={index}
+              itemId={item.id}
+              imageUrl={item.imageUrl}
+              link={item.link}
+              itemName={item.name}
+              itemType={itemType}
+              handleDelete={handleDelete}
+            />
+          ))
+        )}
+      </div>
     </div>
-  </div>
-  
   );
+  
 }

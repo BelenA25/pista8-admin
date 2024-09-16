@@ -10,12 +10,17 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/shared/firebaseConfig";
 import { useState } from "react";
 import Typography from "./Typography/typography";
-import { LoginFormValues, LoginSchema } from "@/shared/api/validation/loginSchema";
+import {
+  LoginFormValues,
+  LoginSchema,
+} from "@/shared/api/validation/loginSchema";
 import { LoginField } from "./loginField";
 
 export default function LoginForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginSchema),
@@ -24,15 +29,36 @@ export default function LoginForm() {
       password: "",
     },
   });
-
+  const MAX_ATTEMPTS = 3;
+  const BLOCK_DURATION = 30 * 1000;
   const onSubmit = async (values: LoginFormValues) => {
     setIsSubmitting(true);
+
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       console.log(values.email, values.password);
       router.push("/startups");
     } catch (error) {
-      toast.error("Credenciales inválidas");
+      setAttemptCount(attemptCount + 1);
+
+      if (attemptCount + 1 >= MAX_ATTEMPTS) {
+        setIsBlocked(true);
+        toast.error(
+          `Demasiados intentos fallidos. El formulario está bloqueado por 30 segundos.`
+        );
+
+        setTimeout(() => {
+          setAttemptCount(0);
+          setIsBlocked(false);
+        }, BLOCK_DURATION);
+      } else {
+        toast.error(
+          `Credenciales inválidas. Intentos restantes: ${
+            MAX_ATTEMPTS - (attemptCount + 1)
+          }`
+        );
+      }
+
       console.log(error);
     } finally {
       setIsSubmitting(false);
@@ -52,6 +78,7 @@ export default function LoginForm() {
               label="Email"
               placeholder="Email"
               type="email"
+              disabled={isBlocked}
             />
             <LoginField
               control={form.control}
@@ -59,13 +86,14 @@ export default function LoginForm() {
               label="Contraseña"
               placeholder="Contraseña"
               type="password"
+              disabled={isBlocked}
             />
           </div>
           <div className="flex justify-center mt-4">
             <Button
               type="button"
               onClick={form.handleSubmit(onSubmit)}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isBlocked}
               className="bg-custom-orange text-white"
             >
               {isSubmitting ? (
