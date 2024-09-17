@@ -26,7 +26,7 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                     toast.success(`Fundador eliminado correctamente!`);
                     break;
                 case "applications":
-                    toast.success(`Postulacion eliminada correctamente!`);
+                    toast.success(`postulación eliminada correctamente!`);
                     break;
                 case "mentors":
                     toast.success(`Mentor eliminado correctamente!`);
@@ -38,12 +38,12 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                     toast.success(`Noticia eliminada correctamente!`);
                     break;  
                 case "suscriptions":
-                    toast.success(`Suscripcion eliminada correctamente!`);
+                    toast.success(`Suscripción eliminada correctamente!`);
                     break;  
                 default:      
             }
         } catch (error) {
-            toast.error("Error borrando");
+            toast.error("Ocurrió un error al intentar borrar. Por favor, inténtalo de nuevo.");
         } finally {
             setOpen(false);
         }
