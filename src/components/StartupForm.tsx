@@ -55,7 +55,10 @@ export default function StartupForm({ startupId }: StartupFormProps) {
     }, [startupId, form]);
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            setSelectedFile(e.target.files[0]);
+            const file = e.target.files[0];
+            setSelectedFile(file);
+            const previewUrl = URL.createObjectURL(file);
+            setStartupImageUrl(previewUrl);
         }
     };
     const onSubmit = async (values: StartupFormValues) => {
@@ -117,17 +120,20 @@ export default function StartupForm({ startupId }: StartupFormProps) {
                     </div>
                     <div className="flex items-center justify-center mt-4 flex-col">
                         <FormLabel className="mb-2 text-center">Imagen del Startup</FormLabel>
-                        {startupImageUrl ? (
-                            <div className="mb-4">
+                        {startupImageUrl && (
+                            <div className="flex justify-center mb-4">
                                 <img
                                     src={startupImageUrl}
                                     alt="Imagen del Startup"
-                                    className="w-32 h-32 object-cover border rounded-lg mx-auto" />
-                                <Input type="file" onChange={handleFileChange} accept="image/*" />
+                                    className="w-32 h-32 object-cover border rounded-lg mx-auto"
+                                />
                             </div>
-                        ) : (
-                            <Input type="file" onChange={handleFileChange} accept="image/*" />
                         )}
+                        <Input
+                            className="w-64 p-2 text-sm border border-gray-500"
+                            type="file"
+                            onChange={handleFileChange}
+                            accept="image/*" />
                     </div>
                     <div className="flex justify-center mt-4 space-x-8">
                         <Button
