@@ -15,6 +15,7 @@ import {
   NewsFormValidation,
   newsValidation,
 } from "@/shared/api/validation/newsValidation";
+import { TextAreaField } from "./TextAreaField";
 
 const TYPE = "news";
 
@@ -110,7 +111,7 @@ export default function FormNews({ newsId }: NewsFormProps) {
               label="Nombre:"
               placeholder="Nombre "
             />
-            <TextField
+            <TextAreaField
               control={form.control}
               fieldName="description"
               label="Descripción:"
