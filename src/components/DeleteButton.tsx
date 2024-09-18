@@ -37,7 +37,7 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
                 case "news":
                     toast.success(`Noticia eliminada correctamente!`);
                     break;  
-                case "suscriptions":
+                case "subscriptions":
                     toast.success(`Suscripción eliminada correctamente!`);
                     break;  
                 default:      
