@@ -18,9 +18,32 @@ export default function DeleteButton({ itemId, itemType, onDelete }: DeleteButto
         try {
             await deleteItem(itemType, itemId);
             onDelete();
-            toast.success("Item borrado correctamente!");
+            switch (itemType) {
+                case "partners":
+                    toast.success(`Partner eliminado correctamente!`);
+                    break;
+                case "founders":
+                    toast.success(`Fundador eliminado correctamente!`);
+                    break;
+                case "applications":
+                    toast.success(`postulación eliminada correctamente!`);
+                    break;
+                case "mentors":
+                    toast.success(`Mentor eliminado correctamente!`);
+                    break;
+                case "startups":
+                    toast.success(`Startup eliminada correctamente!`);
+                    break;
+                case "news":
+                    toast.success(`Noticia eliminada correctamente!`);
+                    break;  
+                case "subscriptions":
+                    toast.success(`Suscripción eliminada correctamente!`);
+                    break;  
+                default:      
+            }
         } catch (error) {
-            toast.error("Error borrando item");
+            toast.error("Ocurrió un error al intentar borrar. Por favor, inténtalo de nuevo.");
         } finally {
             setOpen(false);
         }

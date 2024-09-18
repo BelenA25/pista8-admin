@@ -110,7 +110,7 @@ export default function FounderForm({ founderId }: FounderFormProps) {
               control={form.control}
               fieldName="name"
               label="Nombre"
-              placeholder="La Papelera"
+              placeholder="Nombre del fundador"
             />
             <TextField
               control={form.control}

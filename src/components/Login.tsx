@@ -53,7 +53,6 @@ export default function LoginForm() {
           localStorage.removeItem("attemptCount");
         }, remainingTime);
       } else {
-        // Si ya ha pasado el tiempo de bloqueo, desbloquea el formulario
         setIsBlocked(false);
         setAttemptCount(0);
         localStorage.removeItem("blockEndTime");
